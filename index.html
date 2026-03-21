@@ -400,6 +400,47 @@ canvas#sign-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
 /* price type toggle */
 .price-type-toggle{display:flex;gap:6px;margin-top:4px;}
 
+/* ── PAYMENT MODAL ── */
+.pay-modal{background:var(--dark2);border:1px solid var(--border);border-radius:18px;padding:1.5rem;max-width:440px;width:100%;max-height:92vh;overflow-y:auto;}
+.pay-modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;}
+.pay-modal-title{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:.06em;}
+.pay-modal-title em{color:var(--gold);font-style:normal;}
+.pay-client-strip{background:var(--dark3);border-radius:10px;padding:10px 13px;margin-bottom:13px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.pcs-left .pcs-name{font-size:13px;font-weight:700;}
+.pcs-left .pcs-id{font-size:11px;color:var(--gold);margin-top:2px;}
+.pcs-left .pcs-items{font-size:10px;color:var(--muted);margin-top:2px;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.pcs-total{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--gold);flex-shrink:0;}
+.pay-breakdown{background:var(--dark3);border-radius:10px;padding:12px 14px;margin-bottom:13px;}
+.pbd-title{font-size:10px;font-weight:700;letter-spacing:.09em;color:var(--muted);margin-bottom:8px;}
+.pbd-row{display:flex;justify-content:space-between;font-size:12px;padding:4px 0;border-bottom:1px solid var(--border);}
+.pbd-row:last-child{border-bottom:none;}
+.pbd-row span:first-child{color:var(--muted);}
+.pbd-total{display:flex;justify-content:space-between;font-size:13px;font-weight:700;padding:8px 0 0;margin-top:4px;border-top:2px solid var(--gold);}
+.pbd-total span:last-child{color:var(--gold);font-family:'Bebas Neue',sans-serif;font-size:1.3rem;}
+.pay-method-wrap{margin-bottom:13px;}
+.pay-method-label{font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--muted);margin-bottom:7px;}
+.pay-methods{display:flex;gap:6px;flex-wrap:wrap;}
+.pm-btn{background:var(--dark3);border:1px solid var(--border);color:var(--muted);font-family:'Inter',sans-serif;font-size:11px;font-weight:600;padding:6px 13px;border-radius:20px;cursor:pointer;transition:all .15s;}
+.pm-btn:hover{border-color:var(--gold);color:var(--gold);}
+.pm-btn.active{background:var(--gold-dim);border-color:var(--gold);color:var(--gold);}
+.pay-amount-wrap{margin-bottom:13px;}
+.pay-amount-label{font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--muted);margin-bottom:7px;}
+.pay-amount-row{display:flex;align-items:center;gap:8px;}
+.pay-peso{font-size:20px;font-weight:700;color:var(--muted);}
+.pay-amount-input{flex:1;background:var(--dark3);border:2px solid var(--gold);border-radius:8px;padding:11px 13px;font-family:'Inter',sans-serif;font-size:18px;font-weight:700;color:var(--gold);outline:none;text-align:right;-webkit-appearance:none;}
+.pay-quick{display:flex;gap:5px;margin-top:7px;flex-wrap:wrap;align-items:center;}
+.pq-label{font-size:10px;color:var(--muted);}
+.pq-btn{background:var(--dark3);border:1px solid var(--border);color:var(--muted);font-family:'Inter',sans-serif;font-size:10px;font-weight:600;padding:4px 10px;border-radius:20px;cursor:pointer;transition:all .15s;}
+.pq-btn:hover{border-color:var(--gold);color:var(--gold);}
+.pay-status-bar{border-radius:9px;padding:10px 13px;margin-bottom:13px;font-size:12px;font-weight:600;display:flex;align-items:flex-start;gap:8px;line-height:1.5;}
+.psb-full{background:var(--green-bg);border:1px solid rgba(111,207,151,0.3);color:var(--green);}
+.psb-partial{background:var(--gold-dim);border:1px solid rgba(232,160,32,0.3);color:var(--gold);}
+.psb-low{background:var(--red-bg);border:1px solid rgba(248,113,113,0.3);color:var(--red);}
+.pay-ref-wrap{margin-bottom:14px;}
+.pay-ref-label{font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--muted);margin-bottom:6px;}
+.pay-ref-input{width:100%;background:var(--dark3);border:1px solid var(--border);border-radius:7px;padding:9px 11px;font-family:'Inter',sans-serif;font-size:13px;color:#fff;outline:none;}
+.pay-ref-input:focus{border-color:var(--gold);}
+
 /* delivery toggle */
 .delivery-toggle{display:flex;gap:8px;margin-bottom:12px;}
 .del-btn{flex:1;background:var(--dark3);border:1px solid var(--border);color:var(--muted);font-family:'Inter',sans-serif;font-size:13px;font-weight:500;padding:10px;border-radius:8px;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:6px;}
@@ -947,6 +988,78 @@ canvas#sign-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
     <div class="modal-btns">
       <button class="btn-cancel" onclick="closeItemModal()">Cancel</button>
       <button class="btn-save" id="btn-save-item" onclick="saveItem()">💾 Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAYMENT RECORDING MODAL -->
+<div class="modal-overlay" id="payment-modal-overlay">
+  <div class="pay-modal">
+    <div class="pay-modal-head">
+      <div class="pay-modal-title">Record <em>Payment</em></div>
+      <button class="modal-x" onclick="closePaymentModal()">✕</button>
+    </div>
+
+    <!-- Client info -->
+    <div class="pay-client-strip">
+      <div class="pcs-left">
+        <div class="pcs-name" id="pm-client-name">—</div>
+        <div class="pcs-id" id="pm-booking-id">—</div>
+        <div class="pcs-items" id="pm-items">—</div>
+      </div>
+      <div class="pcs-total" id="pm-rental-total">₱0</div>
+    </div>
+
+    <!-- Expected breakdown -->
+    <div class="pay-breakdown">
+      <div class="pbd-title">EXPECTED PAYMENT BREAKDOWN</div>
+      <div class="pbd-row"><span>Rental Total</span><span id="pm-bd-rental">₱0</span></div>
+      <div class="pbd-row"><span>50% Booking Deposit</span><span id="pm-bd-deposit" style="color:var(--gold)">₱0</span></div>
+      <div class="pbd-row"><span>🛡️ Security Deposit (20%)</span><span id="pm-bd-security" style="color:var(--blue)">₱0</span></div>
+      <div class="pbd-total"><span>Total Due Now</span><span id="pm-bd-total">₱0</span></div>
+    </div>
+
+    <!-- Payment method -->
+    <div class="pay-method-wrap">
+      <div class="pay-method-label">PAYMENT METHOD</div>
+      <div class="pay-methods">
+        <button class="pm-btn active" onclick="setPayMethod(this,'GCash')">📱 GCash</button>
+        <button class="pm-btn" onclick="setPayMethod(this,'MariBank')">🏦 MariBank</button>
+        <button class="pm-btn" onclick="setPayMethod(this,'Cash')">💵 Cash</button>
+        <button class="pm-btn" onclick="setPayMethod(this,'Bank Transfer')">🏛️ Bank Transfer</button>
+        <button class="pm-btn" onclick="setPayMethod(this,'Other')">⋯ Other</button>
+      </div>
+    </div>
+
+    <!-- Amount received -->
+    <div class="pay-amount-wrap">
+      <div class="pay-amount-label">AMOUNT RECEIVED (₱)</div>
+      <div class="pay-amount-row">
+        <span class="pay-peso">₱</span>
+        <input class="pay-amount-input" type="number" id="pm-amount" placeholder="0" min="0" oninput="checkPayAmount()">
+      </div>
+      <div class="pay-quick">
+        <span class="pq-label">Quick fill:</span>
+        <button class="pq-btn" id="pq-deposit-only" onclick="quickFillPay('deposit')">50% Deposit only</button>
+        <button class="pq-btn" id="pq-dep-sec" onclick="quickFillPay('dep+sec')">Deposit + Security</button>
+        <button class="pq-btn" id="pq-full" onclick="quickFillPay('full')">Full rental amount</button>
+      </div>
+    </div>
+
+    <!-- Status indicator -->
+    <div class="pay-status-bar psb-partial" id="pm-status-bar">
+      ⚠ Enter the amount received above
+    </div>
+
+    <!-- Reference / notes -->
+    <div class="pay-ref-wrap">
+      <div class="pay-ref-label">REFERENCE NO. / NOTES (optional)</div>
+      <input class="pay-ref-input" type="text" id="pm-ref" placeholder="GCash ref no., bank ref, or any notes...">
+    </div>
+
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closePaymentModal()">Cancel</button>
+      <button class="btn-save" id="btn-confirm-payment" onclick="confirmPayment()" disabled>💳 Confirm Payment</button>
     </div>
   </div>
 </div>
@@ -1776,7 +1889,7 @@ async function loadAdminBookings(){
       <td style="min-width:130px">
         <button class="btn-sm btn-edit" style="padding:4px 8px;font-size:11px;display:block;width:100%;margin-bottom:2px" onclick="openBookingModal(${bObj})">✏️ Edit</button>
         <button class="btn-sm btn-confirm" style="padding:4px 8px;font-size:11px;display:block;width:100%;margin-bottom:2px" onclick="updateStatus('Bookings','${b.id}',9,'Confirmed')">✓ Confirm</button>
-        <button class="btn-sm" style="padding:4px 8px;font-size:11px;display:block;width:100%;margin-bottom:2px;background:rgba(192,132,252,0.15);color:#c084fc;border:none;border-radius:6px;cursor:pointer;font-weight:600;font-family:Inter,sans-serif" onclick="updateStatusAndContract('${b.id}','${b.name}','${b.phone}','${b.location}','${b.eventDate}','${b.returnDate}','${b.items}','${b.total}')">💳 Paid+Contract</button>
+        <button class="btn-sm" style="padding:4px 8px;font-size:11px;display:block;width:100%;margin-bottom:2px;background:rgba(192,132,252,0.15);color:#c084fc;border:none;border-radius:6px;cursor:pointer;font-weight:600;font-family:Inter,sans-serif" onclick="openPaymentModal('${b.id}','${b.name}','${b.phone}','${b.location}','${b.eventDate}','${b.returnDate}','${b.items}','${b.total}')">💳 Paid+Contract</button>
         <button class="btn-sm" style="padding:4px 8px;font-size:11px;display:block;width:100%;margin-bottom:2px;background:rgba(251,146,60,0.15);color:#fb923c;border:none;border-radius:6px;cursor:pointer;font-weight:600;font-family:Inter,sans-serif" onclick="updateStatus('Bookings','${b.id}',9,'Out / Rented')">🚚 Out</button>
         <button class="btn-sm btn-edit" style="padding:4px 8px;font-size:11px;display:block;width:100%;margin-bottom:2px" onclick="updateStatus('Bookings','${b.id}',9,'Returned')">📦 Returned</button>
         ${releaseBtn}
@@ -1915,6 +2028,184 @@ function statusStyle(s){
   const base='font-size:10px;padding:3px 9px;border-radius:20px;font-weight:500;white-space:nowrap;';
   return base+(m[s]||'background:rgba(255,255,255,0.1);color:#a0a0a0');
 }
+/* ══════════════════════════════════════════════
+   PAYMENT RECORDING MODAL
+══════════════════════════════════════════════ */
+let currentPayBooking = null;
+let currentPayMethod = "GCash";
+
+function openPaymentModal(bookingId, name, phone, location, eventDate, returnDate, items, total) {
+  // Store booking data
+  currentPayBooking = {id:bookingId, name, phone, location, eventDate, returnDate, items, total:parseInt(total)||0};
+  const t = parseInt(total)||0;
+  const dep = Math.ceil(t * 0.5);
+  const sec = Math.ceil(t * 0.20);
+  const dueNow = dep + sec;
+
+  // Fill modal
+  document.getElementById("pm-client-name").textContent = name;
+  document.getElementById("pm-booking-id").textContent = bookingId + " · " + eventDate;
+  document.getElementById("pm-items").textContent = items;
+  document.getElementById("pm-rental-total").textContent = "₱" + t.toLocaleString();
+  document.getElementById("pm-bd-rental").textContent = "₱" + t.toLocaleString();
+  document.getElementById("pm-bd-deposit").textContent = "₱" + dep.toLocaleString();
+  document.getElementById("pm-bd-security").textContent = "₱" + sec.toLocaleString();
+  document.getElementById("pm-bd-total").textContent = "₱" + dueNow.toLocaleString();
+
+  // Quick fill buttons
+  document.getElementById("pq-deposit-only").textContent = "50% Deposit ₱" + dep.toLocaleString();
+  document.getElementById("pq-dep-sec").textContent = "Dep + Security ₱" + dueNow.toLocaleString();
+  document.getElementById("pq-full").textContent = "Full amount ₱" + t.toLocaleString();
+
+  // Reset
+  document.getElementById("pm-amount").value = "";
+  document.getElementById("pm-ref").value = "";
+  document.getElementById("pm-status-bar").className = "pay-status-bar psb-partial";
+  document.getElementById("pm-status-bar").textContent = "⚠ Enter the amount received above";
+  document.getElementById("btn-confirm-payment").disabled = true;
+  document.getElementById("btn-confirm-payment").textContent = "💳 Confirm Payment";
+
+  // Reset method
+  document.querySelectorAll(".pm-btn").forEach(b => b.classList.remove("active"));
+  document.querySelector(".pm-btn").classList.add("active");
+  currentPayMethod = "GCash";
+
+  document.getElementById("payment-modal-overlay").classList.add("open");
+  setTimeout(() => document.getElementById("pm-amount").focus(), 100);
+}
+
+function closePaymentModal() {
+  document.getElementById("payment-modal-overlay").classList.remove("open");
+  currentPayBooking = null;
+}
+
+function setPayMethod(btn, method) {
+  document.querySelectorAll(".pm-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  currentPayMethod = method;
+}
+
+function quickFillPay(type) {
+  if (!currentPayBooking) return;
+  const t = currentPayBooking.total;
+  const dep = Math.ceil(t * 0.5);
+  const sec = Math.ceil(t * 0.20);
+  const vals = { "deposit": dep, "dep+sec": dep + sec, "full": t };
+  document.getElementById("pm-amount").value = vals[type] || 0;
+  checkPayAmount();
+}
+
+function checkPayAmount() {
+  if (!currentPayBooking) return;
+  const t = currentPayBooking.total;
+  const dep = Math.ceil(t * 0.5);
+  const sec = Math.ceil(t * 0.20);
+  const dueNow = dep + sec;
+  const amt = parseInt(document.getElementById("pm-amount").value) || 0;
+  const bar = document.getElementById("pm-status-bar");
+  const btn = document.getElementById("btn-confirm-payment");
+
+  if (amt <= 0) {
+    bar.className = "pay-status-bar psb-partial";
+    bar.textContent = "⚠ Enter the amount received above";
+    btn.disabled = true;
+    btn.textContent = "💳 Confirm Payment";
+  } else if (amt >= dueNow) {
+    bar.className = "pay-status-bar psb-full";
+    bar.innerHTML = "✅ <span>Full deposit + security deposit received — status will be set to <strong>Paid</strong> and contract generated</span>";
+    btn.disabled = false;
+    btn.textContent = "💳 Confirm Payment & Generate Contract";
+  } else if (amt >= dep) {
+    const remaining = dueNow - amt;
+    bar.className = "pay-status-bar psb-partial";
+    bar.innerHTML = "⚠ <span>Booking deposit received. Security deposit of <strong>₱" + remaining.toLocaleString() + "</strong> still pending — status set to <strong>Confirmed</strong> (not Paid yet)</span>";
+    btn.disabled = false;
+    btn.textContent = "💳 Record Partial Payment (Confirm)";
+  } else {
+    const remaining = dueNow - amt;
+    bar.className = "pay-status-bar psb-low";
+    bar.innerHTML = "⚠ <span>Partial payment — <strong>₱" + remaining.toLocaleString() + "</strong> still needed. Status set to <strong>Confirmed</strong>.</span>";
+    btn.disabled = false;
+    btn.textContent = "💳 Record Partial Payment";
+  }
+}
+
+async function confirmPayment() {
+  if (!currentPayBooking) return;
+  const t = currentPayBooking.total;
+  const dep = Math.ceil(t * 0.5);
+  const sec = Math.ceil(t * 0.20);
+  const dueNow = dep + sec;
+  const amt = parseInt(document.getElementById("pm-amount").value) || 0;
+  const ref = document.getElementById("pm-ref").value.trim();
+  const method = currentPayMethod;
+
+  if (amt <= 0) { showToast("Please enter the amount received.", "error"); return; }
+
+  const isFullyPaid = amt >= dueNow;
+  const newStatus = isFullyPaid ? "Paid" : "Confirmed";
+  const payNote = `Payment: ₱${amt.toLocaleString()} via ${method}${ref ? " (Ref: " + ref + ")" : ""}. Expected: ₱${dueNow.toLocaleString()}.${amt < dueNow ? " Balance: ₱" + (dueNow - amt).toLocaleString() : " Fully paid."}`;
+
+  const btn = document.getElementById("btn-confirm-payment");
+  btn.disabled = true; btn.textContent = "Processing...";
+
+  // 1. Update booking status + add payment note
+  const statusRes = await api({
+    action: "updateStatus",
+    sheetName: "Bookings",
+    id: currentPayBooking.id,
+    statusCol: 9,
+    status: newStatus
+  });
+
+  // 2. Save payment details to sheet
+  await api({
+    action: "recordPayment",
+    bookingId: currentPayBooking.id,
+    amountPaid: amt,
+    paymentMethod: method,
+    paymentRef: ref,
+    payNote,
+    isFullyPaid
+  });
+
+  // 3. If fully paid → generate contract + send email
+  if (isFullyPaid) {
+    const b = currentPayBooking;
+    const contractRes = await api({
+      action: "generateContract",
+      bookingId: b.id, name: b.name, phone: b.phone,
+      location: b.location, eventDate: b.eventDate,
+      returnDate: b.returnDate, items: b.items, total: b.total
+    });
+    if (contractRes.success) {
+      const signingUrl = window.location.origin + window.location.pathname + "?sign=" + contractRes.contractId;
+      closePaymentModal();
+      // Show contract link
+      openMod("✅", "Payment Confirmed!",
+        `₱${amt.toLocaleString()} received via ${method}. Contract ${contractRes.contractId} generated! Copy the signing link and send to ${b.name}.`);
+      setTimeout(() => {
+        const mbox = document.querySelector(".modal-box");
+        if (mbox && !document.getElementById("copy-link-btn")) {
+          const linkBtn = document.createElement("button");
+          linkBtn.id = "copy-link-btn";
+          linkBtn.textContent = "📋 Copy Contract Signing Link";
+          linkBtn.style.cssText = "background:var(--dark3);border:1px solid var(--border);color:var(--gold);font-family:Inter,sans-serif;font-size:13px;padding:9px 20px;border-radius:7px;cursor:pointer;display:block;width:100%;margin-top:8px;";
+          linkBtn.onclick = () => copySignLink(contractRes.contractId);
+          mbox.appendChild(linkBtn);
+        }
+      }, 100);
+    }
+  } else {
+    closePaymentModal();
+    showToast(`₱${amt.toLocaleString()} recorded via ${method}. Status → ${newStatus}.`, "success");
+  }
+
+  btn.disabled = false;
+  btn.textContent = "💳 Confirm Payment";
+  loadAdminBookings();
+}
+
 async function releaseSecurityDeposit(bookingId, clientName, amount){
   if(!confirm(`Release ₱${amount.toLocaleString()} security deposit to ${clientName}?\n\nMake sure you have already sent the refund via GCash before confirming.`))return;
   showToast("Marking security deposit as released...","");
