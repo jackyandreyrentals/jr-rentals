@@ -913,6 +913,10 @@ canvas#sign-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
         Jacky & Rey Rentals will be in touch with your event details.<br><br>
         <strong style="color:var(--gold)">See you at your event! 🎊</strong>
       </div>
+      <a id="sign-drive-link" href="#" target="_blank" id="sign-drive-btn"
+        style="display:none;margin-top:1.25rem;background:var(--gold);color:#111;border:none;font-family:Inter,sans-serif;font-size:14px;font-weight:700;padding:12px 28px;border-radius:8px;cursor:pointer;text-decoration:none;display:none;align-items:center;gap:8px;">
+        📄 View / Download Your Signed Contract
+      </a>
       <div style="margin-top:1.5rem;font-size:12px;color:var(--muted)">📞 09912094757 · 09500167754<br>✉ jackyandreyrentals@gmail.com</div>
     </div>
   </div>
@@ -1457,8 +1461,10 @@ async function loadAdminContracts(){
   tbody.innerHTML=res.contracts.reverse().map(c=>{
     const isSigned=c.status==="Signed"||c.status==="Completed";
     const isAwaiting=c.status==="Awaiting Signature";
-    const actionBtn=isSigned
-      ?`<span style="font-size:11px;color:var(--green)">✅ Signed ${c.signedAt?'· '+c.signedAt:''}</span>`
+    const actionBtn=isSigned&&c.driveUrl
+      ?`<a href="${c.driveUrl}" target="_blank" class="btn-sm btn-confirm" style="padding:5px 10px;white-space:nowrap;font-size:11px;text-decoration:none;display:inline-block">📄 View Contract</a>`
+      :isSigned
+      ?`<span style="font-size:11px;color:var(--green)">✅ Signed</span>`
       :isAwaiting
       ?`<button class="btn-sm btn-confirm" style="padding:5px 10px;white-space:nowrap;font-size:11px" onclick="copySignLink('${c.contractNo}')">📋 Copy Link</button>`
       :`<span style="font-size:11px;color:var(--muted)">—</span>`;
@@ -1626,7 +1632,7 @@ async function submitSignature(){
   if(!document.getElementById("sign-agree-check").checked){showToast("Please check the agreement box.","error");return;}
   const sigData=signCanvas.toDataURL("image/png");
   const btn=document.getElementById("btn-sign-submit");
-  btn.disabled=true;btn.textContent="Submitting...";
+  btn.disabled=true;btn.textContent="Saving your signed contract...";
   const res=await api({
     action:"saveSignature",
     contractId:document.getElementById("sign-contract-id").textContent,
@@ -1636,10 +1642,15 @@ async function submitSignature(){
   });
   btn.disabled=false;btn.textContent="✍️ Sign & Submit Contract";
   if(res.success){
+    // Show success with drive link if available
+    if(res.driveUrl){
+      document.getElementById("sign-drive-link").href=res.driveUrl;
+      document.getElementById("sign-drive-btn").style.display="block";
+    }
     document.getElementById("sign-content").style.display="none";
     document.getElementById("sign-success").style.display="block";
     window.scrollTo(0,0);
-  }else showToast("Failed to submit. Please try again.","error");
+  }else showToast("Failed to submit. Please try again or contact us directly.","error");
 }
 
 // ── Admin: Generate contract link when booking → Paid ──
