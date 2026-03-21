@@ -1006,9 +1006,9 @@ canvas#sign-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
         Jacky & Rey Rentals will be in touch with your event details.<br><br>
         <strong style="color:var(--gold)">See you at your event! 🎊</strong>
       </div>
-      <a id="sign-drive-link" href="#" target="_blank" id="sign-drive-btn"
-        style="display:none;margin-top:1.25rem;background:var(--gold);color:#111;border:none;font-family:Inter,sans-serif;font-size:14px;font-weight:700;padding:12px 28px;border-radius:8px;cursor:pointer;text-decoration:none;display:none;align-items:center;gap:8px;">
-        📄 View / Download Your Signed Contract
+      <a id="sign-drive-link" href="#" target="_blank"
+        style="display:none;margin-top:1.25rem;background:var(--gold);color:#111;font-family:Inter,sans-serif;font-size:14px;font-weight:700;padding:12px 28px;border-radius:8px;cursor:pointer;text-decoration:none;">
+        📄 View Your Signed Contract
       </a>
       <div style="margin-top:1.5rem;font-size:12px;color:var(--muted)">📞 09912094757 · 09500167754<br>✉ jackyandreyrentals@gmail.com</div>
     </div>
@@ -1743,6 +1743,16 @@ function closeMod(){document.getElementById("modal").classList.remove("open");}
 ══════════════════════════════════════════════════ */
 let signCanvas, signCtx, signDrawing=false, signHasSig=false, signContractData=null;
 
+// ── Format date nicely ──
+function formatDate(val){
+  if(!val||val==="—"||val.toString().trim()==="")return "—";
+  try{
+    const d=new Date(val);
+    if(isNaN(d.getTime()))return String(val);
+    return d.toLocaleDateString("en-PH",{year:"numeric",month:"long",day:"numeric"});
+  }catch(e){return String(val);}
+}
+
 // ── Check URL for ?sign= on page load ──
 function checkSignUrl(){
   const params=new URLSearchParams(window.location.search);
@@ -1777,8 +1787,8 @@ async function loadContractForSigning(contractId){
   document.getElementById("sc-name").textContent=res.contract.name||"—";
   document.getElementById("sc-phone").textContent=res.contract.phone||"—";
   document.getElementById("sc-location").textContent=res.contract.location||"—";
-  document.getElementById("sc-eventdate").textContent=res.contract.eventDate||"—";
-  document.getElementById("sc-returndate").textContent=res.contract.returnDate||"—";
+  document.getElementById("sc-eventdate").textContent=formatDate(res.contract.eventDate)||"—";
+  document.getElementById("sc-returndate").textContent=formatDate(res.contract.returnDate)||"—";
   document.getElementById("sc-items").textContent=res.contract.items||"—";
   document.getElementById("sc-total").textContent="₱"+(parseInt(res.contract.total)||0).toLocaleString();
   document.getElementById("sign-agree-name").textContent=res.contract.name||"the renter";
@@ -1851,15 +1861,19 @@ async function submitSignature(){
   });
   btn.disabled=false;btn.textContent="✍️ Sign & Submit Contract";
   if(res.success){
-    // Show success with drive link if available
-    if(res.driveUrl){
-      document.getElementById("sign-drive-link").href=res.driveUrl;
-      document.getElementById("sign-drive-btn").style.display="block";
+    const linkEl=document.getElementById("sign-drive-link");
+    if(linkEl&&res.driveUrl){
+      linkEl.href=res.driveUrl;
+      linkEl.style.display="inline-block";
     }
     document.getElementById("sign-content").style.display="none";
     document.getElementById("sign-success").style.display="block";
     window.scrollTo(0,0);
-  }else showToast("Failed to submit. Please try again or contact us directly.","error");
+  }else{
+    showToast("Submission failed. Please try again or contact us directly.","error");
+    const btn=document.getElementById("btn-sign-submit");
+    btn.disabled=false;btn.textContent="✍️ Sign & Submit Contract";
+  }
 }
 
 // ── Admin: Generate contract link when booking → Paid ──
