@@ -18,36 +18,29 @@
 body{font-family:'Inter',sans-serif;background:var(--dark);color:#fff;font-size:14px;}
 .page{display:none;}.page.active{display:block;}
 
-/* ── NAV ── */
 nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;}
-.nav-brand{display:flex;align-items:center;gap:9px;min-width:0;}
+.nav-brand{display:flex;align-items:center;gap:9px;}
 .nav-logo{width:38px;height:38px;border-radius:50%;background:#fff;border:2px solid var(--gold);overflow:hidden;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .nav-logo img{width:100%;height:100%;object-fit:cover;}
 .nav-logo-fallback{font-family:'Bebas Neue',sans-serif;font-size:12px;color:#111;}
-.nav-name{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:.04em;color:#fff;line-height:1.1;white-space:nowrap;}
+.nav-name{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:.04em;color:#fff;line-height:1.1;}
 .nav-name em{color:var(--gold);font-style:normal;}
-.nav-sub{font-size:8px;color:var(--muted);letter-spacing:.08em;white-space:nowrap;}
-
-/* hamburger */
+.nav-sub{font-size:8px;color:var(--muted);letter-spacing:.08em;}
 .hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px;flex-shrink:0;}
 .hamburger span{width:22px;height:2px;background:var(--muted);border-radius:2px;transition:all .25s;}
 .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
 .hamburger.open span:nth-child(2){opacity:0;}
 .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
-
 .nav-links{display:flex;gap:2px;align-items:center;}
-.nav-links button{background:none;border:none;color:var(--muted);font-family:'Inter',sans-serif;font-size:12px;padding:6px 10px;cursor:pointer;border-radius:6px;transition:all .15s;white-space:nowrap;}
+.nav-links button{background:none;border:none;color:var(--muted);font-family:'Inter',sans-serif;font-size:12px;padding:6px 10px;cursor:pointer;border-radius:6px;transition:all .15s;}
 .nav-links button:hover,.nav-links button.active{background:var(--gold-dim);color:var(--gold);}
 .btn-admin-nav{background:var(--gold-dim)!important;color:var(--gold)!important;border:1px solid rgba(232,160,32,0.3)!important;margin-left:6px!important;}
-
-/* mobile nav drawer */
 .mobile-nav{display:none;position:fixed;top:56px;left:0;right:0;background:#111;border-bottom:1px solid var(--border);z-index:199;padding:.5rem;flex-direction:column;gap:4px;}
 .mobile-nav.open{display:flex;}
-.mobile-nav button{background:none;border:none;color:var(--muted);font-family:'Inter',sans-serif;font-size:13px;padding:10px 14px;cursor:pointer;border-radius:8px;text-align:left;transition:all .15s;}
+.mobile-nav button{background:none;border:none;color:var(--muted);font-family:'Inter',sans-serif;font-size:13px;padding:10px 14px;cursor:pointer;border-radius:8px;text-align:left;}
 .mobile-nav button:hover,.mobile-nav button.active{background:var(--gold-dim);color:var(--gold);}
 .mobile-nav .m-admin{background:var(--gold-dim);color:var(--gold);border:1px solid rgba(232,160,32,0.3);}
 
-/* ── HERO ── */
 .hero{background:#111;border-bottom:1px solid var(--border);padding:2.5rem 1.5rem 2rem;text-align:center;}
 .hero-ring{width:88px;height:88px;border-radius:50%;background:#fff;margin:0 auto 1.25rem;padding:3px;border:3px solid var(--gold);overflow:hidden;display:flex;align-items:center;justify-content:center;}
 .hero-ring img{width:100%;height:100%;object-fit:cover;}
@@ -63,28 +56,21 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
 .btn-outline{background:none;color:#fff;border:1px solid rgba(255,255,255,0.25);font-family:'Inter',sans-serif;font-weight:500;font-size:13px;padding:10px 22px;border-radius:7px;cursor:pointer;transition:all .15s;}
 .btn-outline:hover{border-color:var(--gold);color:var(--gold);}
 
-/* ── CONTACT BAR ── */
 .contact-bar{background:var(--dark2);border-bottom:1px solid var(--border);display:flex;flex-wrap:wrap;}
 .contact-item{flex:1;min-width:140px;padding:.85rem 1rem;border-right:1px solid var(--border);display:flex;align-items:center;gap:8px;}
 .contact-item:last-child{border-right:none;}
 .c-icon{font-size:13px;color:var(--gold);flex-shrink:0;}
 .c-label{font-size:10px;color:var(--muted);margin-bottom:2px;}
-.c-val{font-size:12px;color:#fff;font-weight:500;word-break:break-word;}
-
-/* ── STATS ── */
+.c-val{font-size:12px;color:#fff;font-weight:500;}
 .stats-row{display:flex;background:var(--dark2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
 .stat{flex:1;text-align:center;padding:1rem .5rem;border-right:1px solid var(--border);}
 .stat:last-child{border-right:none;}
 .stat-n{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--gold);}
 .stat-l{font-size:10px;color:var(--muted);margin-top:1px;}
-
-/* ── SECTION ── */
 .section{padding:1.75rem 1.25rem;}
 .sec-title{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:.06em;color:#fff;}
 .sec-title em{color:var(--gold);font-style:normal;}
 .sec-sub{font-size:12px;color:var(--muted);margin-top:2px;margin-bottom:1.25rem;}
-
-/* ── SERVICE GRID ── */
 .service-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;}
 .svc-card{background:var(--dark2);border:1px solid var(--border);border-radius:12px;padding:1.25rem 1rem;text-align:center;cursor:pointer;transition:all .15s;}
 .svc-card:hover{border-color:var(--gold);}
@@ -92,11 +78,11 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
 .svc-name{font-size:13px;font-weight:600;margin-bottom:3px;}
 .svc-desc{font-size:11px;color:var(--muted);}
 
-/* ── INVENTORY ── */
 .inv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;}
 .inv-card{background:var(--dark2);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border .15s;}
 .inv-card:hover{border-color:var(--gold);}
-.inv-img{height:88px;background:var(--dark3);display:flex;align-items:center;justify-content:center;font-size:2.4rem;border-bottom:1px solid var(--border);}
+.inv-img{height:110px;background:var(--dark3);display:flex;align-items:center;justify-content:center;font-size:2.4rem;border-bottom:1px solid var(--border);overflow:hidden;}
+.inv-img img{width:100%;height:100%;object-fit:cover;}
 .inv-body{padding:10px 12px;}
 .inv-name{font-size:13px;font-weight:600;margin-bottom:3px;}
 .inv-price{color:var(--gold);font-size:12px;font-weight:500;margin-bottom:6px;}
@@ -106,7 +92,6 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
 .badge-red{background:var(--red-bg);color:var(--red);}
 .btn-book{width:100%;margin-top:8px;background:var(--gold);color:#111;border:none;font-family:'Inter',sans-serif;font-size:12px;font-weight:600;padding:8px;border-radius:6px;cursor:pointer;}
 
-/* ── BOOKING FORM ── */
 .form-card{background:var(--dark2);border:1px solid var(--border);border-radius:14px;padding:1.5rem;}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;}
 .form-full{grid-column:1/-1;}
@@ -123,11 +108,10 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
 .qty-ctrl{display:flex;align-items:center;gap:8px;flex-shrink:0;}
 .qty-btn{width:28px;height:28px;border-radius:50%;border:1px solid var(--border);background:var(--dark2);cursor:pointer;font-size:16px;color:var(--gold);display:flex;align-items:center;justify-content:center;touch-action:manipulation;}
 .qty-n{font-size:13px;font-weight:600;min-width:22px;text-align:center;}
-.btn-submit{width:100%;margin-top:1.25rem;background:var(--gold);color:#111;border:none;font-family:'Inter',sans-serif;font-size:15px;font-weight:600;padding:14px;border-radius:8px;cursor:pointer;transition:all .15s;touch-action:manipulation;}
+.btn-submit{width:100%;margin-top:1.25rem;background:var(--gold);color:#111;border:none;font-family:'Inter',sans-serif;font-size:15px;font-weight:600;padding:14px;border-radius:8px;cursor:pointer;transition:all .15s;}
 .btn-submit:hover{background:var(--gold2);}
 .btn-submit:disabled{background:var(--dark4);color:var(--muted);cursor:not-allowed;}
 
-/* ── QUOTE ── */
 .q-controls{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
 .q-ctrl{background:var(--dark2);border:1px solid var(--border);border-radius:10px;padding:11px;}
 .q-ctrl label{font-size:10px;font-weight:600;color:var(--muted);letter-spacing:.07em;display:block;margin-bottom:6px;}
@@ -137,18 +121,17 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
 .q-head{display:flex;align-items:flex-start;justify-content:space-between;padding-bottom:10px;border-bottom:1px solid var(--border);margin-bottom:10px;gap:8px;}
 .q-head h3{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.06em;}
 .q-head p{font-size:10px;color:var(--muted);margin-top:1px;}
-.q-ref{font-size:10px;background:var(--gold-dim);color:var(--gold);padding:3px 10px;border-radius:20px;white-space:nowrap;flex-shrink:0;}
+.q-ref{font-size:10px;background:var(--gold-dim);color:var(--gold);padding:3px 10px;border-radius:20px;white-space:nowrap;}
 .q-line{display:flex;justify-content:space-between;align-items:center;padding:5px 0;font-size:12px;gap:8px;}
 .q-line-calc{color:var(--muted);font-size:11px;flex-shrink:0;}
 .q-line-amt{font-weight:600;color:var(--gold);flex-shrink:0;}
 .q-div{border:none;border-top:1px dashed var(--border);margin:8px 0;}
 .q-total{display:flex;justify-content:space-between;align-items:center;}
 .q-total-lbl{font-size:13px;font-weight:600;}
-.q-total-amt{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--gold);letter-spacing:.04em;}
+.q-total-amt{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--gold);}
 .q-note{font-size:11px;color:var(--muted);margin-top:10px;line-height:1.6;}
-.btn-proceed{width:100%;margin-top:12px;background:var(--gold);color:#111;border:none;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;padding:13px;border-radius:8px;cursor:pointer;touch-action:manipulation;}
+.btn-proceed{width:100%;margin-top:12px;background:var(--gold);color:#111;border:none;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;padding:13px;border-radius:8px;cursor:pointer;}
 
-/* ── CONTRACT ── */
 .contract{background:var(--dark2);border:1px solid var(--border);border-radius:14px;padding:1.5rem;}
 .ct-head{text-align:center;border-bottom:1px solid var(--gold);padding-bottom:1rem;margin-bottom:1.25rem;}
 .ct-logo{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:.06em;}
@@ -167,7 +150,6 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
 .sig-lbl{font-size:10px;color:var(--muted);}
 .sig-name{font-size:12px;font-weight:500;margin-top:2px;}
 
-/* ── ADMIN LOGIN ── */
 .login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1.5rem;background:var(--dark);}
 .login-card{background:var(--dark2);border:1px solid var(--border);border-radius:18px;padding:2rem 1.5rem;width:100%;max-width:380px;}
 .login-logo-ring{width:70px;height:70px;border-radius:50%;background:#fff;border:3px solid var(--gold);margin:0 auto 1rem;overflow:hidden;display:flex;align-items:center;justify-content:center;}
@@ -178,14 +160,13 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
 .login-sub{font-size:11px;color:var(--muted);text-align:center;margin-top:4px;margin-bottom:2rem;}
 .login-fg{display:flex;flex-direction:column;gap:5px;margin-bottom:14px;}
 .login-fg label{font-size:10px;font-weight:600;color:var(--muted);letter-spacing:.08em;}
-.login-fg input{background:var(--dark3);border:1px solid var(--border);border-radius:8px;padding:12px;font-family:'Inter',sans-serif;font-size:16px;color:#fff;outline:none;transition:border .15s;width:100%;-webkit-appearance:none;}
+.login-fg input{background:var(--dark3);border:1px solid var(--border);border-radius:8px;padding:12px;font-family:'Inter',sans-serif;font-size:16px;color:#fff;outline:none;transition:border .15s;width:100%;}
 .login-fg input:focus{border-color:var(--gold);}
 .login-err{font-size:12px;color:var(--red);margin-bottom:10px;display:none;text-align:center;}
-.btn-login{width:100%;background:var(--gold);color:#111;border:none;font-family:'Inter',sans-serif;font-size:15px;font-weight:700;padding:13px;border-radius:8px;cursor:pointer;margin-top:6px;touch-action:manipulation;}
+.btn-login{width:100%;background:var(--gold);color:#111;border:none;font-family:'Inter',sans-serif;font-size:15px;font-weight:700;padding:13px;border-radius:8px;cursor:pointer;margin-top:6px;}
 .btn-login:hover{background:var(--gold2);}
 .btn-login:disabled{background:var(--dark4);color:var(--muted);cursor:not-allowed;}
 
-/* ── ADMIN SHELL ── */
 .admin-shell{display:flex;height:100vh;overflow:hidden;}
 .admin-sidebar{width:210px;flex-shrink:0;background:#111;border-right:1px solid var(--border);display:flex;flex-direction:column;transition:transform .25s;}
 .sidebar-head{padding:1.25rem;border-bottom:1px solid var(--border);}
@@ -198,7 +179,7 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
 .sidebar-logo-sub{font-size:9px;color:var(--muted);}
 .sidebar-nav{flex:1;padding:.75rem 0;overflow-y:auto;}
 .sidebar-label{font-size:9px;font-weight:600;letter-spacing:.1em;color:var(--muted);padding:.5rem 1rem .25rem;}
-.sidebar-btn{display:flex;align-items:center;gap:9px;width:100%;background:none;border:none;color:var(--muted);font-family:'Inter',sans-serif;font-size:13px;padding:11px 1rem;cursor:pointer;transition:all .15s;text-align:left;touch-action:manipulation;}
+.sidebar-btn{display:flex;align-items:center;gap:9px;width:100%;background:none;border:none;color:var(--muted);font-family:'Inter',sans-serif;font-size:13px;padding:11px 1rem;cursor:pointer;transition:all .15s;text-align:left;}
 .sidebar-btn:hover{background:var(--dark2);color:#fff;}
 .sidebar-btn.active{background:var(--gold-dim);color:var(--gold);border-right:2px solid var(--gold);}
 .sidebar-icon{font-size:15px;width:18px;text-align:center;}
@@ -209,21 +190,17 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
 .admin-page-title{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:.06em;}
 .admin-page-title em{color:var(--gold);font-style:normal;}
 .topbar-right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
-.admin-badge{font-size:11px;background:var(--gold-dim);color:var(--gold);padding:3px 10px;border-radius:20px;white-space:nowrap;}
+.admin-badge{font-size:11px;background:var(--gold-dim);color:var(--gold);padding:3px 10px;border-radius:20px;}
 .admin-content{padding:1rem;}
 .apanel{display:none;}.apanel.active{display:block;}
+.admin-menu-btn{display:none;background:none;border:1px solid var(--border);color:var(--muted);padding:6px 10px;border-radius:6px;cursor:pointer;font-size:13px;}
 
-/* mobile admin menu toggle */
-.admin-menu-btn{display:none;background:none;border:1px solid var(--border);color:var(--muted);padding:6px 10px;border-radius:6px;cursor:pointer;font-size:13px;flex-shrink:0;}
-
-/* ── DASHBOARD ── */
 .dash-metrics{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-bottom:1.5rem;}
 .metric-card{background:var(--dark2);border:1px solid var(--border);border-radius:12px;padding:1rem;}
 .metric-icon{font-size:1.4rem;margin-bottom:.4rem;}
 .metric-val{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--gold);}
 .metric-lbl{font-size:11px;color:var(--muted);margin-top:2px;}
 
-/* ── TABLES ── */
 .tbl-wrap{background:var(--dark2);border:1px solid var(--border);border-radius:12px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
 .data-table{width:100%;border-collapse:collapse;font-size:12px;min-width:500px;}
 .data-table th{text-align:left;font-size:10px;font-weight:600;letter-spacing:.08em;color:var(--muted);padding:10px 12px;border-bottom:1px solid var(--border);white-space:nowrap;}
@@ -231,94 +208,116 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
 .data-table tr:last-child td{border-bottom:none;}
 .data-table tr:hover td{background:rgba(255,255,255,0.02);}
 
-/* ── ADMIN INVENTORY ── */
-.inv-admin-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;}
-.inv-admin-card{background:var(--dark2);border:1px solid var(--border);border-radius:12px;padding:14px;}
-.inv-admin-img{font-size:2rem;margin-bottom:.5rem;}
-.inv-admin-name{font-size:13px;font-weight:600;margin-bottom:4px;}
+/* ── ADMIN INVENTORY CARDS ── */
+.inv-admin-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;}
+.inv-admin-card{background:var(--dark2);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:border .15s;}
+.inv-admin-card:hover{border-color:var(--gold);}
+.inv-admin-photo{height:120px;background:var(--dark3);display:flex;align-items:center;justify-content:center;font-size:2.5rem;overflow:hidden;position:relative;}
+.inv-admin-photo img{width:100%;height:100%;object-fit:cover;}
+.inv-admin-photo .photo-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.55);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s;cursor:pointer;}
+.inv-admin-card:hover .photo-overlay{opacity:1;}
+.photo-overlay span{font-size:11px;color:#fff;font-weight:600;background:var(--gold);color:#111;padding:5px 12px;border-radius:20px;}
+.inv-admin-body{padding:12px;}
+.inv-admin-name{font-size:13px;font-weight:600;margin-bottom:3px;}
 .inv-admin-price{color:var(--gold);font-size:12px;margin-bottom:8px;}
-.inv-admin-row{display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px;}
+.inv-admin-row{display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;}
 .inv-admin-row span:first-child{color:var(--muted);}
-.inv-admin-actions{display:flex;gap:6px;margin-top:10px;}
+.inv-admin-actions{display:flex;gap:6px;margin-top:10px;padding:0 12px 12px;}
 .btn-sm{flex:1;border:none;font-family:'Inter',sans-serif;font-size:11px;font-weight:600;padding:7px;border-radius:6px;cursor:pointer;touch-action:manipulation;}
 .btn-edit{background:var(--blue-bg);color:var(--blue);}
 .btn-confirm{background:var(--green-bg);color:var(--green);}
 .btn-del{background:var(--red-bg);color:var(--red);}
-.btn-add{background:var(--gold);color:#111;border:none;font-family:'Inter',sans-serif;font-size:12px;font-weight:600;padding:8px 18px;border-radius:7px;cursor:pointer;margin-bottom:1rem;touch-action:manipulation;}
+.btn-add{background:var(--gold);color:#111;border:none;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;padding:9px 20px;border-radius:8px;cursor:pointer;margin-bottom:1rem;display:inline-flex;align-items:center;gap:6px;}
 
-/* ── STATUS BADGES ── */
 .status{font-size:10px;padding:3px 9px;border-radius:20px;font-weight:500;white-space:nowrap;}
 .status-pending{background:var(--gold-dim);color:var(--gold);}
 .status-confirmed{background:var(--green-bg);color:var(--green);}
 .status-completed{background:var(--blue-bg);color:var(--blue);}
 .status-signed{background:var(--green-bg);color:var(--green);}
-.status-awaiting{background:var(--gold-dim);color:var(--gold);}
-.status-awaiting-signature{background:var(--gold-dim);color:var(--gold);}
+.status-awaiting,.status-awaiting-signature{background:var(--gold-dim);color:var(--gold);}
 
-/* ── LOADING ── */
 .loading{display:flex;align-items:center;justify-content:center;padding:2rem;color:var(--muted);gap:8px;font-size:13px;}
 .spinner{width:16px;height:16px;border:2px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0;}
 @keyframes spin{to{transform:rotate(360deg);}}
 
-/* ── TOAST ── */
 .toast{position:fixed;bottom:1.5rem;right:1rem;left:1rem;max-width:360px;margin:0 auto;background:var(--dark2);border:1px solid var(--border);border-radius:10px;padding:12px 16px;font-size:13px;z-index:9999;transform:translateY(100px);opacity:0;transition:all .3s;text-align:center;}
 .toast.show{transform:translateY(0);opacity:1;}
 .toast.success{border-color:var(--green);color:var(--green);}
 .toast.error{border-color:var(--red);color:var(--red);}
 
-/* ── MODAL ── */
+/* ── ITEM MODAL (Add/Edit) ── */
 .modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);z-index:999;align-items:center;justify-content:center;padding:1rem;}
 .modal-overlay.open{display:flex;}
-.modal-box{background:var(--dark2);border:1px solid var(--border);border-radius:16px;padding:2rem 1.5rem;max-width:360px;width:100%;text-align:center;}
+.modal-box{background:var(--dark2);border:1px solid var(--border);border-radius:16px;padding:1.75rem 1.5rem;max-width:420px;width:100%;text-align:center;}
 .modal-icon{font-size:2.5rem;margin-bottom:.75rem;}
 .modal-box h3{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:.05em;margin-bottom:.5rem;}
 .modal-box p{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:1.25rem;}
-.modal-close{background:var(--gold);color:#111;border:none;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;padding:11px 28px;border-radius:7px;cursor:pointer;touch-action:manipulation;}
+.modal-close{background:var(--gold);color:#111;border:none;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;padding:11px 28px;border-radius:7px;cursor:pointer;}
 
-/* ══════════════════════════════════
-   MOBILE RESPONSIVE — ≤768px
-══════════════════════════════════ */
+/* item form modal */
+.item-modal{background:var(--dark2);border:1px solid var(--border);border-radius:16px;padding:1.5rem;max-width:460px;width:100%;max-height:90vh;overflow-y:auto;}
+.item-modal-title{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:.06em;margin-bottom:1.25rem;display:flex;align-items:center;justify-content:space-between;}
+.item-modal-title em{color:var(--gold);font-style:normal;}
+.modal-x{background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;padding:0 4px;}
+.item-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1rem;}
+.if-full{grid-column:1/-1;}
+.ifg{display:flex;flex-direction:column;gap:5px;}
+.ifg label{font-size:10px;font-weight:600;color:var(--muted);letter-spacing:.08em;}
+.ifg input,.ifg select{background:var(--dark3);border:1px solid var(--border);border-radius:7px;padding:9px 11px;font-family:'Inter',sans-serif;font-size:13px;color:#fff;outline:none;transition:border .15s;width:100%;}
+.ifg input:focus,.ifg select:focus{border-color:var(--gold);}
+.ifg select option{background:var(--dark3);}
+
+/* image upload area */
+.img-upload-area{border:2px dashed var(--border);border-radius:10px;padding:1rem;text-align:center;cursor:pointer;transition:border .15s;position:relative;background:var(--dark3);}
+.img-upload-area:hover{border-color:var(--gold);}
+.img-upload-area.has-img{border-style:solid;border-color:var(--gold);}
+.img-preview{width:100%;height:120px;object-fit:cover;border-radius:6px;margin-bottom:.5rem;}
+.img-upload-hint{font-size:11px;color:var(--muted);}
+.img-upload-hint strong{color:var(--gold);}
+.img-options{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;}
+.img-opt-btn{background:var(--dark2);border:1px solid var(--border);border-radius:7px;padding:8px;font-family:'Inter',sans-serif;font-size:11px;color:var(--muted);cursor:pointer;transition:all .15s;}
+.img-opt-btn:hover{border-color:var(--gold);color:var(--gold);}
+.img-opt-btn.active-opt{border-color:var(--gold);color:var(--gold);background:var(--gold-dim);}
+.url-input-row{margin-top:8px;}
+.url-input-row input{width:100%;background:var(--dark3);border:1px solid var(--border);border-radius:7px;padding:8px 10px;font-family:'Inter',sans-serif;font-size:12px;color:#fff;outline:none;}
+.url-input-row input:focus{border-color:var(--gold);}
+.file-input{display:none;}
+
+.modal-btns{display:flex;gap:8px;margin-top:1rem;}
+.btn-cancel{flex:1;background:none;border:1px solid var(--border);color:var(--muted);font-family:'Inter',sans-serif;font-size:13px;font-weight:500;padding:11px;border-radius:8px;cursor:pointer;}
+.btn-save{flex:2;background:var(--gold);color:#111;border:none;font-family:'Inter',sans-serif;font-size:13px;font-weight:700;padding:11px;border-radius:8px;cursor:pointer;}
+.btn-save:disabled{background:var(--dark4);color:var(--muted);cursor:not-allowed;}
+
+/* confirm delete modal */
+.confirm-modal{background:var(--dark2);border:1px solid var(--red-bg);border-radius:16px;padding:1.75rem;max-width:360px;width:100%;text-align:center;}
+.confirm-btns{display:flex;gap:8px;margin-top:1.25rem;}
+.btn-no{flex:1;background:none;border:1px solid var(--border);color:var(--muted);font-family:'Inter',sans-serif;font-size:13px;padding:10px;border-radius:8px;cursor:pointer;}
+.btn-yes-del{flex:1;background:var(--red-bg);color:var(--red);border:1px solid rgba(248,113,113,0.3);font-family:'Inter',sans-serif;font-size:13px;font-weight:600;padding:10px;border-radius:8px;cursor:pointer;}
+
+.sidebar-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:299;}
+.sidebar-backdrop.show{display:block;}
+
 @media(max-width:768px){
-  /* nav */
   .nav-links{display:none;}
   .hamburger{display:flex;}
-
-  /* hero */
   .hero{padding:2rem 1rem 1.75rem;}
   .hero h1{font-size:2.2rem;}
   .hero-ring{width:76px;height:76px;}
-
-  /* contact bar — stack on mobile */
   .contact-bar{flex-direction:column;}
   .contact-item{border-right:none;border-bottom:1px solid var(--border);min-width:100%;}
   .contact-item:last-child{border-bottom:none;}
-
-  /* stats — 2x2 grid */
   .stats-row{flex-wrap:wrap;}
   .stat{flex:0 0 50%;border-right:none;border-bottom:1px solid var(--border);}
   .stat:nth-child(odd){border-right:1px solid var(--border);}
   .stat:nth-last-child(-n+2){border-bottom:none;}
-
-  /* section */
   .section{padding:1.25rem 1rem;}
-
-  /* inventory grid — 2 cols on mobile */
   .inv-grid{grid-template-columns:1fr 1fr;}
   .service-grid{grid-template-columns:1fr 1fr;}
-
-  /* booking form — single column */
   .form-grid{grid-template-columns:1fr;}
   .form-full{grid-column:1;}
   .form-card{padding:1.25rem 1rem;}
-
-  /* quotation — single column */
   .q-controls{grid-template-columns:1fr;}
-  .q-ctrl[style*="grid-column"]{grid-column:1!important;}
-
-  /* contract sig area */
   .sig-area{grid-template-columns:1fr;gap:12px;}
-
-  /* admin shell — sidebar overlay */
   .admin-sidebar{position:fixed;top:0;left:0;bottom:0;z-index:300;transform:translateX(-100%);width:230px;}
   .admin-sidebar.mobile-open{transform:translateX(0);}
   .admin-menu-btn{display:flex;align-items:center;gap:5px;}
@@ -326,24 +325,19 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
   .admin-content{padding:.75rem;}
   .dash-metrics{grid-template-columns:1fr 1fr;}
   .inv-admin-grid{grid-template-columns:1fr 1fr;}
-
-  /* sidebar overlay backdrop */
-  .sidebar-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:299;}
-  .sidebar-backdrop.show{display:block;}
+  .item-form-grid{grid-template-columns:1fr;}
+  .if-full{grid-column:1;}
 }
-
 @media(max-width:400px){
   .hero h1{font-size:1.9rem;}
   .inv-grid{grid-template-columns:1fr;}
-  .service-grid{grid-template-columns:1fr 1fr;}
-  .dash-metrics{grid-template-columns:1fr 1fr;}
   .inv-admin-grid{grid-template-columns:1fr;}
+  .dash-metrics{grid-template-columns:1fr 1fr;}
 }
 </style>
 </head>
 <body>
 
-<!-- ══ PUBLIC NAV ══ -->
 <nav id="pub-nav">
   <div class="nav-brand">
     <div class="nav-logo">
@@ -355,9 +349,7 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
       <div class="nav-sub">METRO CEBU · TABLES · CHAIRS · CAMPING</div>
     </div>
   </div>
-  <button class="hamburger" id="hamburger" onclick="toggleMobileNav()" aria-label="Menu">
-    <span></span><span></span><span></span>
-  </button>
+  <button class="hamburger" id="hamburger" onclick="toggleMobileNav()"><span></span><span></span><span></span></button>
   <div class="nav-links">
     <button class="active" onclick="pub('home')">Home</button>
     <button onclick="pub('inventory')">Inventory</button>
@@ -367,8 +359,6 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
     <button class="btn-admin-nav" onclick="showLogin()">⚙ Admin</button>
   </div>
 </nav>
-
-<!-- mobile nav drawer -->
 <div class="mobile-nav" id="mobile-nav">
   <button class="active" onclick="pub('home');closeMobileNav()">🏠 Home</button>
   <button onclick="pub('inventory');closeMobileNav()">📦 Inventory</button>
@@ -378,23 +368,16 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
   <button class="m-admin" onclick="showLogin();closeMobileNav()">⚙ Admin Login</button>
 </div>
 
-<!-- ══ PUBLIC AREA ══ -->
 <div id="public-area">
-
-  <!-- HOME -->
   <div class="page active" id="page-home">
     <div class="hero">
       <div class="hero-ring">
-        <img src="logo_colored.png" alt="J&R Logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <img src="logo_colored.png" alt="J&R" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
         <span class="hero-ring-fallback" style="display:none;">J&R</span>
       </div>
       <h1>Jacky <em>&</em> Rey<br>Rentals</h1>
       <div class="hero-tagline">"From Gatherings to Camping — We've got the Essentials"</div>
-      <div class="hero-tags">
-        <span class="hero-tag">Tables</span>
-        <span class="hero-tag">Chairs</span>
-        <span class="hero-tag">Camping Sets</span>
-      </div>
+      <div class="hero-tags"><span class="hero-tag">Tables</span><span class="hero-tag">Chairs</span><span class="hero-tag">Camping Sets</span></div>
       <div class="hero-btns">
         <button class="btn-gold" onclick="pub('booking')">Book Now</button>
         <button class="btn-outline" onclick="pub('quotation')">Get a Quote</button>
@@ -424,50 +407,40 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
     </div>
   </div>
 
-  <!-- INVENTORY -->
   <div class="page" id="page-inventory">
     <div class="section">
       <div class="sec-title">Our <em>Inventory</em></div>
-      <div class="sec-sub">All items available for rent — prices per day per piece</div>
-      <div class="inv-grid" id="pub-inv-grid">
-        <div class="loading"><div class="spinner"></div> Loading inventory...</div>
-      </div>
+      <div class="sec-sub">All items for rent — prices per day per piece</div>
+      <div class="inv-grid" id="pub-inv-grid"><div class="loading"><div class="spinner"></div> Loading inventory...</div></div>
     </div>
   </div>
 
-  <!-- BOOKING -->
   <div class="page" id="page-booking">
     <div class="section">
       <div class="sec-title">Book a <em>Rental</em></div>
-      <div class="sec-sub">Fill in details and we'll confirm your booking within 24 hours</div>
+      <div class="sec-sub">Fill in details and we'll confirm within 24 hours</div>
       <div class="form-card">
         <div class="form-grid">
           <div class="fg"><label>FULL NAME</label><input type="text" id="b-name" placeholder="Juan dela Cruz" autocomplete="name"></div>
-          <div class="fg"><label>CONTACT NUMBER</label><input type="tel" id="b-phone" placeholder="09XX XXX XXXX" autocomplete="tel"></div>
+          <div class="fg"><label>CONTACT NUMBER</label><input type="tel" id="b-phone" placeholder="09XX XXX XXXX"></div>
           <div class="fg"><label>EVENT DATE</label><input type="date" id="b-date"></div>
           <div class="fg"><label>RETURN DATE</label><input type="date" id="b-return"></div>
           <div class="fg form-full"><label>EVENT LOCATION</label><input type="text" id="b-location" placeholder="Barangay, City, Metro Cebu"></div>
-          <div class="fg form-full">
-            <label>ITEMS TO RENT</label>
-            <div class="item-list" id="booking-items">
-              <div class="loading"><div class="spinner"></div> Loading items...</div>
-            </div>
-          </div>
-          <div class="fg form-full"><label>NOTES / SPECIAL REQUESTS</label><textarea id="b-notes" placeholder="Delivery address, event type, setup needs..."></textarea></div>
+          <div class="fg form-full"><label>ITEMS TO RENT</label><div class="item-list" id="booking-items"><div class="loading"><div class="spinner"></div> Loading items...</div></div></div>
+          <div class="fg form-full"><label>NOTES</label><textarea id="b-notes" placeholder="Delivery address, event type, setup needs..."></textarea></div>
         </div>
         <button class="btn-submit" id="btn-book-submit" onclick="submitBooking()">Submit Booking Request</button>
       </div>
     </div>
   </div>
 
-  <!-- QUOTATION -->
   <div class="page" id="page-quotation">
     <div class="section">
       <div class="sec-title">Get a <em>Quotation</em></div>
       <div class="sec-sub">Adjust quantities and days — total updates instantly</div>
       <div class="q-controls" id="q-controls">
         <div class="q-ctrl" style="grid-column:1/-1"><label>NUMBER OF DAYS</label><input type="number" min="1" value="1" id="q-days" oninput="calcQ()"></div>
-        <div class="loading" style="grid-column:1/-1"><div class="spinner"></div> Loading items...</div>
+        <div class="loading" style="grid-column:1/-1"><div class="spinner"></div> Loading...</div>
       </div>
       <div class="q-summary">
         <div class="q-head"><div><h3>Quotation Summary</h3><p>Jacky & Rey Rentals · Metro Cebu</p></div><div class="q-ref">QT-LIVE</div></div>
@@ -480,7 +453,6 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
     </div>
   </div>
 
-  <!-- CONTRACT -->
   <div class="page" id="page-contract">
     <div class="section">
       <div class="sec-title">Rental <em>Contract</em></div>
@@ -489,18 +461,12 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
         <div class="ct-head">
           <div class="ct-logo">Jacky <em>&</em> Rey Rentals</div>
           <div class="ct-sub">Metro Cebu · jackyandreyrentals@gmail.com · 09912094757 / 09500167754</div>
-          <div class="ct-ref">Contract No. JRR-SAMPLE · Sample Preview</div>
+          <div class="ct-ref">Sample Contract Preview</div>
         </div>
         <div class="ct-section"><div class="ct-sec-title">RENTER INFORMATION</div>
           <div class="ct-row"><span>Full Name</span><span>Your Name Here</span></div>
-          <div class="ct-row"><span>Contact</span><span>Your Number Here</span></div>
+          <div class="ct-row"><span>Contact</span><span>Your Number</span></div>
           <div class="ct-row"><span>Location</span><span>Your Event Location</span></div>
-        </div>
-        <div class="ct-section"><div class="ct-sec-title">RENTAL DETAILS</div>
-          <div class="ct-row"><span>Event Date</span><span>To be confirmed</span></div>
-          <div class="ct-row"><span>Return Date</span><span>To be confirmed</span></div>
-          <div class="ct-row"><span>Items</span><span>Based on booking</span></div>
-          <div class="ct-row" style="border-top:1px dashed var(--border);padding-top:8px;margin-top:4px"><span style="font-weight:600">Total Amount</span><span style="font-weight:600;color:var(--gold)">To be confirmed</span></div>
         </div>
         <div class="ct-section"><div class="ct-sec-title">TERMS & CONDITIONS</div>
           <div class="ct-terms"><ol>
@@ -520,24 +486,22 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
       <button class="btn-proceed" style="margin-top:12px" onclick="pub('booking')">Book Now to Get Your Contract ↗</button>
     </div>
   </div>
+</div>
 
-</div><!-- /public-area -->
-
-<!-- ══ ADMIN LOGIN ══ -->
 <div id="login-area" style="display:none;">
   <div class="login-wrap">
     <div class="login-card">
       <div style="text-align:center;margin-bottom:1.5rem;">
         <div class="login-logo-ring">
-          <img src="logo_colored.png" alt="J&R Logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+          <img src="logo_colored.png" alt="J&R" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
           <span class="login-logo-fallback" style="display:none;">J&R</span>
         </div>
         <div class="login-title">Admin <em>Portal</em></div>
         <div class="login-sub">Jacky & Rey Rentals · Staff Only</div>
       </div>
       <div class="login-fg"><label>USERNAME</label><input type="text" id="l-user" placeholder="Enter username" autocomplete="username"></div>
-      <div class="login-fg"><label>PASSWORD</label><input type="password" id="l-pass" placeholder="Enter password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"></div>
-      <div class="login-err" id="l-err">Incorrect username or password. Try again.</div>
+      <div class="login-fg"><label>PASSWORD</label><input type="password" id="l-pass" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()"></div>
+      <div class="login-err" id="l-err">Incorrect username or password.</div>
       <button class="btn-login" id="btn-login" onclick="doLogin()">Login to Dashboard</button>
       <div style="text-align:center;margin-top:1rem;">
         <button style="background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer;padding:8px;" onclick="backToPublic()">← Back to website</button>
@@ -546,9 +510,7 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
   </div>
 </div>
 
-<!-- ══ ADMIN DASHBOARD ══ -->
 <div id="admin-area" style="display:none;">
-  <!-- sidebar backdrop for mobile -->
   <div class="sidebar-backdrop" id="sidebar-backdrop" onclick="closeSidebar()"></div>
   <div class="admin-shell">
     <div class="admin-sidebar" id="admin-sidebar">
@@ -570,9 +532,7 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
         <button class="sidebar-btn" onclick="aPanel('quotations',this);closeSidebar()"><span class="sidebar-icon">💰</span> Quotations</button>
         <button class="sidebar-btn" onclick="aPanel('contracts',this);closeSidebar()"><span class="sidebar-icon">📄</span> Contracts</button>
       </div>
-      <div class="sidebar-footer">
-        <button class="btn-logout" onclick="doLogout()">⬡ Logout</button>
-      </div>
+      <div class="sidebar-footer"><button class="btn-logout" onclick="doLogout()">⬡ Logout</button></div>
     </div>
 
     <div class="admin-main">
@@ -583,59 +543,50 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
         </div>
         <div class="topbar-right">
           <span class="admin-badge" id="admin-role-badge">Admin</span>
-          <button style="background:none;border:1px solid var(--border);color:var(--muted);font-size:11px;padding:5px 8px;border-radius:6px;cursor:pointer;white-space:nowrap;" onclick="refreshAdminData()">↻ Refresh</button>
+          <button style="background:none;border:1px solid var(--border);color:var(--muted);font-size:11px;padding:5px 8px;border-radius:6px;cursor:pointer;" onclick="refreshAdminData()">↻ Refresh</button>
         </div>
       </div>
       <div class="admin-content">
 
-        <!-- DASHBOARD -->
         <div class="apanel active" id="apanel-dashboard">
-          <div class="dash-metrics" id="dash-metrics">
-            <div class="loading"><div class="spinner"></div> Loading...</div>
-          </div>
+          <div class="dash-metrics" id="dash-metrics"><div class="loading"><div class="spinner"></div> Loading...</div></div>
           <div class="sec-title" style="margin-bottom:.75rem;font-size:1.2rem;">Recent <em>Bookings</em></div>
           <div class="tbl-wrap">
             <table class="data-table">
               <thead><tr><th>ID</th><th>Client</th><th>Items</th><th>Date</th><th>Amount</th><th>Status</th></tr></thead>
-              <tbody id="dash-bookings"><tr><td colspan="6" class="loading"><div class="spinner"></div> Loading...</td></tr></tbody>
+              <tbody id="dash-bookings"><tr><td colspan="6" class="loading"><div class="spinner"></div></td></tr></tbody>
             </table>
           </div>
         </div>
 
-        <!-- INVENTORY -->
         <div class="apanel" id="apanel-inventory">
-          <button class="btn-add" onclick="showToast('Update inventory directly in Google Sheets for now.','error')">+ Add New Item</button>
-          <div class="inv-admin-grid" id="admin-inv-grid">
-            <div class="loading"><div class="spinner"></div> Loading inventory...</div>
-          </div>
+          <button class="btn-add" onclick="openItemModal(null)">➕ Add New Item</button>
+          <div class="inv-admin-grid" id="admin-inv-grid"><div class="loading"><div class="spinner"></div> Loading...</div></div>
         </div>
 
-        <!-- BOOKINGS -->
         <div class="apanel" id="apanel-bookings">
           <div class="tbl-wrap">
             <table class="data-table">
               <thead><tr><th>ID</th><th>Client</th><th>Contact</th><th>Location</th><th>Event Date</th><th>Items</th><th>Total</th><th>Status</th><th>Action</th></tr></thead>
-              <tbody id="admin-bookings-tbody"><tr><td colspan="9" class="loading"><div class="spinner"></div> Loading...</td></tr></tbody>
+              <tbody id="admin-bookings-tbody"><tr><td colspan="9" class="loading"><div class="spinner"></div></td></tr></tbody>
             </table>
           </div>
         </div>
 
-        <!-- QUOTATIONS -->
         <div class="apanel" id="apanel-quotations">
           <div class="tbl-wrap">
             <table class="data-table">
               <thead><tr><th>Ref</th><th>Client</th><th>Contact</th><th>Items</th><th>Days</th><th>Est. Total</th><th>Date</th></tr></thead>
-              <tbody id="admin-quotations-tbody"><tr><td colspan="7" class="loading"><div class="spinner"></div> Loading...</td></tr></tbody>
+              <tbody id="admin-quotations-tbody"><tr><td colspan="7" class="loading"><div class="spinner"></div></td></tr></tbody>
             </table>
           </div>
         </div>
 
-        <!-- CONTRACTS -->
         <div class="apanel" id="apanel-contracts">
           <div class="tbl-wrap">
             <table class="data-table">
               <thead><tr><th>Contract No.</th><th>Client</th><th>Contact</th><th>Event Date</th><th>Return Date</th><th>Total</th><th>Status</th></tr></thead>
-              <tbody id="admin-contracts-tbody"><tr><td colspan="7" class="loading"><div class="spinner"></div> Loading...</td></tr></tbody>
+              <tbody id="admin-contracts-tbody"><tr><td colspan="7" class="loading"><div class="spinner"></div></td></tr></tbody>
             </table>
           </div>
         </div>
@@ -645,10 +596,82 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
   </div>
 </div>
 
-<!-- TOAST -->
-<div class="toast" id="toast"></div>
+<!-- ADD / EDIT ITEM MODAL -->
+<div class="modal-overlay" id="item-modal-overlay">
+  <div class="item-modal">
+    <div class="item-modal-title">
+      <span id="item-modal-title-text">Add <em>New Item</em></span>
+      <button class="modal-x" onclick="closeItemModal()">✕</button>
+    </div>
+    <div class="item-form-grid">
+      <div class="ifg if-full">
+        <label>ITEM NAME</label>
+        <input type="text" id="f-name" placeholder="e.g. Monobloc Chair">
+      </div>
+      <div class="ifg">
+        <label>EMOJI ICON</label>
+        <input type="text" id="f-emoji" placeholder="🪑" maxlength="4">
+      </div>
+      <div class="ifg">
+        <label>PRICE PER DAY (₱)</label>
+        <input type="number" id="f-price" placeholder="150" min="0">
+      </div>
+      <div class="ifg">
+        <label>TOTAL STOCK</label>
+        <input type="number" id="f-total" placeholder="50" min="0">
+      </div>
+      <div class="ifg">
+        <label>AVAILABLE NOW</label>
+        <input type="number" id="f-avail" placeholder="50" min="0">
+      </div>
+      <div class="ifg">
+        <label>CATEGORY</label>
+        <select id="f-cat">
+          <option value="Chairs">Chairs</option>
+          <option value="Tables">Tables</option>
+          <option value="Camping">Camping</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div class="ifg if-full">
+        <label>ITEM PHOTO</label>
+        <div class="img-upload-area" id="img-upload-area" onclick="document.getElementById('f-file').click()">
+          <img class="img-preview" id="img-preview" style="display:none;">
+          <div id="img-placeholder">
+            <div style="font-size:2rem;margin-bottom:.4rem;">📷</div>
+            <div class="img-upload-hint">Click to <strong>upload photo</strong> from your device<br>or paste an image URL below</div>
+          </div>
+        </div>
+        <input type="file" class="file-input" id="f-file" accept="image/*" onchange="handleFileUpload(this)">
+        <div class="url-input-row">
+          <input type="text" id="f-imgurl" placeholder="Or paste image URL (Google Drive, etc.)" oninput="handleUrlInput(this.value)">
+        </div>
+        <div style="font-size:10px;color:var(--muted);margin-top:5px;">
+          💡 For Google Drive: right-click image → Share → copy link → paste here
+        </div>
+      </div>
+    </div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeItemModal()">Cancel</button>
+      <button class="btn-save" id="btn-save-item" onclick="saveItem()">💾 Save Item</button>
+    </div>
+  </div>
+</div>
 
-<!-- MODAL -->
+<!-- DELETE CONFIRM MODAL -->
+<div class="modal-overlay" id="del-modal-overlay">
+  <div class="confirm-modal">
+    <div style="font-size:2.5rem;margin-bottom:.75rem;">🗑️</div>
+    <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:.05em;margin-bottom:.5rem;">Delete Item?</h3>
+    <p style="font-size:13px;color:var(--muted);line-height:1.6;">Are you sure you want to delete <strong id="del-item-name" style="color:#fff"></strong>? This cannot be undone.</p>
+    <div class="confirm-btns">
+      <button class="btn-no" onclick="closeDelModal()">Cancel</button>
+      <button class="btn-yes-del" id="btn-confirm-del" onclick="confirmDelete()">Yes, Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- GENERAL MODAL -->
 <div class="modal-overlay" id="modal">
   <div class="modal-box">
     <div class="modal-icon" id="m-icon">✅</div>
@@ -658,90 +681,70 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
   </div>
 </div>
 
+<div class="toast" id="toast"></div>
+
 <script>
 const API = "https://script.google.com/macros/s/AKfycbyxhstT4vDPqdVTrqcOPBCJL7JDIgzateELyfMqCrDnfnBKzaL3vtdR4982_iMrnUV4yA/exec";
-let inventoryItems = [], bookingQty = {}, quoteQty = {}, adminRole = "";
+let inventoryItems=[], bookingQty={}, adminRole="";
+let editingItem=null, deleteTarget=null, currentImageUrl="";
 
-async function api(data) {
-  try {
-    const res = await fetch(API, { method:"POST", body:JSON.stringify(data), headers:{"Content-Type":"text/plain"} });
+async function api(data){
+  try{
+    const res=await fetch(API,{method:"POST",body:JSON.stringify(data),headers:{"Content-Type":"text/plain"}});
     return await res.json();
-  } catch(e) { return { success:false, error:e.message }; }
+  }catch(e){return{success:false,error:e.message};}
 }
 
 /* ── MOBILE NAV ── */
-function toggleMobileNav() {
-  const nav = document.getElementById("mobile-nav");
-  const btn = document.getElementById("hamburger");
-  nav.classList.toggle("open");
-  btn.classList.toggle("open");
-}
-function closeMobileNav() {
-  document.getElementById("mobile-nav").classList.remove("open");
-  document.getElementById("hamburger").classList.remove("open");
-}
-
-/* ── ADMIN SIDEBAR MOBILE ── */
-function openSidebar() {
-  document.getElementById("admin-sidebar").classList.add("mobile-open");
-  document.getElementById("sidebar-backdrop").classList.add("show");
-}
-function closeSidebar() {
-  document.getElementById("admin-sidebar").classList.remove("mobile-open");
-  document.getElementById("sidebar-backdrop").classList.remove("show");
-}
+function toggleMobileNav(){document.getElementById("mobile-nav").classList.toggle("open");document.getElementById("hamburger").classList.toggle("open");}
+function closeMobileNav(){document.getElementById("mobile-nav").classList.remove("open");document.getElementById("hamburger").classList.remove("open");}
+function openSidebar(){document.getElementById("admin-sidebar").classList.add("mobile-open");document.getElementById("sidebar-backdrop").classList.add("show");}
+function closeSidebar(){document.getElementById("admin-sidebar").classList.remove("mobile-open");document.getElementById("sidebar-backdrop").classList.remove("show");}
 
 /* ── NAVIGATION ── */
-function pub(id) {
-  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
-  document.getElementById("page-" + id).classList.add("active");
-  const pages = ["home","inventory","booking","quotation","contract"];
-  document.querySelectorAll(".nav-links button:not(.btn-admin-nav)").forEach((b,i) => {
-    b.classList.remove("active");
-    if (pages[i] === id) b.classList.add("active");
-  });
-  document.querySelectorAll(".mobile-nav button:not(.m-admin)").forEach((b,i) => {
-    b.classList.remove("active");
-    if (pages[i] === id) b.classList.add("active");
-  });
-  window.scrollTo(0, 0);
-  if (id === "inventory") loadPublicInventory();
-  if (id === "booking") loadBookingItems();
-  if (id === "quotation") loadQuoteItems();
+function pub(id){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  document.getElementById("page-"+id).classList.add("active");
+  const pages=["home","inventory","booking","quotation","contract"];
+  document.querySelectorAll(".nav-links button:not(.btn-admin-nav)").forEach((b,i)=>{b.classList.remove("active");if(pages[i]===id)b.classList.add("active");});
+  document.querySelectorAll(".mobile-nav button:not(.m-admin)").forEach((b,i)=>{b.classList.remove("active");if(pages[i]===id)b.classList.add("active");});
+  window.scrollTo(0,0);
+  if(id==="inventory")loadPublicInventory();
+  if(id==="booking")loadBookingItems();
+  if(id==="quotation")loadQuoteItems();
 }
-
-function showLogin() {
-  document.getElementById("public-area").style.display = "none";
-  document.getElementById("pub-nav").style.display = "none";
-  document.getElementById("login-area").style.display = "block";
-}
-function backToPublic() {
-  document.getElementById("public-area").style.display = "block";
-  document.getElementById("pub-nav").style.display = "flex";
-  document.getElementById("login-area").style.display = "none";
-}
+function showLogin(){document.getElementById("public-area").style.display="none";document.getElementById("pub-nav").style.display="none";document.getElementById("login-area").style.display="block";}
+function backToPublic(){document.getElementById("public-area").style.display="block";document.getElementById("pub-nav").style.display="flex";document.getElementById("login-area").style.display="none";}
 
 /* ── INVENTORY ── */
-async function loadInventory() {
-  if (inventoryItems.length > 0) return inventoryItems;
-  const res = await api({ action:"getInventory" });
-  if (res.success) {
-    inventoryItems = res.items;
-    inventoryItems.forEach(item => { bookingQty[item.name] = 0; quoteQty[item.name] = 0; });
-  }
+async function loadInventory(){
+  if(inventoryItems.length>0)return inventoryItems;
+  const res=await api({action:"getInventory"});
+  if(res.success){inventoryItems=res.items;inventoryItems.forEach(i=>{bookingQty[i.name]=0;});}
   return inventoryItems;
 }
 
-async function loadPublicInventory() {
-  const grid = document.getElementById("pub-inv-grid");
-  grid.innerHTML = `<div class="loading"><div class="spinner"></div> Loading inventory...</div>`;
-  const items = await loadInventory();
-  if (!items.length) { grid.innerHTML = `<p style="color:var(--muted);font-size:13px;padding:1rem">No items found.</p>`; return; }
-  grid.innerHTML = items.map(item => {
-    const avail = parseInt(item.available) || 0;
-    const bc = avail > 20 ? "badge-green" : avail > 0 ? "badge-amber" : "badge-red";
+function itemImg(item,h=110){
+  if(item.imageUrl){
+    let url=item.imageUrl;
+    // convert Google Drive share links to direct image links
+    const m=url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+    if(m)url=`https://drive.google.com/thumbnail?id=${m[1]}&sz=w400`;
+    return `<img src="${url}" style="width:100%;height:${h}px;object-fit:cover;" onerror="this.parentElement.innerHTML='<span style=\\'font-size:2.2rem\\'>${item.emoji||'📦'}</span>'">`;
+  }
+  return `<span style="font-size:2.2rem">${item.emoji||"📦"}</span>`;
+}
+
+async function loadPublicInventory(){
+  const grid=document.getElementById("pub-inv-grid");
+  grid.innerHTML=`<div class="loading"><div class="spinner"></div> Loading inventory...</div>`;
+  const items=await loadInventory();
+  if(!items.length){grid.innerHTML=`<p style="color:var(--muted);padding:1rem">No items found.</p>`;return;}
+  grid.innerHTML=items.map(item=>{
+    const avail=parseInt(item.available)||0;
+    const bc=avail>20?"badge-green":avail>0?"badge-amber":"badge-red";
     return `<div class="inv-card">
-      <div class="inv-img">${item.emoji||"📦"}</div>
+      <div class="inv-img">${itemImg(item)}</div>
       <div class="inv-body">
         <div class="inv-name">${item.name}</div>
         <div class="inv-price">₱${item.price} / day</div>
@@ -752,17 +755,14 @@ async function loadPublicInventory() {
   }).join("");
 }
 
-async function loadBookingItems() {
-  const container = document.getElementById("booking-items");
-  container.innerHTML = `<div class="loading"><div class="spinner"></div> Loading items...</div>`;
-  const items = await loadInventory();
-  if (!items.length) { container.innerHTML = `<p style="color:var(--muted)">No items found.</p>`; return; }
-  container.innerHTML = items.map(item => `
+async function loadBookingItems(){
+  const c=document.getElementById("booking-items");
+  c.innerHTML=`<div class="loading"><div class="spinner"></div> Loading...</div>`;
+  const items=await loadInventory();
+  if(!items.length){c.innerHTML=`<p style="color:var(--muted)">No items found.</p>`;return;}
+  c.innerHTML=items.map(item=>`
     <div class="item-row">
-      <div>
-        <div class="ir-name">${item.emoji||""} ${item.name}</div>
-        <div class="ir-rate">₱${item.price}/day · ${item.available} available</div>
-      </div>
+      <div><div class="ir-name">${item.emoji||""} ${item.name}</div><div class="ir-rate">₱${item.price}/day · ${item.available} available</div></div>
       <div class="qty-ctrl">
         <button class="qty-btn" onclick="chgBooking('${item.name}',-1)">−</button>
         <span class="qty-n" id="bqty-${item.name.replace(/\s/g,'_')}">0</span>
@@ -771,121 +771,108 @@ async function loadBookingItems() {
     </div>`).join("");
 }
 
-function chgBooking(name, delta, max) {
-  const key = name.replace(/\s/g,'_');
-  bookingQty[name] = Math.max(0, Math.min((bookingQty[name]||0)+delta, max||9999));
-  document.getElementById("bqty-"+key).textContent = bookingQty[name];
+function chgBooking(name,delta,max){
+  const key=name.replace(/\s/g,'_');
+  bookingQty[name]=Math.max(0,Math.min((bookingQty[name]||0)+delta,max||9999));
+  document.getElementById("bqty-"+key).textContent=bookingQty[name];
 }
 
-async function submitBooking() {
-  const name = document.getElementById("b-name").value.trim();
-  const phone = document.getElementById("b-phone").value.trim();
-  const date = document.getElementById("b-date").value;
-  const returnDate = document.getElementById("b-return").value;
-  const location = document.getElementById("b-location").value.trim();
-  const notes = document.getElementById("b-notes").value.trim();
-  if (!name||!phone||!date) { showToast("Please fill in your name, contact, and event date.","error"); return; }
-  const itemsList = Object.entries(bookingQty).filter(([k,v])=>v>0).map(([k,v])=>`${v}x ${k}`).join(", ");
-  if (!itemsList) { showToast("Please select at least one item.","error"); return; }
-  const total = Object.entries(bookingQty).reduce((sum,[k,v])=>{
-    const item = inventoryItems.find(i=>i.name===k);
-    return sum+(v*(item?parseInt(item.price):0));
-  },0);
-  const btn = document.getElementById("btn-book-submit");
-  btn.disabled=true; btn.textContent="Submitting...";
-  const res = await api({ action:"submitBooking", name, phone, location, eventDate:date, returnDate, items:itemsList, total, notes });
-  btn.disabled=false; btn.textContent="Submit Booking Request";
-  if (res.success) {
-    openMod("✅","Booking Submitted!",`Your booking (${res.bookingId}) has been received! We will contact you at ${phone} within 24 hours to confirm. Thank you for choosing Jacky & Rey Rentals!`);
+async function submitBooking(){
+  const name=document.getElementById("b-name").value.trim();
+  const phone=document.getElementById("b-phone").value.trim();
+  const date=document.getElementById("b-date").value;
+  const returnDate=document.getElementById("b-return").value;
+  const location=document.getElementById("b-location").value.trim();
+  const notes=document.getElementById("b-notes").value.trim();
+  if(!name||!phone||!date){showToast("Please fill in your name, contact, and event date.","error");return;}
+  const itemsList=Object.entries(bookingQty).filter(([k,v])=>v>0).map(([k,v])=>`${v}x ${k}`).join(", ");
+  if(!itemsList){showToast("Please select at least one item.","error");return;}
+  const total=Object.entries(bookingQty).reduce((s,[k,v])=>{const i=inventoryItems.find(x=>x.name===k);return s+(v*(i?parseInt(i.price):0));},0);
+  const btn=document.getElementById("btn-book-submit");
+  btn.disabled=true;btn.textContent="Submitting...";
+  const res=await api({action:"submitBooking",name,phone,location,eventDate:date,returnDate,items:itemsList,total,notes});
+  btn.disabled=false;btn.textContent="Submit Booking Request";
+  if(res.success){
+    openMod("✅","Booking Submitted!",`Your booking (${res.bookingId}) has been received! We will contact you at ${phone} within 24 hours. Thank you for choosing Jacky & Rey Rentals!`);
     Object.keys(bookingQty).forEach(k=>{bookingQty[k]=0;});
-    loadBookingItems(); inventoryItems=[];
-  } else { showToast("Submission failed. Please try again or contact us directly.","error"); }
+    loadBookingItems();inventoryItems=[];
+  }else showToast("Submission failed. Please try again.","error");
 }
 
-async function loadQuoteItems() {
-  const container = document.getElementById("q-controls");
-  container.innerHTML = `<div class="q-ctrl" style="grid-column:1/-1"><label>NUMBER OF DAYS</label><input type="number" min="1" value="1" id="q-days" oninput="calcQ()"></div><div class="loading" style="grid-column:1/-1"><div class="spinner"></div> Loading items...</div>`;
-  const items = await loadInventory();
-  container.innerHTML = `<div class="q-ctrl" style="grid-column:1/-1"><label>NUMBER OF DAYS</label><input type="number" min="1" value="1" id="q-days" oninput="calcQ()"></div>`
-    + items.map(item=>`<div class="q-ctrl"><label>${item.emoji||""} ${item.name.toUpperCase()}</label><input type="number" min="0" value="0" id="qq-${item.name.replace(/\s/g,'_')}" oninput="calcQ()"></div>`).join("");
+async function loadQuoteItems(){
+  const c=document.getElementById("q-controls");
+  c.innerHTML=`<div class="q-ctrl" style="grid-column:1/-1"><label>NUMBER OF DAYS</label><input type="number" min="1" value="1" id="q-days" oninput="calcQ()"></div><div class="loading" style="grid-column:1/-1"><div class="spinner"></div> Loading...</div>`;
+  const items=await loadInventory();
+  c.innerHTML=`<div class="q-ctrl" style="grid-column:1/-1"><label>NUMBER OF DAYS</label><input type="number" min="1" value="1" id="q-days" oninput="calcQ()"></div>`
+    +items.map(i=>`<div class="q-ctrl"><label>${i.emoji||""} ${i.name.toUpperCase()}</label><input type="number" min="0" value="0" id="qq-${i.name.replace(/\s/g,'_')}" oninput="calcQ()"></div>`).join("");
   calcQ();
 }
 
-function calcQ() {
-  if (!inventoryItems.length) return;
-  const days = Math.max(1, parseInt(document.getElementById("q-days")?.value)||1);
-  let total=0, html="";
-  inventoryItems.forEach(item => {
-    const qty = parseInt(document.getElementById("qq-"+item.name.replace(/\s/g,'_'))?.value)||0;
-    if (qty>0) { const sub=qty*parseInt(item.price)*days; total+=sub; html+=`<div class="q-line"><span>${item.name}</span><span class="q-line-calc">${qty}×₱${item.price}×${days}d</span><span class="q-line-amt">₱${sub.toLocaleString()}</span></div>`; }
+function calcQ(){
+  if(!inventoryItems.length)return;
+  const days=Math.max(1,parseInt(document.getElementById("q-days")?.value)||1);
+  let total=0,html="";
+  inventoryItems.forEach(i=>{
+    const qty=parseInt(document.getElementById("qq-"+i.name.replace(/\s/g,'_'))?.value)||0;
+    if(qty>0){const sub=qty*parseInt(i.price)*days;total+=sub;html+=`<div class="q-line"><span>${i.name}</span><span class="q-line-calc">${qty}×₱${i.price}×${days}d</span><span class="q-line-amt">₱${sub.toLocaleString()}</span></div>`;}
   });
-  document.getElementById("q-lines").innerHTML = html||`<p style="font-size:12px;color:var(--muted);padding:6px 0">Select items above to see your estimate.</p>`;
-  document.getElementById("q-total").textContent = "₱"+total.toLocaleString();
+  document.getElementById("q-lines").innerHTML=html||`<p style="font-size:12px;color:var(--muted);padding:6px 0">Select items above to see your estimate.</p>`;
+  document.getElementById("q-total").textContent="₱"+total.toLocaleString();
 }
 
-async function quoteToBooking() {
-  if (!inventoryItems.length) { pub('booking'); return; }
-  const days = Math.max(1, parseInt(document.getElementById("q-days")?.value)||1);
-  const itemsList = inventoryItems.map(item=>{ const qty=parseInt(document.getElementById("qq-"+item.name.replace(/\s/g,'_'))?.value)||0; return qty>0?`${qty}x ${item.name}`:null; }).filter(Boolean).join(", ");
-  const total = inventoryItems.reduce((sum,item)=>{ const qty=parseInt(document.getElementById("qq-"+item.name.replace(/\s/g,'_'))?.value)||0; return sum+qty*parseInt(item.price)*days; },0);
-  if (itemsList) await api({ action:"submitQuotation", name:"Website Visitor", phone:"-", items:itemsList, days, total });
+async function quoteToBooking(){
+  if(!inventoryItems.length){pub('booking');return;}
+  const days=Math.max(1,parseInt(document.getElementById("q-days")?.value)||1);
+  const itemsList=inventoryItems.map(i=>{const qty=parseInt(document.getElementById("qq-"+i.name.replace(/\s/g,'_'))?.value)||0;return qty>0?`${qty}x ${i.name}`:null;}).filter(Boolean).join(", ");
+  const total=inventoryItems.reduce((s,i)=>{const qty=parseInt(document.getElementById("qq-"+i.name.replace(/\s/g,'_'))?.value)||0;return s+qty*parseInt(i.price)*days;},0);
+  if(itemsList)await api({action:"submitQuotation",name:"Website Visitor",phone:"-",items:itemsList,days,total});
   pub('booking');
 }
 
-async function doLogin() {
+/* ── ADMIN LOGIN ── */
+async function doLogin(){
   const username=document.getElementById("l-user").value.trim();
   const password=document.getElementById("l-pass").value;
-  if (!username||!password) { document.getElementById("l-err").style.display="block"; document.getElementById("l-err").textContent="Please enter username and password."; return; }
-  const btn=document.getElementById("btn-login");
-  btn.disabled=true; btn.textContent="Verifying...";
-  const res=await api({ action:"adminLogin", username, password });
-  btn.disabled=false; btn.textContent="Login to Dashboard";
-  if (res.success) {
+  if(!username||!password){document.getElementById("l-err").style.display="block";return;}
+  const btn=document.getElementById("btn-login");btn.disabled=true;btn.textContent="Verifying...";
+  const res=await api({action:"adminLogin",username,password});
+  btn.disabled=false;btn.textContent="Login to Dashboard";
+  if(res.success){
     adminRole=res.role||"Staff";
     document.getElementById("l-err").style.display="none";
     document.getElementById("login-area").style.display="none";
     document.getElementById("admin-area").style.display="block";
     document.getElementById("admin-role-badge").textContent=adminRole;
     loadAdminDashboard();
-  } else {
-    document.getElementById("l-err").style.display="block";
-    document.getElementById("l-err").textContent="Incorrect username or password.";
-  }
+  }else{document.getElementById("l-err").style.display="block";}
 }
 
-function doLogout() {
+function doLogout(){
   document.getElementById("admin-area").style.display="none";
   document.getElementById("public-area").style.display="block";
   document.getElementById("pub-nav").style.display="flex";
-  document.getElementById("l-user").value=""; document.getElementById("l-pass").value="";
-  adminRole=""; inventoryItems=[];
+  document.getElementById("l-user").value="";document.getElementById("l-pass").value="";
+  adminRole="";inventoryItems=[];
 }
 
-function aPanel(id, btn) {
+function aPanel(id,btn){
   document.querySelectorAll(".apanel").forEach(p=>p.classList.remove("active"));
   document.getElementById("apanel-"+id).classList.add("active");
   document.querySelectorAll(".sidebar-btn").forEach(b=>b.classList.remove("active"));
   btn.classList.add("active");
   const titles={dashboard:"Dashboard <em>Overview</em>",inventory:"Inventory <em>Management</em>",bookings:"Booking <em>Records</em>",quotations:"Quotation <em>Manager</em>",contracts:"Contract <em>Records</em>"};
   document.getElementById("a-page-title").innerHTML=titles[id];
-  if (id==="inventory") loadAdminInventory();
-  if (id==="bookings") loadAdminBookings();
-  if (id==="quotations") loadAdminQuotations();
-  if (id==="contracts") loadAdminContracts();
+  if(id==="inventory")loadAdminInventory();
+  if(id==="bookings")loadAdminBookings();
+  if(id==="quotations")loadAdminQuotations();
+  if(id==="contracts")loadAdminContracts();
 }
 
-function refreshAdminData() {
-  inventoryItems=[];
-  loadAdminDashboard();
-  const active=document.querySelector(".apanel.active")?.id?.replace("apanel-","");
-  if (active&&active!=="dashboard") aPanel(active, document.querySelector(".sidebar-btn.active"));
-  showToast("Data refreshed!","success");
-}
+function refreshAdminData(){inventoryItems=[];loadAdminDashboard();const active=document.querySelector(".apanel.active")?.id?.replace("apanel-","");if(active&&active!=="dashboard")aPanel(active,document.querySelector(".sidebar-btn.active"));showToast("Data refreshed!","success");}
 
-async function loadAdminDashboard() {
-  const [invRes,bkRes]=await Promise.all([api({action:"getInventory"}),api({action:"getBookings"})]);
-  const items=invRes.success?invRes.items:[];
-  const bookings=bkRes.success?bkRes.bookings:[];
+async function loadAdminDashboard(){
+  const[invRes,bkRes]=await Promise.all([api({action:"getInventory"}),api({action:"getBookings"})]);
+  const items=invRes.success?invRes.items:[];const bookings=bkRes.success?bkRes.bookings:[];
   const pending=bookings.filter(b=>b.status==="Pending").length;
   const revenue=bookings.filter(b=>b.status!=="Pending").reduce((s,b)=>s+(parseInt(b.total)||0),0);
   document.getElementById("dash-metrics").innerHTML=`
@@ -900,33 +887,119 @@ async function loadAdminDashboard() {
     ||`<tr><td colspan="6" style="color:var(--muted);text-align:center;padding:1rem">No bookings yet</td></tr>`;
 }
 
-async function loadAdminInventory() {
+/* ══ INVENTORY CRUD ══ */
+async function loadAdminInventory(){
   const grid=document.getElementById("admin-inv-grid");
   grid.innerHTML=`<div class="loading"><div class="spinner"></div> Loading...</div>`;
-  inventoryItems=[];
-  await loadInventory();
-  if (!inventoryItems.length) { grid.innerHTML=`<p style="color:var(--muted)">No inventory data found.</p>`; return; }
+  inventoryItems=[];await loadInventory();
+  if(!inventoryItems.length){grid.innerHTML=`<p style="color:var(--muted)">No inventory found.</p>`;return;}
   grid.innerHTML=inventoryItems.map(item=>`
     <div class="inv-admin-card">
-      <div class="inv-admin-img">${item.emoji||"📦"}</div>
-      <div class="inv-admin-name">${item.name}</div>
-      <div class="inv-admin-price">₱${item.price} / day</div>
-      <div class="inv-admin-row"><span>Total stock</span><span>${item.total}</span></div>
-      <div class="inv-admin-row"><span>Available</span><span style="color:var(--green);font-weight:600">${item.available}</span></div>
-      <div class="inv-admin-row"><span>Rented out</span><span style="color:var(--gold);font-weight:600">${item.rented}</span></div>
-      <div class="inv-admin-row"><span>Category</span><span>${item.category}</span></div>
+      <div class="inv-admin-photo">
+        ${itemImg(item,120)}
+        <div class="photo-overlay" onclick="openItemModal(${JSON.stringify(item).replace(/"/g,'&quot;')})"><span>✏️ Edit</span></div>
+      </div>
+      <div class="inv-admin-body">
+        <div class="inv-admin-name">${item.name}</div>
+        <div class="inv-admin-price">₱${item.price} / day</div>
+        <div class="inv-admin-row"><span>Total stock</span><span>${item.total}</span></div>
+        <div class="inv-admin-row"><span>Available</span><span style="color:var(--green);font-weight:600">${item.available}</span></div>
+        <div class="inv-admin-row"><span>Rented out</span><span style="color:var(--gold);font-weight:600">${item.rented}</span></div>
+        <div class="inv-admin-row"><span>Category</span><span>${item.category}</span></div>
+      </div>
       <div class="inv-admin-actions">
-        <button class="btn-sm btn-edit" onclick="showToast('Edit in Google Sheets','error')">Edit</button>
-        <button class="btn-sm btn-del" onclick="showToast('Remove in Google Sheets','error')">Remove</button>
+        <button class="btn-sm btn-edit" onclick="openItemModal(${JSON.stringify(item).replace(/"/g,'&quot;')})">✏️ Edit</button>
+        <button class="btn-sm btn-del" onclick="openDelModal('${item.name}')">🗑️ Delete</button>
       </div>
     </div>`).join("");
 }
 
-async function loadAdminBookings() {
+/* ── ADD / EDIT MODAL ── */
+function openItemModal(item){
+  editingItem=item;currentImageUrl=item?item.imageUrl||"":"";
+  document.getElementById("item-modal-title-text").innerHTML=item?`Edit <em>Item</em>`:`Add <em>New Item</em>`;
+  document.getElementById("f-name").value=item?item.name:"";
+  document.getElementById("f-emoji").value=item?item.emoji:"";
+  document.getElementById("f-price").value=item?item.price:"";
+  document.getElementById("f-total").value=item?item.total:"";
+  document.getElementById("f-avail").value=item?item.available:"";
+  document.getElementById("f-cat").value=item?item.category:"Chairs";
+  document.getElementById("f-imgurl").value=item?item.imageUrl||"":"";
+  updateImgPreview(currentImageUrl);
+  document.getElementById("item-modal-overlay").classList.add("open");
+}
+function closeItemModal(){document.getElementById("item-modal-overlay").classList.remove("open");editingItem=null;currentImageUrl="";}
+
+function handleFileUpload(input){
+  const file=input.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{currentImageUrl=e.target.result;updateImgPreview(currentImageUrl);document.getElementById("f-imgurl").value="(uploaded from device)";};
+  reader.readAsDataURL(file);
+}
+
+function handleUrlInput(url){
+  currentImageUrl=url;
+  if(url.trim())updateImgPreview(url);
+}
+
+function updateImgPreview(url){
+  const area=document.getElementById("img-upload-area");
+  const preview=document.getElementById("img-preview");
+  const placeholder=document.getElementById("img-placeholder");
+  if(url&&url.trim()&&!url.includes("uploaded from")){
+    let displayUrl=url;
+    const m=url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+    if(m)displayUrl=`https://drive.google.com/thumbnail?id=${m[1]}&sz=w400`;
+    preview.src=displayUrl;preview.style.display="block";
+    placeholder.style.display="none";area.classList.add("has-img");
+  }else if(url&&url.includes("data:")){
+    preview.src=url;preview.style.display="block";
+    placeholder.style.display="none";area.classList.add("has-img");
+  }else{
+    preview.style.display="none";placeholder.style.display="block";area.classList.remove("has-img");
+  }
+}
+
+async function saveItem(){
+  const name=document.getElementById("f-name").value.trim();
+  const emoji=document.getElementById("f-emoji").value.trim();
+  const price=document.getElementById("f-price").value;
+  const total=document.getElementById("f-total").value;
+  const available=document.getElementById("f-avail").value;
+  const category=document.getElementById("f-cat").value;
+  const imgUrlField=document.getElementById("f-imgurl").value.trim();
+  const imageUrl=currentImageUrl.startsWith("data:")?currentImageUrl:(imgUrlField==="(uploaded from device)"?"":imgUrlField||currentImageUrl);
+  if(!name||!price||!total){showToast("Please fill in name, price, and stock.","error");return;}
+  const btn=document.getElementById("btn-save-item");btn.disabled=true;btn.textContent="Saving...";
+  const payload=editingItem
+    ?{action:"editItem",originalName:editingItem.name,name,emoji,price:parseInt(price),total:parseInt(total),available:parseInt(available),rented:parseInt(total)-parseInt(available),category,imageUrl}
+    :{action:"addItem",name,emoji,price:parseInt(price),total:parseInt(total),category,imageUrl};
+  const res=await api(payload);
+  btn.disabled=false;btn.textContent="💾 Save Item";
+  if(res.success){
+    showToast(editingItem?"Item updated!":"Item added!","success");
+    closeItemModal();inventoryItems=[];loadAdminInventory();
+  }else showToast("Save failed. Please try again.","error");
+}
+
+/* ── DELETE MODAL ── */
+function openDelModal(name){deleteTarget=name;document.getElementById("del-item-name").textContent=name;document.getElementById("del-modal-overlay").classList.add("open");}
+function closeDelModal(){document.getElementById("del-modal-overlay").classList.remove("open");deleteTarget=null;}
+async function confirmDelete(){
+  if(!deleteTarget)return;
+  const btn=document.getElementById("btn-confirm-del");btn.disabled=true;btn.textContent="Deleting...";
+  const res=await api({action:"deleteItem",name:deleteTarget});
+  btn.disabled=false;btn.textContent="Yes, Delete";
+  if(res.success){showToast("Item deleted!","success");closeDelModal();inventoryItems=[];loadAdminInventory();}
+  else showToast("Delete failed.","error");
+}
+
+/* ── BOOKINGS ── */
+async function loadAdminBookings(){
   const tbody=document.getElementById("admin-bookings-tbody");
-  tbody.innerHTML=`<tr><td colspan="9" class="loading"><div class="spinner"></div> Loading...</td></tr>`;
+  tbody.innerHTML=`<tr><td colspan="9" class="loading"><div class="spinner"></div></td></tr>`;
   const res=await api({action:"getBookings"});
-  if (!res.success||!res.bookings.length) { tbody.innerHTML=`<tr><td colspan="9" style="color:var(--muted);text-align:center;padding:1rem">No bookings yet</td></tr>`; return; }
+  if(!res.success||!res.bookings.length){tbody.innerHTML=`<tr><td colspan="9" style="color:var(--muted);text-align:center;padding:1rem">No bookings yet</td></tr>`;return;}
   tbody.innerHTML=res.bookings.reverse().map(b=>`
     <tr>
       <td>${b.id}</td><td>${b.name}</td><td>${b.phone}</td><td>${b.location}</td>
@@ -940,18 +1013,18 @@ async function loadAdminBookings() {
     </tr>`).join("");
 }
 
-async function updateStatus(sheet,id,col,status) {
+async function updateStatus(sheet,id,col,status){
   showToast("Updating...","");
   const res=await api({action:"updateStatus",sheetName:sheet,id,statusCol:col,status});
-  if (res.success) { showToast(`Updated to "${status}"!`,"success"); loadAdminBookings(); }
+  if(res.success){showToast(`Updated to "${status}"!`,"success");loadAdminBookings();}
   else showToast("Update failed.","error");
 }
 
-async function loadAdminQuotations() {
+async function loadAdminQuotations(){
   const tbody=document.getElementById("admin-quotations-tbody");
-  tbody.innerHTML=`<tr><td colspan="7" class="loading"><div class="spinner"></div> Loading...</td></tr>`;
+  tbody.innerHTML=`<tr><td colspan="7" class="loading"><div class="spinner"></div></td></tr>`;
   const res=await api({action:"getQuotations"});
-  if (!res.success||!res.quotations?.length) { tbody.innerHTML=`<tr><td colspan="7" style="color:var(--muted);text-align:center;padding:1rem">No quotations yet</td></tr>`; return; }
+  if(!res.success||!res.quotations?.length){tbody.innerHTML=`<tr><td colspan="7" style="color:var(--muted);text-align:center;padding:1rem">No quotations yet</td></tr>`;return;}
   tbody.innerHTML=res.quotations.reverse().map(q=>`
     <tr><td>${q.ref}</td><td>${q.name}</td><td>${q.phone}</td>
     <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${q.items}</td>
@@ -959,11 +1032,11 @@ async function loadAdminQuotations() {
     <td>${q.date}</td></tr>`).join("");
 }
 
-async function loadAdminContracts() {
+async function loadAdminContracts(){
   const tbody=document.getElementById("admin-contracts-tbody");
-  tbody.innerHTML=`<tr><td colspan="7" class="loading"><div class="spinner"></div> Loading...</td></tr>`;
+  tbody.innerHTML=`<tr><td colspan="7" class="loading"><div class="spinner"></div></td></tr>`;
   const res=await api({action:"getContracts"});
-  if (!res.success||!res.contracts?.length) { tbody.innerHTML=`<tr><td colspan="7" style="color:var(--muted);text-align:center;padding:1rem">No contracts yet</td></tr>`; return; }
+  if(!res.success||!res.contracts?.length){tbody.innerHTML=`<tr><td colspan="7" style="color:var(--muted);text-align:center;padding:1rem">No contracts yet</td></tr>`;return;}
   tbody.innerHTML=res.contracts.reverse().map(c=>`
     <tr><td>${c.contractNo}</td><td>${c.name}</td><td>${c.phone}</td>
     <td>${c.eventDate}</td><td>${c.returnDate}</td>
@@ -971,17 +1044,8 @@ async function loadAdminContracts() {
     <td><span class="status status-${(c.status||'').toLowerCase().replace(/\s/g,'-')}">${c.status}</span></td></tr>`).join("");
 }
 
-function showToast(msg,type) {
-  const t=document.getElementById("toast");
-  t.textContent=msg; t.className="toast show "+(type||"");
-  setTimeout(()=>t.classList.remove("show"),3500);
-}
-function openMod(icon,title,msg) {
-  document.getElementById("m-icon").textContent=icon;
-  document.getElementById("m-title").textContent=title;
-  document.getElementById("m-msg").textContent=msg;
-  document.getElementById("modal").classList.add("open");
-}
+function showToast(msg,type){const t=document.getElementById("toast");t.textContent=msg;t.className="toast show "+(type||"");setTimeout(()=>t.classList.remove("show"),3500);}
+function openMod(icon,title,msg){document.getElementById("m-icon").textContent=icon;document.getElementById("m-title").textContent=title;document.getElementById("m-msg").textContent=msg;document.getElementById("modal").classList.add("open");}
 function closeMod(){document.getElementById("modal").classList.remove("open");}
 </script>
 </body>
