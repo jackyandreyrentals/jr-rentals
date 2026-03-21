@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jacky & Rey Rentals — Metro Cebu</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --dark:#1a1a1a;--dark2:#242424;--dark3:#2e2e2e;--dark4:#383838;
+  --gold:#e8a020;--gold2:#f5c060;--gold-dim:rgba(232,160,32,0.15);
+  --white:#fff;--muted:#a0a0a0;--border:rgba(255,255,255,0.1);
+  --green:#6fcf97;--green-bg:rgba(45,110,78,0.2);
+  --red:#f87171;--red-bg:rgba(248,113,113,0.15);
+  --blue:#60a5fa;--blue-bg:rgba(96,165,250,0.15);
+}
+body{font-family:'Inter',sans-serif;background:var(--dark);color:#fff;font-size:14px;}
+.page{display:none;}.page.active{display:block;}
+
+/* NAV */
+nav{background:#111;border-bottom:1px solid var(--border);padding:0 1.25rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.nav-brand{display:flex;align-items:center;gap:10px;}
+.nav-logo{width:40px;height:40px;border-radius:50%;background:#fff;border:2px solid var(--gold);overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.nav-logo img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.nav-logo-fallback{font-family:'Bebas Neue',sans-serif;font-size:13px;color:#111;}
+.nav-name{font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:.04em;color:#fff;line-height:1.1;}
+.nav-name em{color:var(--gold);font-style:normal;}
+.nav-sub{font-size:9px;color:var(--muted);letter-spacing:.09em;}
+.nav-links{display:flex;gap:2px;align-items:center;flex-wrap:wrap;}
+.nav-links button{background:none;border:none;color:var(--muted);font-family:'Inter',sans-serif;font-size:12px;padding:6px 10px;cursor:pointer;border-radius:6px;transition:all .15s;}
+.nav-links button:hover,.nav-links button.active{background:var(--gold-dim);color:var(--gold);}
+.btn-admin-nav{background:var(--gold-dim)!important;color:var(--gold)!important;border:1px solid rgba(232,160,32,0.3)!important;margin-left:6px!important;}
+
+/* HERO */
+.hero{background:#111;border-bottom:1px solid var(--border);padding:2.5rem 1.5rem 2rem;text-align:center;}
+.hero-ring{width:90px;height:90px;border-radius:50%;background:#fff;margin:0 auto 1.25rem;padding:3px;border:3px solid var(--gold);overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.hero-ring img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.hero-ring-fallback{font-family:'Bebas Neue',sans-serif;font-size:26px;color:#111;}
+.hero h1{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;letter-spacing:.05em;color:#fff;line-height:1.1;margin-bottom:.5rem;}
+.hero h1 em{color:var(--gold);font-style:normal;}
+.hero-tagline{font-style:italic;color:var(--muted);font-size:13px;margin-bottom:1.5rem;}
+.hero-tags{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:1.75rem;}
+.hero-tag{background:var(--gold-dim);border:1px solid rgba(232,160,32,0.3);color:var(--gold);font-size:11px;padding:4px 14px;border-radius:20px;}
+.hero-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.btn-gold{background:var(--gold);color:#111;border:none;font-family:'Inter',sans-serif;font-weight:600;font-size:13px;padding:10px 22px;border-radius:7px;cursor:pointer;transition:all .15s;}
+.btn-gold:hover{background:var(--gold2);}
+.btn-outline{background:none;color:#fff;border:1px solid rgba(255,255,255,0.25);font-family:'Inter',sans-serif;font-weight:500;font-size:13px;padding:10px 22px;border-radius:7px;cursor:pointer;transition:all .15s;}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold);}
+
+/* CONTACT BAR */
+.contact-bar{background:var(--dark2);border-bottom:1px solid var(--border);display:flex;flex-wrap:wrap;}
+.contact-item{flex:1;min-width:140px;padding:.85rem 1rem;border-right:1px solid var(--border);display:flex;align-items:center;gap:8px;}
+.contact-item:last-child{border-right:none;}
+.c-icon{font-size:13px;color:var(--gold);}
+.c-label{font-size:10px;color:var(--muted);margin-bottom:2px;}
+.c-val{font-size:12px;color:#fff;font-weight:500;}
+
+/* STATS */
+.stats-row{display:flex;background:var(--dark2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.stat{flex:1;text-align:center;padding:1rem .5rem;border-right:1px solid var(--border);}
+.stat:last-child{border-right:none;}
+.stat-n{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--gold);}
+.stat-l{font-size:10px;color:var(--muted);margin-top:1px;}
+
+/* SECTION */
+.section{padding:1.75rem 1.25rem;}
+.sec-title{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:.06em;color:#fff;}
+.sec-title em{color:var(--gold);font-style:normal;}
+.sec-sub{font-size:12px;color:var(--muted);margin-top:2px;margin-bottom:1.25rem;}
+
+/* SERVICE GRID */
+.service-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:10px;}
+.svc-card{background:var(--dark2);border:1px solid var(--border);border-radius:12px;padding:1.25rem 1rem;text-align:center;cursor:pointer;transition:all .15s;}
+.svc-card:hover{border-color:var(--gold);}
+.svc-icon{font-size:2rem;margin-bottom:.6rem;}
+.svc-name{font-size:13px;font-weight:600;margin-bottom:3px;}
+.svc-desc{font-size:11px;color:var(--muted);}
+
+/* INVENTORY */
+.inv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;}
+.inv-card{background:var(--dark2);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border .15s;}
+.inv-card:hover{border-color:var(--gold);}
+.inv-img{height:88px;background:var(--dark3);display:flex;align-items:center;justify-content:center;font-size:2.4rem;border-bottom:1px solid var(--border);}
+.inv-body{padding:10px 12px;}
+.inv-name{font-size:13px;font-weight:600;margin-bottom:3px;}
+.inv-price{color:var(--gold);font-size:12px;font-weight:500;margin-bottom:6px;}
+.badge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:20px;}
+.badge-green{background:var(--green-bg);color:var(--green);}
+.badge-amber{background:var(--gold-dim);color:var(--gold);}
+.badge-red{background:var(--red-bg);color:var(--red);}
+.btn-book{width:100%;margin-top:8px;background:var(--gold);color:#111;border:none;font-family:'Inter',sans-serif;font-size:12px;font-weight:600;padding:7px;border-radius:6px;cursor:pointer;}
+
+/* BOOKING FORM */
+.form-card{background:var(--dark2);border:1px solid var(--border);border-radius:14px;padding:1.5rem;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;}
+.form-full{grid-column:1/-1;}
+.fg{display:flex;flex-direction:column;gap:5px;}
+.fg label{font-size:10px;font-weight:600;color:var(--muted);letter-spacing:.08em;}
+.fg input,.fg select,.fg textarea{background:var(--dark3);border:1px solid var(--border);border-radius:7px;padding:9px 11px;font-family:'Inter',sans-serif;font-size:13px;color:#fff;outline:none;transition:border .15s;}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--gold);}
+.fg select option{background:var(--dark3);}
+.fg textarea{resize:vertical;min-height:70px;}
+.item-list{display:flex;flex-direction:column;gap:7px;margin-top:4px;}
+.item-row{display:flex;align-items:center;justify-content:space-between;background:var(--dark3);border:1px solid var(--border);border-radius:8px;padding:8px 11px;}
+.ir-name{font-size:12px;font-weight:500;}
+.ir-rate{font-size:11px;color:var(--muted);}
+.qty-ctrl{display:flex;align-items:center;gap:7px;}
+.qty-btn{width:24px;height:24px;border-radius:50%;border:1px solid var(--border);background:var(--dark2);cursor:pointer;font-size:14px;color:var(--gold);display:flex;align-items:center;justify-content:center;}
+.qty-n{font-size:13px;font-weight:500;min-width:18px;text-align:center;}
+.btn-submit{width:100%;margin-top:1.25rem;background:var(--gold);color:#111;border:none;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;padding:12px;border-radius:8px;cursor:pointer;transition:all .15s;}
+.btn-submit:hover{background:var(--gold2);}
+.btn-submit:disabled{background:var(--dark4);color:var(--muted);cursor:not-allowed;}
+
+/* QUOTE */
+.q-controls{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.q-ctrl{background:var(--dark2);border:1px solid var(--border);border-radius:10px;padding:11px;}
+.q-ctrl label{font-size:10px;font-weight:600;color:var(--muted);letter-spacing:.07em;display:block;margin-bottom:6px;}
+.q-ctrl input{width:100%;background:var(--dark3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;font-family:'Inter',sans-serif;font-size:13px;color:#fff;outline:none;}
+.q-ctrl input:focus{border-color:var(--gold);}
+.q-summary{background:var(--dark2);border:1px solid var(--border);border-radius:14px;padding:1.25rem;margin-top:13px;}
+.q-head{display:flex;align-items:center;justify-content:space-between;padding-bottom:10px;border-bottom:1px solid var(--border);margin-bottom:10px;}
+.q-head h3{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.06em;}
+.q-head p{font-size:10px;color:var(--muted);margin-top:1px;}
+.q-ref{font-size:10px;background:var(--gold-dim);color:var(--gold);padding:3px 10px;border-radius:20px;}
+.q-line{display:flex;justify-content:space-between;align-items:center;padding:5px 0;font-size:12px;}
+.q-line-calc{color:var(--muted);font-size:11px;}
+.q-line-amt{font-weight:600;color:var(--gold);}
+.q-div{border:none;border-top:1px dashed var(--border);margin:8px 0;}
+.q-total{display:flex;justify-content:space-between;align-items:center;}
+.q-total-lbl{font-size:13px;font-weight:600;}
+.q-total-amt{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--gold);letter-spacing:.04em;}
+.q-note{font-size:11px;color:var(--muted);margin-top:10px;line-height:1.6;}
+.btn-proceed{width:100%;margin-top:12px;background:var(--gold);color:#111;border:none;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;padding:11px;border-radius:8px;cursor:pointer;}
+
+/* CONTRACT */
+.contract{background:var(--dark2);border:1px solid var(--border);border-radius:14px;padding:1.5rem;}
+.ct-head{text-align:center;border-bottom:1px solid var(--gold);padding-bottom:1rem;margin-bottom:1.25rem;}
+.ct-logo{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:.06em;}
+.ct-logo em{color:var(--gold);font-style:normal;}
+.ct-sub{font-size:11px;color:var(--muted);margin-top:2px;}
+.ct-ref{font-size:10px;color:var(--muted);margin-top:6px;}
+.ct-section{margin-bottom:1.25rem;}
+.ct-sec-title{font-size:10px;font-weight:600;letter-spacing:.1em;color:var(--gold);border-bottom:1px solid rgba(232,160,32,0.2);padding-bottom:4px;margin-bottom:9px;}
+.ct-row{display:flex;justify-content:space-between;font-size:12px;padding:4px 0;}
+.ct-row span:first-child{color:var(--muted);}
+.ct-row span:last-child{font-weight:500;}
+.ct-terms{font-size:11px;color:var(--muted);line-height:1.7;}
+.ct-terms li{margin-bottom:4px;}
+.sig-area{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:1.5rem;border-top:1px solid var(--border);padding-top:1.25rem;}
+.sig-line{border-top:1px solid rgba(255,255,255,0.3);margin-top:2.5rem;padding-top:6px;}
+.sig-lbl{font-size:10px;color:var(--muted);}
+.sig-name{font-size:12px;font-weight:500;margin-top:2px;}
+
+/* ADMIN LOGIN */
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem;background:var(--dark);}
+.login-card{background:var(--dark2);border:1px solid var(--border);border-radius:18px;padding:2.5rem 2rem;width:100%;max-width:380px;}
+.login-logo-ring{width:70px;height:70px;border-radius:50%;background:#fff;border:3px solid var(--gold);margin:0 auto 1rem;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.login-logo-ring img{width:100%;height:100%;object-fit:cover;}
+.login-logo-fallback{font-family:'Bebas Neue',sans-serif;font-size:22px;color:#111;}
+.login-title{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:.06em;text-align:center;}
+.login-title em{color:var(--gold);font-style:normal;}
+.login-sub{font-size:11px;color:var(--muted);text-align:center;margin-top:4px;margin-bottom:2rem;}
+.login-fg{display:flex;flex-direction:column;gap:5px;margin-bottom:14px;}
+.login-fg label{font-size:10px;font-weight:600;color:var(--muted);letter-spacing:.08em;}
+.login-fg input{background:var(--dark3);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-family:'Inter',sans-serif;font-size:13px;color:#fff;outline:none;transition:border .15s;width:100%;}
+.login-fg input:focus{border-color:var(--gold);}
+.login-err{font-size:12px;color:var(--red);margin-bottom:10px;display:none;text-align:center;}
+.btn-login{width:100%;background:var(--gold);color:#111;border:none;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;padding:12px;border-radius:8px;cursor:pointer;margin-top:6px;}
+.btn-login:hover{background:var(--gold2);}
+.btn-login:disabled{background:var(--dark4);color:var(--muted);cursor:not-allowed;}
+.login-hint{font-size:11px;color:var(--muted);text-align:center;margin-top:1rem;}
+
+/* ADMIN SHELL */
+.admin-shell{display:flex;height:100vh;overflow:hidden;}
+.admin-sidebar{width:210px;flex-shrink:0;background:#111;border-right:1px solid var(--border);display:flex;flex-direction:column;}
+.sidebar-head{padding:1.25rem;border-bottom:1px solid var(--border);}
+.sidebar-logo{display:flex;align-items:center;gap:9px;}
+.sidebar-logo-ring{width:36px;height:36px;border-radius:50%;background:#fff;border:2px solid var(--gold);overflow:hidden;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.sidebar-logo-ring img{width:100%;height:100%;object-fit:cover;}
+.sidebar-logo-fallback{font-family:'Bebas Neue',sans-serif;font-size:12px;color:#111;}
+.sidebar-logo-name{font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:.04em;line-height:1.1;}
+.sidebar-logo-name em{color:var(--gold);font-style:normal;}
+.sidebar-logo-sub{font-size:9px;color:var(--muted);}
+.sidebar-nav{flex:1;padding:.75rem 0;overflow-y:auto;}
+.sidebar-label{font-size:9px;font-weight:600;letter-spacing:.1em;color:var(--muted);padding:.5rem 1rem .25rem;}
+.sidebar-btn{display:flex;align-items:center;gap:9px;width:100%;background:none;border:none;color:var(--muted);font-family:'Inter',sans-serif;font-size:12px;padding:9px 1rem;cursor:pointer;transition:all .15s;text-align:left;}
+.sidebar-btn:hover{background:var(--dark2);color:#fff;}
+.sidebar-btn.active{background:var(--gold-dim);color:var(--gold);border-right:2px solid var(--gold);}
+.sidebar-icon{font-size:14px;width:16px;text-align:center;}
+.sidebar-footer{padding:1rem;border-top:1px solid var(--border);}
+.btn-logout{width:100%;background:var(--red-bg);color:var(--red);border:1px solid rgba(248,113,113,0.2);font-family:'Inter',sans-serif;font-size:12px;font-weight:500;padding:8px;border-radius:7px;cursor:pointer;}
+.admin-main{flex:1;overflow-y:auto;background:var(--dark);}
+.admin-topbar{background:#111;border-bottom:1px solid var(--border);padding:.9rem 1.5rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;}
+.admin-page-title{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:.06em;}
+.admin-page-title em{color:var(--gold);font-style:normal;}
+.topbar-right{display:flex;align-items:center;gap:12px;}
+.admin-badge{font-size:11px;background:var(--gold-dim);color:var(--gold);padding:3px 10px;border-radius:20px;}
+.admin-content{padding:1.5rem;}
+.apanel{display:none;}.apanel.active{display:block;}
+
+/* ADMIN DASHBOARD */
+.dash-metrics{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-bottom:1.5rem;}
+.metric-card{background:var(--dark2);border:1px solid var(--border);border-radius:12px;padding:1rem;}
+.metric-icon{font-size:1.4rem;margin-bottom:.4rem;}
+.metric-val{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--gold);}
+.metric-lbl{font-size:11px;color:var(--muted);margin-top:2px;}
+
+/* TABLES */
+.tbl-wrap{background:var(--dark2);border:1px solid var(--border);border-radius:12px;overflow:auto;}
+.data-table{width:100%;border-collapse:collapse;font-size:12px;}
+.data-table th{text-align:left;font-size:10px;font-weight:600;letter-spacing:.08em;color:var(--muted);padding:10px 12px;border-bottom:1px solid var(--border);white-space:nowrap;}
+.data-table td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,0.05);color:#fff;vertical-align:middle;}
+.data-table tr:last-child td{border-bottom:none;}
+.data-table tr:hover td{background:rgba(255,255,255,0.02);}
+
+/* ADMIN INVENTORY */
+.inv-admin-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;}
+.inv-admin-card{background:var(--dark2);border:1px solid var(--border);border-radius:12px;padding:14px;}
+.inv-admin-img{font-size:2rem;margin-bottom:.5rem;}
+.inv-admin-name{font-size:13px;font-weight:600;margin-bottom:4px;}
+.inv-admin-price{color:var(--gold);font-size:12px;margin-bottom:8px;}
+.inv-admin-row{display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px;}
+.inv-admin-row span:first-child{color:var(--muted);}
+.inv-admin-actions{display:flex;gap:6px;margin-top:10px;}
+.btn-sm{flex:1;border:none;font-family:'Inter',sans-serif;font-size:11px;font-weight:600;padding:6px;border-radius:6px;cursor:pointer;}
+.btn-edit{background:var(--blue-bg);color:var(--blue);}
+.btn-confirm{background:var(--green-bg);color:var(--green);}
+.btn-del{background:var(--red-bg);color:var(--red);}
+.btn-add{background:var(--gold);color:#111;border:none;font-family:'Inter',sans-serif;font-size:12px;font-weight:600;padding:8px 18px;border-radius:7px;cursor:pointer;margin-bottom:1rem;}
+
+/* STATUS BADGES */
+.status{font-size:10px;padding:3px 9px;border-radius:20px;font-weight:500;white-space:nowrap;}
+.status-pending{background:var(--gold-dim);color:var(--gold);}
+.status-confirmed{background:var(--green-bg);color:var(--green);}
+.status-completed{background:var(--blue-bg);color:var(--blue);}
+.status-signed{background:var(--green-bg);color:var(--green);}
+.status-awaiting{background:var(--gold-dim);color:var(--gold);}
+
+/* LOADING */
+.loading{display:flex;align-items:center;justify-content:center;padding:2rem;color:var(--muted);gap:8px;font-size:13px;}
+.spinner{width:16px;height:16px;border:2px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* TOAST */
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--dark2);border:1px solid var(--border);border-radius:10px;padding:12px 18px;font-size:13px;z-index:9999;transform:translateY(80px);opacity:0;transition:all .3s;max-width:320px;}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast.success{border-color:var(--green);color:var(--green);}
+.toast.error{border-color:var(--red);color:var(--red);}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);z-index:999;align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal-box{background:var(--dark2);border:1px solid var(--border);border-radius:16px;padding:2rem;max-width:360px;width:90%;text-align:center;}
+.modal-icon{font-size:2.5rem;margin-bottom:.75rem;}
+.modal-box h3{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:.05em;margin-bottom:.5rem;}
+.modal-box p{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:1.25rem;}
+.modal-close{background:var(--gold);color:#111;border:none;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;padding:9px 26px;border-radius:7px;cursor:pointer;}
+
+@media(max-width:600px){
+  .form-grid{grid-template-columns:1fr;}
+  .form-full{grid-column:1;}
+  .q-controls{grid-template-columns:1fr;}
+  .admin-sidebar{display:none;}
+  nav{flex-wrap:wrap;height:auto;padding:.5rem;}
+  .nav-links{gap:2px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ PUBLIC NAV ══ -->
+<nav id="pub-nav">
+  <div class="nav-brand">
+    <div class="nav-logo">
+      <img src="logoo_1.png" alt="J&R Logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <span class="nav-logo-fallback" style="display:none;">J&R</span>
+    </div>
+    <div>
+      <div class="nav-name">J<em>&</em>R <span style="color:#fff">Rentals</span></div>
+      <div class="nav-sub">METRO CEBU · TABLES · CHAIRS · CAMPING</div>
+    </div>
+  </div>
+  <div class="nav-links">
+    <button class="active" onclick="pub('home')">Home</button>
+    <button onclick="pub('inventory')">Inventory</button>
+    <button onclick="pub('booking')">Book</button>
+    <button onclick="pub('quotation')">Quote</button>
+    <button onclick="pub('contract')">Contract</button>
+    <button class="btn-admin-nav" onclick="showLogin()">⚙ Admin</button>
+  </div>
+</nav>
+
+<!-- ══ PUBLIC AREA ══ -->
+<div id="public-area">
+
+  <!-- HOME -->
+  <div class="page active" id="page-home">
+    <div class="hero">
+      <div class="hero-ring">
+        <img src="logoo_1.png" alt="J&R Logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <span class="hero-ring-fallback" style="display:none;">J&R</span>
+      </div>
+      <h1>Jacky <em>&</em> Rey<br>Rentals</h1>
+      <div class="hero-tagline">"From Gatherings to Camping — We've got the Essentials"</div>
+      <div class="hero-tags">
+        <span class="hero-tag">Tables</span>
+        <span class="hero-tag">Chairs</span>
+        <span class="hero-tag">Camping Sets</span>
+      </div>
+      <div class="hero-btns">
+        <button class="btn-gold" onclick="pub('booking')">Book Now</button>
+        <button class="btn-outline" onclick="pub('quotation')">Get a Quote</button>
+        <button class="btn-outline" onclick="pub('inventory')">View Items</button>
+      </div>
+    </div>
+    <div class="contact-bar">
+      <div class="contact-item"><span class="c-icon">✉</span><div><div class="c-label">EMAIL</div><div class="c-val">jackyandreyrentals@gmail.com</div></div></div>
+      <div class="contact-item"><span class="c-icon">☎</span><div><div class="c-label">PHONE</div><div class="c-val">09912094757 · 09500167754</div></div></div>
+      <div class="contact-item"><span class="c-icon">⊙</span><div><div class="c-label">LOCATION</div><div class="c-val">Metro Cebu</div></div></div>
+    </div>
+    <div class="stats-row">
+      <div class="stat"><div class="stat-n">200+</div><div class="stat-l">Chairs</div></div>
+      <div class="stat"><div class="stat-n">50+</div><div class="stat-l">Tables</div></div>
+      <div class="stat"><div class="stat-n">10+</div><div class="stat-l">Camping sets</div></div>
+      <div class="stat"><div class="stat-n">5★</div><div class="stat-l">Rated</div></div>
+    </div>
+    <div class="section">
+      <div class="sec-title">What We <em>Offer</em></div>
+      <div class="sec-sub">Affordable rentals for every occasion in Metro Cebu</div>
+      <div class="service-grid">
+        <div class="svc-card" onclick="pub('inventory')"><div class="svc-icon">🪑</div><div class="svc-name">Chairs</div><div class="svc-desc">Monoblock, foldable & more</div></div>
+        <div class="svc-card" onclick="pub('inventory')"><div class="svc-icon">🍽️</div><div class="svc-name">Tables</div><div class="svc-desc">Round, rectangular & banquet</div></div>
+        <div class="svc-card" onclick="pub('inventory')"><div class="svc-icon">⛺</div><div class="svc-name">Camping Sets</div><div class="svc-desc">Tents, lights & essentials</div></div>
+        <div class="svc-card" onclick="pub('quotation')"><div class="svc-icon">📋</div><div class="svc-name">Free Quotation</div><div class="svc-desc">Instant price estimate</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INVENTORY -->
+  <div class="page" id="page-inventory">
+    <div class="section">
+      <div class="sec-title">Our <em>Inventory</em></div>
+      <div class="sec-sub">All items available for rent — prices per day per piece</div>
+      <div class="inv-grid" id="pub-inv-grid">
+        <div class="loading"><div class="spinner"></div> Loading inventory...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOOKING -->
+  <div class="page" id="page-booking">
+    <div class="section">
+      <div class="sec-title">Book a <em>Rental</em></div>
+      <div class="sec-sub">Fill in details and we'll confirm your booking within 24 hours</div>
+      <div class="form-card">
+        <div class="form-grid">
+          <div class="fg"><label>FULL NAME</label><input type="text" id="b-name" placeholder="Juan dela Cruz"></div>
+          <div class="fg"><label>CONTACT NUMBER</label><input type="text" id="b-phone" placeholder="09XX XXX XXXX"></div>
+          <div class="fg"><label>EVENT DATE</label><input type="date" id="b-date"></div>
+          <div class="fg"><label>RETURN DATE</label><input type="date" id="b-return"></div>
+          <div class="fg form-full"><label>EVENT LOCATION</label><input type="text" id="b-location" placeholder="Barangay, City, Metro Cebu"></div>
+          <div class="fg form-full">
+            <label>ITEMS TO RENT</label>
+            <div class="item-list" id="booking-items">
+              <div class="loading"><div class="spinner"></div> Loading items...</div>
+            </div>
+          </div>
+          <div class="fg form-full"><label>NOTES / SPECIAL REQUESTS</label><textarea id="b-notes" placeholder="Delivery address, event type, setup needs..."></textarea></div>
+        </div>
+        <button class="btn-submit" id="btn-book-submit" onclick="submitBooking()">Submit Booking Request</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUOTATION -->
+  <div class="page" id="page-quotation">
+    <div class="section">
+      <div class="sec-title">Get a <em>Quotation</em></div>
+      <div class="sec-sub">Adjust quantities and days — total updates instantly</div>
+      <div class="q-controls" id="q-controls">
+        <div class="q-ctrl" style="grid-column:1/-1"><label>NUMBER OF DAYS</label><input type="number" min="1" value="1" id="q-days" oninput="calcQ()"></div>
+        <div class="loading" style="grid-column:1/-1"><div class="spinner"></div> Loading items...</div>
+      </div>
+      <div class="q-summary">
+        <div class="q-head"><div><h3>Quotation Summary</h3><p>Jacky & Rey Rentals · Metro Cebu</p></div><div class="q-ref">QT-LIVE</div></div>
+        <div id="q-lines"><p style="font-size:12px;color:var(--muted);padding:6px 0">Select items above to see your estimate.</p></div>
+        <hr class="q-div">
+        <div class="q-total"><span class="q-total-lbl">Estimated Total</span><span class="q-total-amt" id="q-total">₱0</span></div>
+        <p class="q-note">* Prices are per day. Delivery fee may apply. Final amount confirmed upon booking.</p>
+      </div>
+      <button class="btn-proceed" onclick="quoteToBooking()">Proceed to Booking ↗</button>
+    </div>
+  </div>
+
+  <!-- CONTRACT -->
+  <div class="page" id="page-contract">
+    <div class="section">
+      <div class="sec-title">Rental <em>Contract</em></div>
+      <div class="sec-sub">A contract is generated for every confirmed booking</div>
+      <div class="contract">
+        <div class="ct-head">
+          <div class="ct-logo">Jacky <em>&</em> Rey Rentals</div>
+          <div class="ct-sub">Metro Cebu · jackyandreyrentals@gmail.com · 09912094757 / 09500167754</div>
+          <div class="ct-ref">Contract No. JRR-SAMPLE · Sample Preview</div>
+        </div>
+        <div class="ct-section"><div class="ct-sec-title">RENTER INFORMATION</div>
+          <div class="ct-row"><span>Full Name</span><span>Your Name Here</span></div>
+          <div class="ct-row"><span>Contact</span><span>Your Number Here</span></div>
+          <div class="ct-row"><span>Location</span><span>Your Event Location</span></div>
+        </div>
+        <div class="ct-section"><div class="ct-sec-title">RENTAL DETAILS</div>
+          <div class="ct-row"><span>Event Date</span><span>To be confirmed</span></div>
+          <div class="ct-row"><span>Return Date</span><span>To be confirmed</span></div>
+          <div class="ct-row"><span>Items</span><span>Based on booking</span></div>
+          <div class="ct-row" style="border-top:1px dashed var(--border);padding-top:8px;margin-top:4px"><span style="font-weight:600">Total Amount</span><span style="font-weight:600;color:var(--gold)">To be confirmed</span></div>
+        </div>
+        <div class="ct-section"><div class="ct-sec-title">TERMS & CONDITIONS</div>
+          <div class="ct-terms"><ol>
+            <li>A 50% deposit is required to confirm the booking.</li>
+            <li>Items must be returned in the same condition. Damage or loss will be charged accordingly.</li>
+            <li>Cancellations less than 48 hours before the event are non-refundable.</li>
+            <li>The renter is responsible for all items from pick-up until return.</li>
+            <li>Delivery and pick-up fees apply based on location within Metro Cebu.</li>
+            <li>J&R Rentals reserves the right to repossess items if terms are violated.</li>
+          </ol></div>
+        </div>
+        <div class="sig-area">
+          <div><div class="sig-line"><div class="sig-lbl">Renter's Signature over Printed Name</div></div></div>
+          <div><div class="sig-line"><div class="sig-lbl">Authorized Representative</div><div class="sig-name">Jacky & Rey Rentals</div></div></div>
+        </div>
+      </div>
+      <button class="btn-proceed" style="margin-top:12px" onclick="pub('booking')">Book Now to Get Your Contract ↗</button>
+    </div>
+  </div>
+
+</div><!-- /public-area -->
+
+<!-- ══ ADMIN LOGIN ══ -->
+<div id="login-area" style="display:none;">
+  <div class="login-wrap">
+    <div class="login-card">
+      <div style="text-align:center;margin-bottom:1.5rem;">
+        <div class="login-logo-ring">
+          <img src="logoo_1.png" alt="J&R Logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+          <span class="login-logo-fallback" style="display:none;">J&R</span>
+        </div>
+        <div class="login-title">Admin <em>Portal</em></div>
+        <div class="login-sub">Jacky & Rey Rentals · Staff Only</div>
+      </div>
+      <div class="login-fg"><label>USERNAME</label><input type="text" id="l-user" placeholder="Enter username"></div>
+      <div class="login-fg"><label>PASSWORD</label><input type="password" id="l-pass" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()"></div>
+      <div class="login-err" id="l-err">Incorrect username or password. Try again.</div>
+      <button class="btn-login" id="btn-login" onclick="doLogin()">Login to Dashboard</button>
+      <div style="text-align:center;margin-top:1rem;">
+        <button style="background:none;border:none;color:var(--muted);font-size:12px;cursor:pointer;" onclick="backToPublic()">← Back to website</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ADMIN DASHBOARD ══ -->
+<div id="admin-area" style="display:none;">
+  <div class="admin-shell">
+    <div class="admin-sidebar">
+      <div class="sidebar-head">
+        <div class="sidebar-logo">
+          <div class="sidebar-logo-ring">
+            <img src="logoo_1.png" alt="J&R" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+            <span class="sidebar-logo-fallback" style="display:none;">J&R</span>
+          </div>
+          <div><div class="sidebar-logo-name">J<em>&</em>R Admin</div><div class="sidebar-logo-sub">Staff Dashboard</div></div>
+        </div>
+      </div>
+      <div class="sidebar-nav">
+        <div class="sidebar-label">OVERVIEW</div>
+        <button class="sidebar-btn active" onclick="aPanel('dashboard',this)"><span class="sidebar-icon">📊</span> Dashboard</button>
+        <div class="sidebar-label">MANAGE</div>
+        <button class="sidebar-btn" onclick="aPanel('inventory',this)"><span class="sidebar-icon">📦</span> Inventory</button>
+        <button class="sidebar-btn" onclick="aPanel('bookings',this)"><span class="sidebar-icon">📅</span> Bookings</button>
+        <button class="sidebar-btn" onclick="aPanel('quotations',this)"><span class="sidebar-icon">💰</span> Quotations</button>
+        <button class="sidebar-btn" onclick="aPanel('contracts',this)"><span class="sidebar-icon">📄</span> Contracts</button>
+      </div>
+      <div class="sidebar-footer">
+        <button class="btn-logout" onclick="doLogout()">⬡ Logout</button>
+      </div>
+    </div>
+
+    <div class="admin-main">
+      <div class="admin-topbar">
+        <div class="admin-page-title" id="a-page-title">Dashboard <em>Overview</em></div>
+        <div class="topbar-right">
+          <span class="admin-badge" id="admin-role-badge">Admin</span>
+          <button style="background:none;border:1px solid var(--border);color:var(--muted);font-size:11px;padding:5px 10px;border-radius:6px;cursor:pointer;" onclick="refreshAdminData()">↻ Refresh</button>
+        </div>
+      </div>
+      <div class="admin-content">
+
+        <!-- DASHBOARD -->
+        <div class="apanel active" id="apanel-dashboard">
+          <div class="dash-metrics" id="dash-metrics">
+            <div class="loading"><div class="spinner"></div> Loading...</div>
+          </div>
+          <div class="sec-title" style="margin-bottom:.75rem;">Recent <em>Bookings</em></div>
+          <div class="tbl-wrap">
+            <table class="data-table">
+              <thead><tr><th>ID</th><th>Client</th><th>Items</th><th>Date</th><th>Amount</th><th>Status</th></tr></thead>
+              <tbody id="dash-bookings"><tr><td colspan="6" class="loading"><div class="spinner"></div> Loading...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- INVENTORY -->
+        <div class="apanel" id="apanel-inventory">
+          <button class="btn-add" onclick="showToast('Add item form coming soon! Update directly in Google Sheets for now.','error')">+ Add New Item</button>
+          <div class="inv-admin-grid" id="admin-inv-grid">
+            <div class="loading"><div class="spinner"></div> Loading inventory...</div>
+          </div>
+        </div>
+
+        <!-- BOOKINGS -->
+        <div class="apanel" id="apanel-bookings">
+          <div class="tbl-wrap">
+            <table class="data-table">
+              <thead><tr><th>ID</th><th>Client</th><th>Contact</th><th>Location</th><th>Event Date</th><th>Items</th><th>Total</th><th>Status</th><th>Action</th></tr></thead>
+              <tbody id="admin-bookings-tbody"><tr><td colspan="9" class="loading"><div class="spinner"></div> Loading...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- QUOTATIONS -->
+        <div class="apanel" id="apanel-quotations">
+          <div class="tbl-wrap">
+            <table class="data-table">
+              <thead><tr><th>Ref</th><th>Client</th><th>Contact</th><th>Items</th><th>Days</th><th>Est. Total</th><th>Date</th></tr></thead>
+              <tbody id="admin-quotations-tbody"><tr><td colspan="7" class="loading"><div class="spinner"></div> Loading...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- CONTRACTS -->
+        <div class="apanel" id="apanel-contracts">
+          <div class="tbl-wrap">
+            <table class="data-table">
+              <thead><tr><th>Contract No.</th><th>Client</th><th>Contact</th><th>Event Date</th><th>Return Date</th><th>Total</th><th>Status</th></tr></thead>
+              <tbody id="admin-contracts-tbody"><tr><td colspan="7" class="loading"><div class="spinner"></div> Loading...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal-box">
+    <div class="modal-icon" id="m-icon">✅</div>
+    <h3 id="m-title">Done!</h3>
+    <p id="m-msg"></p>
+    <button class="modal-close" onclick="closeMod()">Close</button>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════
+// CONFIG — Google Apps Script API URL
+// ══════════════════════════════════════════════════════
+const API = "https://script.google.com/macros/s/AKfycbyxhstT4vDPqdVTrqcOPBCJL7JDIgzateELyfMqCrDnfnBKzaL3vtdR4982_iMrnUV4yA/exec";
+
+// ══════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════
+let inventoryItems = [];
+let bookingQty = {};
+let quoteQty = {};
+let adminRole = "";
+let quoteRef = 1;
+
+// ══════════════════════════════════════════════════════
+// API HELPER
+// ══════════════════════════════════════════════════════
+async function api(data) {
+  try {
+    const res = await fetch(API, {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: { "Content-Type": "text/plain" }
+    });
+    return await res.json();
+  } catch (e) {
+    return { success: false, error: e.message };
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════════════════
+function pub(id) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.getElementById("page-" + id).classList.add("active");
+  const pages = ["home","inventory","booking","quotation","contract"];
+  document.querySelectorAll(".nav-links button:not(.btn-admin-nav)").forEach((b,i) => {
+    b.classList.remove("active");
+    if (pages[i] === id) b.classList.add("active");
+  });
+  window.scrollTo(0, 0);
+  if (id === "inventory") loadPublicInventory();
+  if (id === "booking") loadBookingItems();
+  if (id === "quotation") loadQuoteItems();
+}
+
+function showLogin() {
+  document.getElementById("public-area").style.display = "none";
+  document.getElementById("pub-nav").style.display = "none";
+  document.getElementById("login-area").style.display = "block";
+}
+
+function backToPublic() {
+  document.getElementById("public-area").style.display = "block";
+  document.getElementById("pub-nav").style.display = "flex";
+  document.getElementById("login-area").style.display = "none";
+}
+
+// ══════════════════════════════════════════════════════
+// LOAD INVENTORY (shared)
+// ══════════════════════════════════════════════════════
+async function loadInventory() {
+  if (inventoryItems.length > 0) return inventoryItems;
+  const res = await api({ action: "getInventory" });
+  if (res.success) {
+    inventoryItems = res.items;
+    inventoryItems.forEach(item => {
+      bookingQty[item.name] = 0;
+      quoteQty[item.name] = 0;
+    });
+  }
+  return inventoryItems;
+}
+
+// ══════════════════════════════════════════════════════
+// PUBLIC INVENTORY PAGE
+// ══════════════════════════════════════════════════════
+async function loadPublicInventory() {
+  const grid = document.getElementById("pub-inv-grid");
+  grid.innerHTML = `<div class="loading"><div class="spinner"></div> Loading inventory...</div>`;
+  const items = await loadInventory();
+  if (!items.length) { grid.innerHTML = `<p style="color:var(--muted);font-size:13px">No items found.</p>`; return; }
+  grid.innerHTML = items.map(item => {
+    const avail = parseInt(item.available) || 0;
+    const badgeClass = avail > 20 ? "badge-green" : avail > 0 ? "badge-amber" : "badge-red";
+    const availText = avail > 0 ? `${avail} available` : "Out of stock";
+    return `<div class="inv-card">
+      <div class="inv-img">${item.emoji || "📦"}</div>
+      <div class="inv-body">
+        <div class="inv-name">${item.name}</div>
+        <div class="inv-price">₱${item.price} / day</div>
+        <span class="badge ${badgeClass}">${availText}</span>
+        <button class="btn-book" onclick="pub('booking')" ${avail === 0 ? "disabled style='background:var(--dark4);color:var(--muted)'" : ""}>
+          ${avail > 0 ? "Book this" : "Unavailable"}
+        </button>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+// ══════════════════════════════════════════════════════
+// BOOKING ITEMS
+// ══════════════════════════════════════════════════════
+async function loadBookingItems() {
+  const container = document.getElementById("booking-items");
+  container.innerHTML = `<div class="loading"><div class="spinner"></div> Loading items...</div>`;
+  const items = await loadInventory();
+  if (!items.length) { container.innerHTML = `<p style="color:var(--muted)">No items found.</p>`; return; }
+  container.innerHTML = items.map(item => `
+    <div class="item-row">
+      <div>
+        <div class="ir-name">${item.emoji || ""} ${item.name}</div>
+        <div class="ir-rate">₱${item.price}/day · ${item.available} available</div>
+      </div>
+      <div class="qty-ctrl">
+        <button class="qty-btn" onclick="chgBooking('${item.name}',-1)">−</button>
+        <span class="qty-n" id="bqty-${item.name.replace(/\s/g,'_')}">0</span>
+        <button class="qty-btn" onclick="chgBooking('${item.name}',1,${item.available})">+</button>
+      </div>
+    </div>`).join("");
+}
+
+function chgBooking(name, delta, max) {
+  const key = name.replace(/\s/g,'_');
+  bookingQty[name] = Math.max(0, Math.min((bookingQty[name] || 0) + delta, max || 9999));
+  document.getElementById("bqty-" + key).textContent = bookingQty[name];
+}
+
+// ══════════════════════════════════════════════════════
+// SUBMIT BOOKING
+// ══════════════════════════════════════════════════════
+async function submitBooking() {
+  const name = document.getElementById("b-name").value.trim();
+  const phone = document.getElementById("b-phone").value.trim();
+  const date = document.getElementById("b-date").value;
+  const returnDate = document.getElementById("b-return").value;
+  const location = document.getElementById("b-location").value.trim();
+  const notes = document.getElementById("b-notes").value.trim();
+
+  if (!name || !phone || !date) {
+    showToast("Please fill in your name, contact, and event date.", "error"); return;
+  }
+
+  const itemsList = Object.entries(bookingQty)
+    .filter(([k, v]) => v > 0)
+    .map(([k, v]) => `${v}x ${k}`).join(", ");
+
+  if (!itemsList) { showToast("Please select at least one item.", "error"); return; }
+
+  const total = Object.entries(bookingQty).reduce((sum, [k, v]) => {
+    const item = inventoryItems.find(i => i.name === k);
+    return sum + (v * (item ? parseInt(item.price) : 0));
+  }, 0);
+
+  const btn = document.getElementById("btn-book-submit");
+  btn.disabled = true; btn.textContent = "Submitting...";
+
+  const res = await api({ action: "submitBooking", name, phone, location, eventDate: date, returnDate, items: itemsList, total, notes });
+
+  btn.disabled = false; btn.textContent = "Submit Booking Request";
+
+  if (res.success) {
+    openMod("✅", "Booking Submitted!", `Your booking (${res.bookingId}) has been received! We will contact you at ${phone} within 24 hours to confirm. Thank you for choosing Jacky & Rey Rentals!`);
+    Object.keys(bookingQty).forEach(k => { bookingQty[k] = 0; });
+    loadBookingItems();
+    inventoryItems = [];
+  } else {
+    showToast("Submission failed. Please try again or contact us directly.", "error");
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// QUOTATION
+// ══════════════════════════════════════════════════════
+async function loadQuoteItems() {
+  const container = document.getElementById("q-controls");
+  const daysCtrl = container.querySelector('[id="q-days"]') ? container.innerHTML.split('</div>')[0] + '</div>' : '';
+  container.innerHTML = `<div class="q-ctrl" style="grid-column:1/-1"><label>NUMBER OF DAYS</label><input type="number" min="1" value="1" id="q-days" oninput="calcQ()"></div><div class="loading" style="grid-column:1/-1"><div class="spinner"></div> Loading items...</div>`;
+  const items = await loadInventory();
+  const daysDiv = `<div class="q-ctrl" style="grid-column:1/-1"><label>NUMBER OF DAYS</label><input type="number" min="1" value="1" id="q-days" oninput="calcQ()"></div>`;
+  container.innerHTML = daysDiv + items.map(item => `
+    <div class="q-ctrl">
+      <label>${item.emoji || ""} ${item.name.toUpperCase()}</label>
+      <input type="number" min="0" value="0" id="qq-${item.name.replace(/\s/g,'_')}" oninput="calcQ()">
+    </div>`).join("");
+  calcQ();
+}
+
+function calcQ() {
+  if (!inventoryItems.length) return;
+  const days = Math.max(1, parseInt(document.getElementById("q-days")?.value) || 1);
+  let total = 0, html = "";
+  inventoryItems.forEach(item => {
+    const el = document.getElementById("qq-" + item.name.replace(/\s/g,'_'));
+    const qty = parseInt(el?.value) || 0;
+    if (qty > 0) {
+      const sub = qty * parseInt(item.price) * days;
+      total += sub;
+      html += `<div class="q-line"><span>${item.name}</span><span class="q-line-calc">${qty}×₱${item.price}×${days}d</span><span class="q-line-amt">₱${sub.toLocaleString()}</span></div>`;
+    }
+  });
+  document.getElementById("q-lines").innerHTML = html || `<p style="font-size:12px;color:var(--muted);padding:6px 0">Select items above to see your estimate.</p>`;
+  document.getElementById("q-total").textContent = "₱" + total.toLocaleString();
+}
+
+async function quoteToBooking() {
+  if (!inventoryItems.length) { pub('booking'); return; }
+  const days = Math.max(1, parseInt(document.getElementById("q-days")?.value) || 1);
+  const itemsList = inventoryItems.map(item => {
+    const qty = parseInt(document.getElementById("qq-" + item.name.replace(/\s/g,'_'))?.value) || 0;
+    return qty > 0 ? `${qty}x ${item.name}` : null;
+  }).filter(Boolean).join(", ");
+  const total = inventoryItems.reduce((sum, item) => {
+    const qty = parseInt(document.getElementById("qq-" + item.name.replace(/\s/g,'_'))?.value) || 0;
+    return sum + qty * parseInt(item.price) * days;
+  }, 0);
+  if (itemsList) {
+    await api({ action: "submitQuotation", name: "Website Visitor", phone: "-", items: itemsList, days, total });
+  }
+  pub('booking');
+}
+
+// ══════════════════════════════════════════════════════
+// ADMIN LOGIN
+// ══════════════════════════════════════════════════════
+async function doLogin() {
+  const username = document.getElementById("l-user").value.trim();
+  const password = document.getElementById("l-pass").value;
+  if (!username || !password) { document.getElementById("l-err").style.display = "block"; document.getElementById("l-err").textContent = "Please enter username and password."; return; }
+  const btn = document.getElementById("btn-login");
+  btn.disabled = true; btn.textContent = "Verifying...";
+  const res = await api({ action: "adminLogin", username, password });
+  btn.disabled = false; btn.textContent = "Login to Dashboard";
+  if (res.success) {
+    adminRole = res.role || "Staff";
+    document.getElementById("l-err").style.display = "none";
+    document.getElementById("login-area").style.display = "none";
+    document.getElementById("admin-area").style.display = "block";
+    document.getElementById("admin-role-badge").textContent = adminRole;
+    loadAdminDashboard();
+  } else {
+    document.getElementById("l-err").style.display = "block";
+    document.getElementById("l-err").textContent = "Incorrect username or password.";
+  }
+}
+
+function doLogout() {
+  document.getElementById("admin-area").style.display = "none";
+  document.getElementById("public-area").style.display = "block";
+  document.getElementById("pub-nav").style.display = "flex";
+  document.getElementById("l-user").value = "";
+  document.getElementById("l-pass").value = "";
+  adminRole = "";
+  inventoryItems = [];
+}
+
+// ══════════════════════════════════════════════════════
+// ADMIN PANELS
+// ══════════════════════════════════════════════════════
+function aPanel(id, btn) {
+  document.querySelectorAll(".apanel").forEach(p => p.classList.remove("active"));
+  document.getElementById("apanel-" + id).classList.add("active");
+  document.querySelectorAll(".sidebar-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  const titles = { dashboard:"Dashboard <em>Overview</em>", inventory:"Inventory <em>Management</em>", bookings:"Booking <em>Records</em>", quotations:"Quotation <em>Manager</em>", contracts:"Contract <em>Records</em>" };
+  document.getElementById("a-page-title").innerHTML = titles[id];
+  if (id === "inventory") loadAdminInventory();
+  if (id === "bookings") loadAdminBookings();
+  if (id === "quotations") loadAdminQuotations();
+  if (id === "contracts") loadAdminContracts();
+}
+
+function refreshAdminData() {
+  inventoryItems = [];
+  loadAdminDashboard();
+  const active = document.querySelector(".apanel.active")?.id?.replace("apanel-","");
+  if (active && active !== "dashboard") aPanel(active, document.querySelector(".sidebar-btn.active"));
+  showToast("Data refreshed!", "success");
+}
+
+// ── DASHBOARD ──
+async function loadAdminDashboard() {
+  const [invRes, bkRes] = await Promise.all([
+    api({ action: "getInventory" }),
+    api({ action: "getBookings" })
+  ]);
+  const items = invRes.success ? invRes.items : [];
+  const bookings = bkRes.success ? bkRes.bookings : [];
+  const pending = bookings.filter(b => b.status === "Pending").length;
+  const revenue = bookings.filter(b => b.status !== "Pending").reduce((s, b) => s + (parseInt(b.total) || 0), 0);
+
+  document.getElementById("dash-metrics").innerHTML = `
+    <div class="metric-card"><div class="metric-icon">📅</div><div class="metric-val">${bookings.length}</div><div class="metric-lbl">Total Bookings</div></div>
+    <div class="metric-card"><div class="metric-icon">⏳</div><div class="metric-val">${pending}</div><div class="metric-lbl">Pending Approvals</div></div>
+    <div class="metric-card"><div class="metric-icon">📦</div><div class="metric-val">${items.length}</div><div class="metric-lbl">Item Types</div></div>
+    <div class="metric-card"><div class="metric-icon">💰</div><div class="metric-val">₱${revenue.toLocaleString()}</div><div class="metric-lbl">Confirmed Revenue</div></div>`;
+
+  document.getElementById("dash-bookings").innerHTML = bookings.slice(-5).reverse().map(b => `
+    <tr>
+      <td>${b.id}</td><td>${b.name}</td><td>${b.items}</td>
+      <td>${b.eventDate}</td><td style="color:var(--gold);font-weight:600">₱${parseInt(b.total||0).toLocaleString()}</td>
+      <td><span class="status status-${(b.status||'pending').toLowerCase().replace(' ','-')}">${b.status}</span></td>
+    </tr>`).join("") || `<tr><td colspan="6" style="color:var(--muted);text-align:center;padding:1rem">No bookings yet</td></tr>`;
+}
+
+// ── INVENTORY ──
+async function loadAdminInventory() {
+  const grid = document.getElementById("admin-inv-grid");
+  grid.innerHTML = `<div class="loading"><div class="spinner"></div> Loading...</div>`;
+  inventoryItems = [];
+  const res = await loadInventory();
+  if (!inventoryItems.length) { grid.innerHTML = `<p style="color:var(--muted)">No inventory data found.</p>`; return; }
+  grid.innerHTML = inventoryItems.map(item => {
+    const avail = parseInt(item.available) || 0;
+    const rented = parseInt(item.rented) || 0;
+    return `<div class="inv-admin-card">
+      <div class="inv-admin-img">${item.emoji || "📦"}</div>
+      <div class="inv-admin-name">${item.name}</div>
+      <div class="inv-admin-price">₱${item.price} / day</div>
+      <div class="inv-admin-row"><span>Total stock</span><span>${item.total}</span></div>
+      <div class="inv-admin-row"><span>Available</span><span style="color:var(--green);font-weight:600">${avail}</span></div>
+      <div class="inv-admin-row"><span>Rented out</span><span style="color:var(--gold);font-weight:600">${rented}</span></div>
+      <div class="inv-admin-row"><span>Category</span><span>${item.category}</span></div>
+      <div class="inv-admin-actions">
+        <button class="btn-sm btn-edit" onclick="showToast('Edit ${item.name} directly in Google Sheets','error')">Edit</button>
+        <button class="btn-sm btn-del" onclick="showToast('Remove item directly in Google Sheets','error')">Remove</button>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+// ── BOOKINGS ──
+async function loadAdminBookings() {
+  const tbody = document.getElementById("admin-bookings-tbody");
+  tbody.innerHTML = `<tr><td colspan="9" class="loading"><div class="spinner"></div> Loading...</td></tr>`;
+  const res = await api({ action: "getBookings" });
+  if (!res.success || !res.bookings.length) { tbody.innerHTML = `<tr><td colspan="9" style="color:var(--muted);text-align:center;padding:1rem">No bookings yet</td></tr>`; return; }
+  tbody.innerHTML = res.bookings.reverse().map(b => `
+    <tr>
+      <td>${b.id}</td><td>${b.name}</td><td>${b.phone}</td><td>${b.location}</td>
+      <td>${b.eventDate}</td><td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${b.items}</td>
+      <td style="color:var(--gold);font-weight:600">₱${parseInt(b.total||0).toLocaleString()}</td>
+      <td><span class="status status-${(b.status||'pending').toLowerCase().replace(/\s/g,'-')}">${b.status}</span></td>
+      <td>
+        <button class="btn-sm btn-confirm" style="padding:4px 8px" onclick="updateStatus('Bookings',${JSON.stringify(b.id)},9,'Confirmed')">✓</button>
+        <button class="btn-sm btn-edit" style="padding:4px 8px;margin:0 3px" onclick="updateStatus('Bookings',${JSON.stringify(b.id)},9,'Completed')">Done</button>
+      </td>
+    </tr>`).join("");
+}
+
+async function updateStatus(sheet, id, col, status) {
+  showToast("Updating status...", "");
+  const res = await api({ action: "updateStatus", sheetName: sheet, id, statusCol: col, status });
+  if (res.success) { showToast(`Updated to "${status}"!`, "success"); loadAdminBookings(); }
+  else showToast("Update failed.", "error");
+}
+
+// ── QUOTATIONS ──
+async function loadAdminQuotations() {
+  const tbody = document.getElementById("admin-quotations-tbody");
+  tbody.innerHTML = `<tr><td colspan="7" class="loading"><div class="spinner"></div> Loading...</td></tr>`;
+  const res = await api({ action: "getQuotations" });
+  if (!res.success || !res.quotations?.length) { tbody.innerHTML = `<tr><td colspan="7" style="color:var(--muted);text-align:center;padding:1rem">No quotations yet</td></tr>`; return; }
+  tbody.innerHTML = res.quotations.reverse().map(q => `
+    <tr>
+      <td>${q.ref}</td><td>${q.name}</td><td>${q.phone}</td>
+      <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${q.items}</td>
+      <td>${q.days}</td><td style="color:var(--gold);font-weight:600">₱${parseInt(q.total||0).toLocaleString()}</td>
+      <td>${q.date}</td>
+    </tr>`).join("");
+}
+
+// ── CONTRACTS ──
+async function loadAdminContracts() {
+  const tbody = document.getElementById("admin-contracts-tbody");
+  tbody.innerHTML = `<tr><td colspan="7" class="loading"><div class="spinner"></div> Loading...</td></tr>`;
+  const res = await api({ action: "getContracts" });
+  if (!res.success || !res.contracts?.length) { tbody.innerHTML = `<tr><td colspan="7" style="color:var(--muted);text-align:center;padding:1rem">No contracts yet</td></tr>`; return; }
+  tbody.innerHTML = res.contracts.reverse().map(c => `
+    <tr>
+      <td>${c.contractNo}</td><td>${c.name}</td><td>${c.phone}</td>
+      <td>${c.eventDate}</td><td>${c.returnDate}</td>
+      <td style="color:var(--gold);font-weight:600">₱${parseInt(c.total||0).toLocaleString()}</td>
+      <td><span class="status status-${(c.status||'').toLowerCase().replace(/\s/g,'-')}">${c.status}</span></td>
+    </tr>`).join("");
+}
+
+// ══════════════════════════════════════════════════════
+// UI HELPERS
+// ══════════════════════════════════════════════════════
+function showToast(msg, type) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.className = "toast show " + (type || "");
+  setTimeout(() => t.classList.remove("show"), 3500);
+}
+
+function openMod(icon, title, msg) {
+  document.getElementById("m-icon").textContent = icon;
+  document.getElementById("m-title").textContent = title;
+  document.getElementById("m-msg").textContent = msg;
+  document.getElementById("modal").classList.add("open");
+}
+
+function closeMod() { document.getElementById("modal").classList.remove("open"); }
+</script>
+</body>
+</html>
