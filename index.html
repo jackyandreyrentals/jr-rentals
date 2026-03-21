@@ -297,6 +297,10 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
 .status-signed{background:var(--green-bg);color:var(--green);}
 .status-awaiting,.status-awaiting-signature{background:var(--gold-dim);color:var(--gold);}
 .status-cancelled{background:var(--red-bg);color:var(--red);}
+.status-paid{background:rgba(192,132,252,0.15);color:#c084fc;}
+.status-out{background:rgba(251,146,60,0.15);color:#fb923c;}
+.status-out-rented{background:rgba(251,146,60,0.15);color:#fb923c;}
+.status-returned{background:var(--green-bg);color:var(--green);}
 
 /* LOADING + TOAST + MODAL */
 .loading{display:flex;align-items:center;justify-content:center;padding:2rem;color:var(--muted);gap:8px;font-size:13px;}
@@ -493,11 +497,12 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
         <div class="form-grid">
           <div class="fg"><label>FULL NAME</label><input type="text" id="b-name" placeholder="Juan dela Cruz" autocomplete="name"></div>
           <div class="fg"><label>CONTACT NUMBER</label><input type="tel" id="b-phone" placeholder="09XX XXX XXXX"></div>
-          <div class="fg"><label>EVENT DATE</label><input type="date" id="b-date"></div>
-          <div class="fg"><label>RETURN DATE</label><input type="date" id="b-return"></div>
+          <div class="fg"><label>EVENT DATE</label><input type="date" id="b-date" onchange="checkDateAvailability()"></div>
+          <div class="fg"><label>RETURN DATE</label><input type="date" id="b-return" onchange="checkDateAvailability()"></div>
           <div class="fg form-full"><label>EVENT LOCATION</label><input type="text" id="b-location" placeholder="Barangay, City, Metro Cebu"></div>
           <div class="fg form-full">
             <div class="extras-label" id="extras-label">ITEMS TO RENT</div>
+            <div id="avail-notice" style="font-size:11px;color:var(--muted);margin-bottom:6px;min-height:16px;transition:color .3s"></div>
             <div class="item-list" id="booking-items"><div class="loading"><div class="spinner"></div> Loading...</div></div>
           </div>
           <div class="fg form-full"><label>NOTES / SPECIAL REQUESTS</label><textarea id="b-notes" placeholder="Delivery address, event type, setup needs..."></textarea></div>
@@ -910,20 +915,48 @@ function clearPackage(){
 }
 
 /* BOOKING */
-async function loadBookingItems(){
+async function loadBookingItems(availability){
   const c=document.getElementById("booking-items");
   c.innerHTML=`<div class="loading"><div class="spinner"></div> Loading...</div>`;
   const items=await loadInventory();
   if(!items.length){c.innerHTML=`<p style="color:var(--muted)">No items found.</p>`;return;}
-  c.innerHTML=items.map(item=>`
-    <div class="item-row">
-      <div><div class="ir-name">${item.emoji||""} ${item.name}</div><div class="ir-rate">₱${item.price}/day · ${item.available} available</div></div>
+  c.innerHTML=items.map(item=>{
+    const av = availability ? (availability[item.name]||{}) : {};
+    const avOnDate = availability ? (av.availableOnDate !== undefined ? av.availableOnDate : parseInt(item.available)||0) : parseInt(item.available)||0;
+    const booked = av.bookedOnDate||0;
+    let warn = "";
+    if(availability && booked>0){
+      if(avOnDate===0) warn=`<span style="color:var(--red);font-size:10px;margin-top:2px;display:block">⚠ Fully booked on this date</span>`;
+      else if(avOnDate<=10) warn=`<span style="color:var(--gold);font-size:10px;margin-top:2px;display:block">⚠ Only ${avOnDate} left on this date (${booked} reserved)</span>`;
+      else warn=`<span style="color:var(--muted);font-size:10px;margin-top:2px;display:block">${booked} reserved on this date · ${avOnDate} available</span>`;
+    }
+    return `<div class="item-row" ${avOnDate===0&&availability?'style="opacity:0.5"':''}>
+      <div>
+        <div class="ir-name">${item.emoji||""} ${item.name}</div>
+        <div class="ir-rate">₱${item.price}/day · ${availability?avOnDate:item.available} available</div>
+        ${warn}
+      </div>
       <div class="qty-ctrl">
         <button class="qty-btn" onclick="chgBooking('${item.name}',-1)">−</button>
         <span class="qty-n" id="bqty-${item.name.replace(/\s/g,'_')}">0</span>
-        <button class="qty-btn" onclick="chgBooking('${item.name}',1,${item.available})">+</button>
+        <button class="qty-btn" onclick="chgBooking('${item.name}',1,${avOnDate||parseInt(item.available)||0})">+</button>
       </div>
-    </div>`).join("");
+    </div>`;
+  }).join("");
+}
+
+async function checkDateAvailability(){
+  const date=document.getElementById("b-date").value;
+  const ret=document.getElementById("b-return").value;
+  if(!date)return;
+  const notice=document.getElementById("avail-notice");
+  if(notice){notice.textContent="Checking availability for this date...";notice.style.color="var(--muted)";}
+  const res=await api({action:"checkAvailability",eventDate:date,returnDate:ret||date});
+  if(res.success){
+    await loadBookingItems(res.availability);
+    if(notice){notice.textContent="✓ Availability updated for selected dates";notice.style.color="var(--green)";}
+    setTimeout(()=>{if(notice)notice.textContent="";},3000);
+  }
 }
 
 function chgBooking(name,delta,max){
@@ -1045,7 +1078,7 @@ async function loadAdminDashboard(){
   document.getElementById("dash-bookings").innerHTML=bookings.slice(-5).reverse().map(b=>`
     <tr><td>${b.id}</td><td>${b.name}</td><td>${b.items}</td><td>${b.eventDate}</td>
     <td style="color:var(--gold);font-weight:600">₱${parseInt(b.total||0).toLocaleString()}</td>
-    <td><span class="status status-${(b.status||'pending').toLowerCase().replace(' ','-')}">${b.status}</span></td></tr>`).join("")
+    <td><span class="status" style="${statusStyle(b.status)}">${b.status}</span></td></tr>`).join("")
     ||`<tr><td colspan="6" style="color:var(--muted);text-align:center;padding:1rem">No bookings yet</td></tr>`;
 }
 
@@ -1223,10 +1256,13 @@ async function loadAdminBookings(){
     <tr><td>${b.id}</td><td>${b.name}</td><td>${b.phone}</td><td>${b.location}</td>
     <td>${b.eventDate}</td><td style="max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${b.items}</td>
     <td style="color:var(--gold);font-weight:600">₱${parseInt(b.total||0).toLocaleString()}</td>
-    <td><span class="status status-${(b.status||'pending').toLowerCase().replace(/\s/g,'-')}">${b.status}</span></td>
+    <td><span class="status" style="${statusStyle(b.status)}">${b.status}</span></td>
     <td style="white-space:nowrap">
       <button class="btn-sm btn-confirm" style="padding:4px 8px" onclick="updateStatus('Bookings',${JSON.stringify(b.id)},9,'Confirmed')">✓ Confirm</button>
-        <button class="btn-sm btn-edit" style="padding:3px 7px;font-size:10px;display:block;width:100%;margin-bottom:2px" onclick="updateStatus(\'Bookings\',${JSON.stringify(b.id)},9,\'Completed\')">🏁 Done</button>
+        <button class="btn-sm btn-del" style="padding:3px 7px;font-size:10px;display:block;width:100%;margin-bottom:2px;background:rgba(192,132,252,0.15);color:#c084fc" onclick="updateStatus(\'Bookings\',${JSON.stringify(b.id)},9,\'Paid\')">💳 Paid</button>
+        <button class="btn-sm" style="padding:3px 7px;font-size:10px;display:block;width:100%;margin-bottom:2px;background:rgba(251,146,60,0.15);color:#fb923c;border:none;border-radius:6px;cursor:pointer;font-weight:600;font-family:Inter,sans-serif" onclick="updateStatus(\'Bookings\',${JSON.stringify(b.id)},9,\'Out / Rented\')">🚚 Out</button>
+        <button class="btn-sm btn-edit" style="padding:3px 7px;font-size:10px;display:block;width:100%;margin-bottom:2px" onclick="updateStatus(\'Bookings\',${JSON.stringify(b.id)},9,\'Returned\')">📦 Returned</button>
+        <button class="btn-sm btn-confirm" style="padding:3px 7px;font-size:10px;display:block;width:100%;margin-bottom:2px" onclick="updateStatus(\'Bookings\',${JSON.stringify(b.id)},9,\'Completed\')">🏁 Completed</button>
         <button class="btn-sm btn-del" style="padding:3px 7px;font-size:10px;display:block;width:100%" onclick="updateStatus(\'Bookings\',${JSON.stringify(b.id)},9,\'Cancelled\')">✕ Cancel</button>
     </td></tr>`).join("");
 }
@@ -1287,6 +1323,19 @@ function convertToBooking(q){
   },300);
 }
 
+function statusStyle(s){
+  const m={
+    'Pending':'background:rgba(232,160,32,0.15);color:#e8a020',
+    'Confirmed':'background:rgba(45,110,78,0.2);color:#6fcf97',
+    'Paid':'background:rgba(192,132,252,0.15);color:#c084fc',
+    'Out / Rented':'background:rgba(251,146,60,0.15);color:#fb923c',
+    'Returned':'background:rgba(45,110,78,0.2);color:#6fcf97',
+    'Completed':'background:rgba(96,165,250,0.15);color:#60a5fa',
+    'Cancelled':'background:rgba(248,113,113,0.15);color:#f87171'
+  };
+  const base='font-size:10px;padding:3px 9px;border-radius:20px;font-weight:500;white-space:nowrap;';
+  return base+(m[s]||'background:rgba(255,255,255,0.1);color:#a0a0a0');
+}
 function showToast(msg,type){const t=document.getElementById("toast");t.textContent=msg;t.className="toast show "+(type||"");setTimeout(()=>t.classList.remove("show"),3500);}
 function openMod(icon,title,msg){document.getElementById("m-icon").textContent=icon;document.getElementById("m-title").textContent=title;document.getElementById("m-msg").textContent=msg;document.getElementById("modal").classList.add("open");}
 function closeMod(){document.getElementById("modal").classList.remove("open");}
