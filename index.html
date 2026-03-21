@@ -396,6 +396,29 @@ canvas#sign-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
 
 /* price type toggle */
 .price-type-toggle{display:flex;gap:6px;margin-top:4px;}
+
+/* delivery toggle */
+.delivery-toggle{display:flex;gap:8px;margin-bottom:12px;}
+.del-btn{flex:1;background:var(--dark3);border:1px solid var(--border);color:var(--muted);font-family:'Inter',sans-serif;font-size:13px;font-weight:500;padding:10px;border-radius:8px;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:6px;}
+.del-btn.active{border-color:var(--gold);background:var(--gold-dim);color:var(--gold);}
+.del-btn.active-green{border-color:var(--green);background:var(--green-bg);color:var(--green);}
+.delivery-fields{display:none;background:var(--dark3);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:10px;}
+.delivery-fields.show{display:block;}
+.delivery-fee-row{display:flex;align-items:center;justify-content:space-between;margin-top:10px;padding:8px 10px;background:var(--dark2);border-radius:7px;border:1px solid var(--border);}
+.delivery-fee-label{font-size:12px;color:var(--muted);}
+.delivery-fee-val{font-size:13px;font-weight:600;color:var(--gold);}
+.delivery-note{font-size:10px;color:var(--muted);margin-top:6px;line-height:1.5;}
+.pkg-selector-wrap{background:var(--dark3);border:1px solid rgba(232,160,32,0.25);border-radius:10px;padding:12px;margin-bottom:14px;}
+.pkg-selector-label{font-size:10px;font-weight:600;color:var(--gold);letter-spacing:.08em;margin-bottom:7px;}
+.pkg-selector-select{width:100%;background:var(--dark2);border:1px solid var(--border);border-radius:7px;padding:9px 11px;font-family:'Inter',sans-serif;font-size:13px;color:#fff;outline:none;}
+.pkg-selector-select:focus{border-color:var(--gold);}
+.booking-total-bar{background:var(--dark3);border:1px solid rgba(232,160,32,0.3);border-radius:10px;padding:12px 14px;margin-top:14px;}
+.btb-row{display:flex;justify-content:space-between;font-size:12px;padding:3px 0;}
+.btb-row span:first-child{color:var(--muted);}
+.btb-row span:last-child{font-weight:500;}
+.btb-total{display:flex;justify-content:space-between;border-top:1px dashed var(--border);padding-top:8px;margin-top:6px;}
+.btb-total span:first-child{font-size:13px;font-weight:600;}
+.btb-total span:last-child{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:var(--gold);}
 .ptt-btn{flex:1;background:var(--dark3);border:1px solid var(--border);color:var(--muted);font-family:'Inter',sans-serif;font-size:12px;padding:7px;border-radius:7px;cursor:pointer;transition:all .15s;}
 .ptt-btn.active{background:var(--gold-dim);border-color:var(--gold);color:var(--gold);}
 
@@ -528,7 +551,16 @@ canvas#sign-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
       <div class="sec-title">Book a <em>Rental</em></div>
       <div class="sec-sub">Fill in details and we'll confirm within 24 hours</div>
       <div class="form-card">
-        <!-- package selected banner -->
+
+        <!-- PACKAGE SELECTOR (if coming directly to booking) -->
+        <div class="pkg-selector-wrap" id="pkg-selector-wrap">
+          <div class="pkg-selector-label">🎁 SELECT A PACKAGE (OPTIONAL)</div>
+          <select class="pkg-selector-select" id="pkg-selector" onchange="onPkgSelectorChange(this)">
+            <option value="">— No package, I'll choose individual items —</option>
+          </select>
+        </div>
+
+        <!-- PACKAGE SELECTED BANNER -->
         <div class="pkg-selected-banner" id="pkg-banner">
           <div>
             <div class="psb-left" id="pkg-banner-name">🎁 Package Selected</div>
@@ -536,19 +568,63 @@ canvas#sign-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
           </div>
           <button class="psb-clear" onclick="clearPackage()">✕ Clear</button>
         </div>
+
         <div class="form-grid">
           <div class="fg"><label>FULL NAME</label><input type="text" id="b-name" placeholder="Juan dela Cruz" autocomplete="name"></div>
           <div class="fg"><label>CONTACT NUMBER</label><input type="tel" id="b-phone" placeholder="09XX XXX XXXX"></div>
           <div class="fg"><label>EVENT DATE</label><input type="date" id="b-date" onchange="checkDateAvailability()"></div>
           <div class="fg"><label>RETURN DATE</label><input type="date" id="b-return" onchange="checkDateAvailability()"></div>
-          <div class="fg form-full"><label>EVENT LOCATION</label><input type="text" id="b-location" placeholder="Barangay, City, Metro Cebu"></div>
+          <div class="fg form-full"><label>EVENT LOCATION / ADDRESS</label><input type="text" id="b-location" placeholder="Barangay, City, Metro Cebu"></div>
+
+          <!-- DELIVERY OPTION -->
+          <div class="fg form-full">
+            <label>DELIVERY OR PICKUP?</label>
+            <div class="delivery-toggle" style="margin-top:6px">
+              <button class="del-btn active-green" id="del-pickup" onclick="setDelivery('pickup')">🏠 Self Pickup <span style="font-size:10px;opacity:.7">(Free)</span></button>
+              <button class="del-btn" id="del-delivery" onclick="setDelivery('delivery')">🚚 Delivery to my location</button>
+            </div>
+            <div class="delivery-fields" id="delivery-fields">
+              <div class="fg" style="margin-bottom:10px">
+                <label>FULL DELIVERY ADDRESS</label>
+                <input type="text" id="b-deliv-address" placeholder="House no., Street, Barangay, City">
+              </div>
+              <div class="fg">
+                <label>DELIVERY METHOD</label>
+                <select id="b-deliv-method">
+                  <option value="Lalamove">Lalamove (booked by us)</option>
+                  <option value="Taxi">Taxi / Grab</option>
+                  <option value="Our vehicle">Our own vehicle</option>
+                  <option value="TBD">To be arranged — contact me</option>
+                </select>
+              </div>
+              <div class="delivery-fee-row">
+                <div>
+                  <div class="delivery-fee-label">Delivery Fee</div>
+                  <div style="font-size:10px;color:var(--muted);margin-top:1px">Actual fee confirmed after booking</div>
+                </div>
+                <div class="delivery-fee-val">To be confirmed</div>
+              </div>
+              <div class="delivery-note">⚠ Delivery fee will be confirmed by J&R Rentals after booking based on your location and method. It will be added to your final total.</div>
+            </div>
+          </div>
+
+          <!-- ITEMS -->
           <div class="fg form-full">
             <div class="extras-label" id="extras-label">ITEMS TO RENT</div>
             <div id="avail-notice" style="font-size:11px;color:var(--muted);margin-bottom:6px;min-height:16px;transition:color .3s"></div>
             <div class="item-list" id="booking-items"><div class="loading"><div class="spinner"></div> Loading...</div></div>
           </div>
-          <div class="fg form-full"><label>NOTES / SPECIAL REQUESTS</label><textarea id="b-notes" placeholder="Delivery address, event type, setup needs..."></textarea></div>
+          <div class="fg form-full"><label>NOTES / SPECIAL REQUESTS</label><textarea id="b-notes" placeholder="Event type, setup preferences, time of delivery, other requests..."></textarea></div>
         </div>
+
+        <!-- BOOKING SUMMARY -->
+        <div class="booking-total-bar" id="booking-total-bar" style="display:none">
+          <div class="btb-row"><span>Items subtotal</span><span id="btb-items">₱0</span></div>
+          <div class="btb-row" id="btb-pkg-row" style="display:none"><span>Package</span><span id="btb-pkg">₱0</span></div>
+          <div class="btb-row" id="btb-del-row" style="display:none"><span>🚚 Delivery fee</span><span id="btb-del">To be confirmed</span></div>
+          <div class="btb-total"><span>Estimated Total</span><span id="btb-total">₱0</span></div>
+        </div>
+
         <button class="btn-submit" id="btn-book-submit" onclick="submitBooking()">Submit Booking Request</button>
       </div>
     </div>
@@ -563,12 +639,29 @@ canvas#sign-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
         <div class="q-ctrl" style="grid-column:1/-1"><label>NUMBER OF DAYS</label><input type="number" min="1" value="1" id="q-days" oninput="calcQ()"></div>
         <div class="loading" style="grid-column:1/-1"><div class="spinner"></div> Loading...</div>
       </div>
-      <div class="q-summary">
+
+      <!-- DELIVERY OPTION IN QUOTE -->
+      <div style="background:var(--dark2);border:1px solid var(--border);border-radius:12px;padding:14px;margin-top:12px;">
+        <div style="font-size:10px;font-weight:600;color:var(--muted);letter-spacing:.08em;margin-bottom:8px;">DELIVERY OR PICKUP?</div>
+        <div class="delivery-toggle">
+          <button class="del-btn active-green" id="q-del-pickup" onclick="setQDelivery('pickup')">🏠 Self Pickup <span style="font-size:10px;opacity:.7">(Free)</span></button>
+          <button class="del-btn" id="q-del-delivery" onclick="setQDelivery('delivery')">🚚 Delivery</button>
+        </div>
+        <div class="delivery-fields" id="q-delivery-fields">
+          <div style="font-size:12px;color:var(--muted);line-height:1.6;">
+            Delivery fee depends on your location and method (Lalamove, taxi, our vehicle).<br>
+            It will be confirmed after booking. <strong style="color:var(--gold)">Estimated: ₱150–₱500+</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="q-summary" style="margin-top:12px">
         <div class="q-head"><div><h3>Quotation Summary</h3><p>Jacky & Rey Rentals · Metro Cebu</p></div><div class="q-ref">QT-LIVE</div></div>
         <div id="q-lines"><p style="font-size:12px;color:var(--muted);padding:6px 0">Select items above to see your estimate.</p></div>
+        <div id="q-delivery-line" style="display:none"><div class="q-line"><span>🚚 Delivery fee</span><span class="q-line-calc"></span><span class="q-line-amt" style="color:var(--muted)">To be confirmed</span></div></div>
         <hr class="q-div">
         <div class="q-total"><span class="q-total-lbl">Estimated Total</span><span class="q-total-amt" id="q-total">₱0</span></div>
-        <p class="q-note">* Prices are per day. Delivery fee may apply. Final amount confirmed upon booking.</p>
+        <p class="q-note" id="q-note-text">* Prices are per day. Final amount confirmed upon booking.</p>
       </div>
       <button class="btn-proceed" onclick="quoteToBooking()">Proceed to Booking ↗</button>
     </div>
@@ -929,7 +1022,7 @@ const API="https://script.google.com/macros/s/AKfycbyxhstT4vDPqdVTrqcOPBCJL7JDIg
 let inventoryItems=[],packagesData=[],bookingQty={},adminRole="";
 let editingItem=null,editingType="item",deleteTarget=null,deleteType="item";
 let currentImageUrl="",currentPkgImageUrl="",currentPriceType="fixed";
-let selectedPackage=null;
+let selectedPackage=null,deliveryType="pickup";
 
 async function api(data){
   try{const res=await fetch(API,{method:"POST",body:JSON.stringify(data),headers:{"Content-Type":"text/plain"}});return await res.json();}
@@ -952,7 +1045,7 @@ function pub(id){
   window.scrollTo(0,0);
   if(id==="inventory")loadPublicInventory();
   if(id==="packages")loadPublicPackages();
-  if(id==="booking")loadBookingItems();
+  if(id==="booking"){loadBookingItems();loadPackageSelectorOnBooking();}
   if(id==="quotation")loadQuoteItems();
 }
 function showLogin(){document.getElementById("public-area").style.display="none";document.getElementById("pub-nav").style.display="none";document.getElementById("login-area").style.display="block";}
@@ -1034,10 +1127,16 @@ function bookPackage(pkg){
   setTimeout(()=>{
     const banner=document.getElementById("pkg-banner");
     const label=document.getElementById("extras-label");
+    const wrap=document.getElementById("pkg-selector-wrap");
     banner.classList.add("show");
+    if(wrap)wrap.style.display="none"; // hide selector once package chosen
     document.getElementById("pkg-banner-name").textContent=`🎁 ${pkg.name}`;
     document.getElementById("pkg-banner-price").textContent=`₱${parseInt(pkg.packagePrice).toLocaleString()} ${pkg.priceType==="perday"?"/ day":"fixed"}`;
-    label.textContent="ADD EXTRA ITEMS (optional)";
+    label.textContent="➕ ADD EXTRA ITEMS (optional — on top of package)";
+    // Update selector value too
+    const sel=document.getElementById("pkg-selector");
+    if(sel){for(let i=0;i<sel.options.length;i++){if(sel.options[i].value===pkg.name){sel.selectedIndex=i;break;}}}
+    updateBookingTotal();
   },100);
 }
 
@@ -1045,9 +1144,78 @@ function clearPackage(){
   selectedPackage=null;
   document.getElementById("pkg-banner").classList.remove("show");
   document.getElementById("extras-label").textContent="ITEMS TO RENT";
+  const wrap=document.getElementById("pkg-selector-wrap");
+  if(wrap)wrap.style.display="block";
+  const sel=document.getElementById("pkg-selector");
+  if(sel)sel.selectedIndex=0;
+  updateBookingTotal();
 }
 
 /* BOOKING */
+/* ── DELIVERY TOGGLE ── */
+function setDelivery(type){
+  deliveryType=type;
+  const pickupBtn=document.getElementById("del-pickup");
+  const delivBtn=document.getElementById("del-delivery");
+  const fields=document.getElementById("delivery-fields");
+  if(type==="pickup"){
+    pickupBtn.className="del-btn active-green";
+    delivBtn.className="del-btn";
+    fields.classList.remove("show");
+  } else {
+    pickupBtn.className="del-btn";
+    delivBtn.className="del-btn active";
+    fields.classList.add("show");
+  }
+  updateBookingTotal();
+}
+
+/* ── PACKAGE SELECTOR (on booking page) ── */
+async function loadPackageSelectorOnBooking(){
+  const sel=document.getElementById("pkg-selector");
+  if(!sel)return;
+  const pkgs=await loadPackages();
+  // Remove old options except first
+  while(sel.options.length>1)sel.remove(1);
+  pkgs.filter(p=>p.available==="Yes").forEach(pkg=>{
+    const opt=document.createElement("option");
+    opt.value=pkg.name;
+    opt.textContent=`🎁 ${pkg.name} — ₱${parseInt(pkg.packagePrice).toLocaleString()} ${pkg.priceType==="perday"?"/ day":"fixed"}`;
+    opt.dataset.pkg=JSON.stringify(pkg);
+    sel.appendChild(opt);
+  });
+}
+
+function onPkgSelectorChange(sel){
+  if(!sel.value){clearPackage();return;}
+  const opt=sel.options[sel.selectedIndex];
+  const pkg=JSON.parse(opt.dataset.pkg||"{}");
+  if(pkg.name) bookPackage(pkg);
+}
+
+/* ── BOOKING TOTAL CALCULATOR ── */
+function updateBookingTotal(){
+  let itemsTotal=0;
+  Object.entries(bookingQty).forEach(([k,v])=>{
+    if(v>0){const item=inventoryItems.find(i=>i.name===k);if(item)itemsTotal+=v*parseInt(item.price);}
+  });
+  const pkgTotal=selectedPackage?parseInt(selectedPackage.packagePrice)||0:0;
+  const grandTotal=itemsTotal+pkgTotal;
+  const bar=document.getElementById("booking-total-bar");
+  if(!bar)return;
+  if(grandTotal>0||selectedPackage){
+    bar.style.display="block";
+    document.getElementById("btb-items").textContent="₱"+itemsTotal.toLocaleString();
+    const pkgRow=document.getElementById("btb-pkg-row");
+    if(selectedPackage){pkgRow.style.display="flex";document.getElementById("btb-pkg").textContent=`₱${pkgTotal.toLocaleString()} (${selectedPackage.name})`;}
+    else pkgRow.style.display="none";
+    const delRow=document.getElementById("btb-del-row");
+    if(deliveryType==="delivery"){delRow.style.display="flex";}
+    else delRow.style.display="none";
+    document.getElementById("btb-total").textContent="₱"+grandTotal.toLocaleString()+(deliveryType==="delivery"?" + delivery":"");
+  } else bar.style.display="none";
+}
+
 async function loadBookingItems(availability){
   const c=document.getElementById("booking-items");
   c.innerHTML=`<div class="loading"><div class="spinner"></div> Loading...</div>`;
@@ -1096,6 +1264,7 @@ function chgBooking(name,delta,max){
   const key=name.replace(/\s/g,'_');
   bookingQty[name]=Math.max(0,Math.min((bookingQty[name]||0)+delta,max||9999));
   document.getElementById("bqty-"+key).textContent=bookingQty[name];
+  updateBookingTotal();
 }
 
 async function submitBooking(){
@@ -1107,6 +1276,12 @@ async function submitBooking(){
   const notes=document.getElementById("b-notes").value.trim();
   if(!name||!phone||!date){showToast("Please fill in your name, contact, and event date.","error");return;}
 
+  // Delivery details
+  const delivAddress=deliveryType==="delivery"?(document.getElementById("b-deliv-address")?.value.trim()||""):"";
+  const delivMethod=deliveryType==="delivery"?(document.getElementById("b-deliv-method")?.value||""):"";
+  if(deliveryType==="delivery"&&!delivAddress){showToast("Please enter your delivery address.","error");return;}
+
+  // Items + package
   let itemsList="";let total=0;
   if(selectedPackage){
     itemsList=`PACKAGE: ${selectedPackage.name}`;
@@ -1120,13 +1295,25 @@ async function submitBooking(){
     total=Object.entries(bookingQty).reduce((s,[k,v])=>{const i=inventoryItems.find(x=>x.name===k);return s+(v*(i?parseInt(i.price):0));},0);
   }
 
+  const deliveryLabel=deliveryType==="delivery"
+    ?`Delivery via ${delivMethod} to: ${delivAddress} (fee to be confirmed)`
+    :"Self Pickup";
+
   const btn=document.getElementById("btn-book-submit");btn.disabled=true;btn.textContent="Submitting...";
-  const res=await api({action:"submitBooking",name,phone,location,eventDate:date,returnDate,items:itemsList,total,notes});
+  const res=await api({
+    action:"submitBooking",
+    name,phone,location,eventDate:date,returnDate,
+    items:itemsList,total,
+    deliveryType,deliveryAddress:delivAddress,deliveryMethod:delivMethod,
+    notes:(notes?(notes+"\n"):"")+"Delivery: "+deliveryLabel
+  });
   btn.disabled=false;btn.textContent="Submit Booking Request";
   if(res.success){
-    openMod("✅","Booking Submitted!",`Your booking (${res.bookingId}) has been received! We will contact you at ${phone} within 24 hours. Thank you for choosing Jacky & Rey Rentals!`);
+    const delivMsg=deliveryType==="delivery"?" Our team will contact you to confirm the delivery fee.":"";
+    openMod("✅","Booking Submitted!",`Your booking (${res.bookingId}) has been received!${delivMsg} We will contact you at ${phone} within 24 hours. Thank you for choosing Jacky & Rey Rentals!`);
     Object.keys(bookingQty).forEach(k=>{bookingQty[k]=0;});
-    clearPackage();loadBookingItems();inventoryItems=[];
+    clearPackage();setDelivery("pickup");loadBookingItems();inventoryItems=[];
+    document.getElementById("booking-total-bar").style.display="none";
   }else showToast("Submission failed. Please try again.","error");
 }
 
@@ -1139,13 +1326,33 @@ async function loadQuoteItems(){
     +items.map(i=>`<div class="q-ctrl"><label>${i.emoji||""} ${i.name.toUpperCase()}</label><input type="number" min="0" value="0" id="qq-${i.name.replace(/\s/g,'_')}" oninput="calcQ()"></div>`).join("");
   calcQ();
 }
+let qDeliveryType="pickup";
+function setQDelivery(type){
+  qDeliveryType=type;
+  document.getElementById("q-del-pickup").className=type==="pickup"?"del-btn active-green":"del-btn";
+  document.getElementById("q-del-delivery").className=type==="delivery"?"del-btn active":"del-btn";
+  const fields=document.getElementById("q-delivery-fields");
+  const dline=document.getElementById("q-delivery-line");
+  const note=document.getElementById("q-note-text");
+  if(type==="delivery"){
+    fields.classList.add("show");
+    if(dline)dline.style.display="block";
+    if(note)note.textContent="* Prices are per day. Delivery fee will be confirmed after booking.";
+  }else{
+    fields.classList.remove("show");
+    if(dline)dline.style.display="none";
+    if(note)note.textContent="* Prices are per day. Final amount confirmed upon booking.";
+  }
+  calcQ();
+}
 function calcQ(){
   if(!inventoryItems.length)return;
   const days=Math.max(1,parseInt(document.getElementById("q-days")?.value)||1);
   let total=0,html="";
   inventoryItems.forEach(i=>{const qty=parseInt(document.getElementById("qq-"+i.name.replace(/\s/g,'_'))?.value)||0;if(qty>0){const sub=qty*parseInt(i.price)*days;total+=sub;html+=`<div class="q-line"><span>${i.name}</span><span class="q-line-calc">${qty}×₱${i.price}×${days}d</span><span class="q-line-amt">₱${sub.toLocaleString()}</span></div>`;}});
   document.getElementById("q-lines").innerHTML=html||`<p style="font-size:12px;color:var(--muted);padding:6px 0">Select items above to see your estimate.</p>`;
-  document.getElementById("q-total").textContent="₱"+total.toLocaleString();
+  const totalTxt="₱"+total.toLocaleString()+(qDeliveryType==="delivery"?" + delivery fee":"");
+  document.getElementById("q-total").textContent=totalTxt;
 }
 async function quoteToBooking(){
   if(!inventoryItems.length){pub('booking');return;}
@@ -1387,7 +1594,7 @@ async function loadAdminBookings(){
   if(!res.success||!res.bookings.length){tbody.innerHTML=`<tr><td colspan="9" style="color:var(--muted);text-align:center;padding:1rem">No bookings yet</td></tr>`;return;}
   tbody.innerHTML=res.bookings.reverse().map(b=>`
     <tr><td>${b.id}</td><td>${b.name}</td><td>${b.phone}</td><td>${b.location}</td>
-    <td>${b.eventDate}</td><td style="max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${b.items}</td>
+    <td>${b.eventDate}</td><td style="max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${b.items}">${b.items}</td>
     <td style="color:var(--gold);font-weight:600">₱${parseInt(b.total||0).toLocaleString()}</td>
     <td><span class="status" style="${statusStyle(b.status)}">${b.status}</span></td>
     <td style="white-space:nowrap">
@@ -1490,7 +1697,9 @@ function convertToBooking(q){
     if(q.name&&q.name!=="Website Visitor")document.getElementById("b-name").value=q.name;
     if(q.phone&&q.phone!=="-")document.getElementById("b-phone").value=q.phone;
     // set notes with quote ref
-    document.getElementById("b-notes").value=`From quotation ${q.ref}. Items: ${q.items}. Est. total: ₱${parseInt(q.total||0).toLocaleString()} for ${q.days} day(s).`;
+    const delNote=qDeliveryType==="delivery"?" Delivery requested — fee to be confirmed.":"" ;
+    document.getElementById("b-notes").value=`From quotation ${q.ref}. Items: ${q.items}. Est. total: ₱${parseInt(q.total||0).toLocaleString()} for ${q.days} day(s).${delNote}`;
+    if(qDeliveryType==="delivery")setDelivery("delivery");
     showToast(`Quote ${q.ref} loaded into booking form. Fill in remaining details and submit!`,"success");
     // set quantities from quote items string
     // parse "2x Monobloc Chair, 5x Round Table" etc
