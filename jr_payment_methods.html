@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>J&R Rentals – Payment</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #1a2b4a;
+    --orange: #c8561a;
+    --steel: #5b88b0;
+    --cream: #f7f3ee;
+    --white: #ffffff;
+    --gold: #e8a230;
+  }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--cream);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .card {
+    background: var(--white);
+    border-radius: 24px;
+    width: 680px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(26,43,74,0.18), 0 4px 16px rgba(26,43,74,0.10);
+    position: relative;
+  }
+
+  /* === HEADER === */
+  .header {
+    background: var(--navy);
+    padding: 28px 36px 22px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    right: -40px; top: -40px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: rgba(200,86,26,0.12);
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    right: 30px; bottom: -30px;
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: rgba(91,136,176,0.10);
+  }
+
+  .logo-wrap img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid var(--orange);
+    object-fit: cover;
+    display: block;
+  }
+
+  .header-text h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    letter-spacing: 2px;
+    color: var(--white);
+    line-height: 1;
+  }
+  .header-text h1 span { color: var(--orange); }
+  .header-text p {
+    color: var(--steel);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  .pay-badge {
+    margin-left: auto;
+    background: var(--orange);
+    color: var(--white);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 2px;
+    padding: 8px 20px;
+    border-radius: 50px;
+    white-space: nowrap;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* === DIVIDER === */
+  .divider {
+    height: 5px;
+    background: linear-gradient(90deg, var(--orange) 0%, var(--gold) 50%, var(--steel) 100%);
+  }
+
+  /* === INSTRUCTION === */
+  .instruction {
+    text-align: center;
+    padding: 22px 36px 6px;
+  }
+  .instruction h2 {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--navy);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+  .instruction p {
+    font-size: 13px;
+    color: #7a8a9a;
+    margin-top: 4px;
+    font-weight: 600;
+  }
+
+  /* === QR SECTION === */
+  .qr-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    padding: 20px 30px 28px;
+  }
+
+  .qr-card {
+    border-radius: 18px;
+    padding: 22px 18px 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* GCash card */
+  .qr-card.gcash {
+    background: linear-gradient(145deg, #e8f3ff 0%, #d0e8ff 100%);
+    border: 2px solid #3b82f6;
+  }
+  .qr-card.gcash::before {
+    content: '';
+    position: absolute;
+    top: -30px; right: -30px;
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    background: rgba(59,130,246,0.12);
+  }
+
+  /* MariBank card */
+  .qr-card.maribank {
+    background: linear-gradient(145deg, #fff3e8 0%, #ffe5c8 100%);
+    border: 2px solid var(--orange);
+  }
+  .qr-card.maribank::before {
+    content: '';
+    position: absolute;
+    top: -30px; right: -30px;
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    background: rgba(200,86,26,0.12);
+  }
+
+  .payment-logo {
+    height: 36px;
+    object-fit: contain;
+    position: relative;
+    z-index: 1;
+  }
+
+  .qr-placeholder {
+    width: 180px;
+    height: 180px;
+    border-radius: 12px;
+    background: var(--white);
+    border: 2px dashed #b0bec8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .qr-placeholder svg {
+    opacity: 0.25;
+  }
+
+  .qr-placeholder span {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #9aabb8;
+    text-align: center;
+    padding: 0 10px;
+  }
+
+  .acct-name {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--navy);
+    text-align: center;
+    letter-spacing: 0.5px;
+    position: relative;
+    z-index: 1;
+  }
+  .acct-name span {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    color: #7a8a9a;
+    margin-top: 2px;
+  }
+
+  /* === FOOTER === */
+  .footer {
+    background: var(--navy);
+    padding: 16px 36px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .footer-left {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .footer-left p {
+    font-size: 11px;
+    color: var(--steel);
+    font-weight: 600;
+  }
+  .footer-left p strong {
+    color: var(--white);
+  }
+
+  .footer-note {
+    font-size: 10px;
+    color: var(--gold);
+    font-weight: 700;
+    text-align: right;
+    letter-spacing: 0.5px;
+    font-style: italic;
+  }
+
+  /* === TRANSFER FEE NOTICE === */
+  .fee-notice {
+    margin: 0 30px;
+    background: #fff8e6;
+    border: 1.5px solid var(--gold);
+    border-radius: 10px;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .fee-notice .fee-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .fee-notice p {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: #7a5a00;
+    line-height: 1.5;
+  }
+  .fee-notice p span {
+    font-weight: 900;
+    color: #c8860a;
+  }
+
+  /* === OTHER PAYMENT OPTIONS === */
+  .other-payment {
+    margin: 14px 30px 20px;
+    background: linear-gradient(135deg, #eef3fa 0%, #e8f0f8 100%);
+    border: 1.5px solid var(--steel);
+    border-radius: 10px;
+    padding: 14px 18px;
+  }
+  .other-payment h3 {
+    font-size: 11px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--navy);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .other-payment p {
+    font-size: 12px;
+    font-weight: 600;
+    color: #445566;
+    line-height: 1.6;
+  }
+  .other-payment .contact-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .contact-chip {
+    background: var(--navy);
+    color: var(--white);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  /* === PRINT / SCREENSHOT hint === */
+  .screenshot-hint {
+    text-align: center;
+    padding: 10px;
+    font-size: 11px;
+    color: #aaa;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+</style>
+</head>
+<body>
+
+<div>
+  <div class="card">
+
+    <!-- HEADER -->
+    <div class="header">
+      <div class="logo-wrap">
+        <img src="/mnt/user-data/uploads/logoooo_4.png" alt="J&R Logo">
+      </div>
+      <div class="header-text">
+        <h1>Jacky <span>&</span> Rey Rentals</h1>
+        <p>Tables &bull; Chairs &bull; Camping Sets</p>
+      </div>
+      <div class="pay-badge">Payment Details</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- INSTRUCTION -->
+    <div class="instruction">
+      <h2>Scan to Pay</h2>
+      <p>Choose your preferred payment method below and scan the QR code</p>
+    </div>
+
+    <!-- QR SECTION -->
+    <div class="qr-section">
+
+      <!-- GCash -->
+      <div class="qr-card gcash">
+        <img class="payment-logo" src="/mnt/user-data/uploads/gcash.png" alt="GCash">
+        <div class="qr-placeholder">
+          <!-- Generic QR icon -->
+          <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="4" y="4" width="24" height="24" rx="3" stroke="#3b82f6" stroke-width="3" fill="none"/>
+            <rect x="10" y="10" width="12" height="12" rx="1" fill="#3b82f6"/>
+            <rect x="36" y="4" width="24" height="24" rx="3" stroke="#3b82f6" stroke-width="3" fill="none"/>
+            <rect x="42" y="10" width="12" height="12" rx="1" fill="#3b82f6"/>
+            <rect x="4" y="36" width="24" height="24" rx="3" stroke="#3b82f6" stroke-width="3" fill="none"/>
+            <rect x="10" y="42" width="12" height="12" rx="1" fill="#3b82f6"/>
+            <rect x="36" y="36" width="4" height="4" fill="#3b82f6"/>
+            <rect x="44" y="36" width="4" height="4" fill="#3b82f6"/>
+            <rect x="52" y="36" width="8" height="4" fill="#3b82f6"/>
+            <rect x="36" y="44" width="8" height="4" fill="#3b82f6"/>
+            <rect x="48" y="44" width="4" height="4" fill="#3b82f6"/>
+            <rect x="36" y="52" width="4" height="8" fill="#3b82f6"/>
+            <rect x="44" y="52" width="16" height="8" fill="#3b82f6"/>
+          </svg>
+          <span>Place GCash QR Code Here</span>
+        </div>
+        <div class="acct-name">
+          JACKY & REY RENTALS
+          <span>GCash Account</span>
+        </div>
+      </div>
+
+      <!-- MariBank -->
+      <div class="qr-card maribank">
+        <img class="payment-logo" src="/mnt/user-data/uploads/maribank-logo_brandlogos_net_fuwzy.png" alt="MariBank">
+        <div class="qr-placeholder">
+          <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="4" y="4" width="24" height="24" rx="3" stroke="#c8561a" stroke-width="3" fill="none"/>
+            <rect x="10" y="10" width="12" height="12" rx="1" fill="#c8561a"/>
+            <rect x="36" y="4" width="24" height="24" rx="3" stroke="#c8561a" stroke-width="3" fill="none"/>
+            <rect x="42" y="10" width="12" height="12" rx="1" fill="#c8561a"/>
+            <rect x="4" y="36" width="24" height="24" rx="3" stroke="#c8561a" stroke-width="3" fill="none"/>
+            <rect x="10" y="42" width="12" height="12" rx="1" fill="#c8561a"/>
+            <rect x="36" y="36" width="4" height="4" fill="#c8561a"/>
+            <rect x="44" y="36" width="4" height="4" fill="#c8561a"/>
+            <rect x="52" y="36" width="8" height="4" fill="#c8561a"/>
+            <rect x="36" y="44" width="8" height="4" fill="#c8561a"/>
+            <rect x="48" y="44" width="4" height="4" fill="#c8561a"/>
+            <rect x="36" y="52" width="4" height="8" fill="#c8561a"/>
+            <rect x="44" y="52" width="16" height="8" fill="#c8561a"/>
+          </svg>
+          <span>Place MariBank QR Code Here</span>
+        </div>
+        <div class="acct-name">
+          JACKY & REY RENTALS
+          <span>MariBank Account</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TRANSFER FEE NOTICE -->
+    <div class="fee-notice">
+      <div class="fee-icon">⚠️</div>
+      <p><span>Note:</span> Transfer fees may apply depending on your bank or e-wallet provider. Please make sure the full amount is received. Any transfer charges are shouldered by the sender.</p>
+    </div>
+
+    <!-- OTHER PAYMENT OPTIONS -->
+    <div class="other-payment">
+      <h3>💬 Other Payment Options?</h3>
+      <p>If you prefer a different payment method (cash, bank transfer, etc.), please contact us directly and we'll be happy to assist you.</p>
+      <div class="contact-links">
+        <div class="contact-chip">📞 09912094757</div>
+        <div class="contact-chip">📞 09500167754</div>
+        <div class="contact-chip">📧 jackyandreyrentals@gmail.com</div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+      <div class="footer-left">
+        <p><strong>📞</strong> 09912094757 &nbsp;|&nbsp; 09500167754</p>
+        <p><strong>📧</strong> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e3898280889a828d8791869a91868d97828f90a3848e828a8fcd808c8e">[email&#160;protected]</a></p>
+        <p><strong>📍</strong> Metro Cebu</p>
+      </div>
+      <div class="footer-note">
+        "From Gatherings to Camping —<br>We've got the Essentials"
+      </div>
+    </div>
+
+  <
