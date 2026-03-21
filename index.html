@@ -18,6 +18,7 @@
 body{font-family:'Inter',sans-serif;background:var(--dark);color:#fff;font-size:14px;}
 .page{display:none;}.page.active{display:block;}
 
+/* NAV */
 nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;}
 .nav-brand{display:flex;align-items:center;gap:9px;}
 .nav-logo{width:38px;height:38px;border-radius:50%;background:#fff;border:2px solid var(--gold);overflow:hidden;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
@@ -32,15 +33,16 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
 .hamburger.open span:nth-child(2){opacity:0;}
 .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
 .nav-links{display:flex;gap:2px;align-items:center;}
-.nav-links button{background:none;border:none;color:var(--muted);font-family:'Inter',sans-serif;font-size:12px;padding:6px 10px;cursor:pointer;border-radius:6px;transition:all .15s;}
+.nav-links button{background:none;border:none;color:var(--muted);font-family:'Inter',sans-serif;font-size:12px;padding:6px 9px;cursor:pointer;border-radius:6px;transition:all .15s;white-space:nowrap;}
 .nav-links button:hover,.nav-links button.active{background:var(--gold-dim);color:var(--gold);}
-.btn-admin-nav{background:var(--gold-dim)!important;color:var(--gold)!important;border:1px solid rgba(232,160,32,0.3)!important;margin-left:6px!important;}
-.mobile-nav{display:none;position:fixed;top:56px;left:0;right:0;background:#111;border-bottom:1px solid var(--border);z-index:199;padding:.5rem;flex-direction:column;gap:4px;}
+.btn-admin-nav{background:var(--gold-dim)!important;color:var(--gold)!important;border:1px solid rgba(232,160,32,0.3)!important;margin-left:4px!important;}
+.mobile-nav{display:none;position:fixed;top:56px;left:0;right:0;background:#111;border-bottom:1px solid var(--border);z-index:199;padding:.5rem;flex-direction:column;gap:3px;}
 .mobile-nav.open{display:flex;}
-.mobile-nav button{background:none;border:none;color:var(--muted);font-family:'Inter',sans-serif;font-size:13px;padding:10px 14px;cursor:pointer;border-radius:8px;text-align:left;}
+.mobile-nav button{background:none;border:none;color:var(--muted);font-family:'Inter',sans-serif;font-size:13px;padding:10px 14px;cursor:pointer;border-radius:8px;text-align:left;transition:all .15s;}
 .mobile-nav button:hover,.mobile-nav button.active{background:var(--gold-dim);color:var(--gold);}
 .mobile-nav .m-admin{background:var(--gold-dim);color:var(--gold);border:1px solid rgba(232,160,32,0.3);}
 
+/* HERO */
 .hero{background:#111;border-bottom:1px solid var(--border);padding:2.5rem 1.5rem 2rem;text-align:center;}
 .hero-ring{width:88px;height:88px;border-radius:50%;background:#fff;margin:0 auto 1.25rem;padding:3px;border:3px solid var(--gold);overflow:hidden;display:flex;align-items:center;justify-content:center;}
 .hero-ring img{width:100%;height:100%;object-fit:cover;}
@@ -56,6 +58,7 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
 .btn-outline{background:none;color:#fff;border:1px solid rgba(255,255,255,0.25);font-family:'Inter',sans-serif;font-weight:500;font-size:13px;padding:10px 22px;border-radius:7px;cursor:pointer;transition:all .15s;}
 .btn-outline:hover{border-color:var(--gold);color:var(--gold);}
 
+/* CONTACT + STATS */
 .contact-bar{background:var(--dark2);border-bottom:1px solid var(--border);display:flex;flex-wrap:wrap;}
 .contact-item{flex:1;min-width:140px;padding:.85rem 1rem;border-right:1px solid var(--border);display:flex;align-items:center;gap:8px;}
 .contact-item:last-child{border-right:none;}
@@ -67,10 +70,14 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
 .stat:last-child{border-right:none;}
 .stat-n{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--gold);}
 .stat-l{font-size:10px;color:var(--muted);margin-top:1px;}
+
+/* SECTION */
 .section{padding:1.75rem 1.25rem;}
 .sec-title{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:.06em;color:#fff;}
 .sec-title em{color:var(--gold);font-style:normal;}
 .sec-sub{font-size:12px;color:var(--muted);margin-top:2px;margin-bottom:1.25rem;}
+
+/* SERVICE GRID */
 .service-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;}
 .svc-card{background:var(--dark2);border:1px solid var(--border);border-radius:12px;padding:1.25rem 1rem;text-align:center;cursor:pointer;transition:all .15s;}
 .svc-card:hover{border-color:var(--gold);}
@@ -78,6 +85,7 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
 .svc-name{font-size:13px;font-weight:600;margin-bottom:3px;}
 .svc-desc{font-size:11px;color:var(--muted);}
 
+/* INVENTORY */
 .inv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;}
 .inv-card{background:var(--dark2);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border .15s;}
 .inv-card:hover{border-color:var(--gold);}
@@ -92,6 +100,34 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
 .badge-red{background:var(--red-bg);color:var(--red);}
 .btn-book{width:100%;margin-top:8px;background:var(--gold);color:#111;border:none;font-family:'Inter',sans-serif;font-size:12px;font-weight:600;padding:8px;border-radius:6px;cursor:pointer;}
 
+/* ── PACKAGES ── */
+.pkg-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;}
+.pkg-card{background:var(--dark2);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:border .2s;position:relative;}
+.pkg-card:hover{border-color:var(--gold);}
+.pkg-card.featured{border-color:var(--gold);}
+.pkg-photo{height:150px;background:var(--dark3);display:flex;align-items:center;justify-content:center;font-size:3rem;overflow:hidden;position:relative;}
+.pkg-photo img{width:100%;height:100%;object-fit:cover;}
+.pkg-badge{position:absolute;top:10px;right:10px;background:var(--gold);color:#111;font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;}
+.pkg-body{padding:14px 16px;}
+.pkg-name{font-family:'Bebas Neue',sans-serif;font-size:1.15rem;letter-spacing:.05em;margin-bottom:4px;}
+.pkg-desc{font-size:12px;color:var(--muted);margin-bottom:10px;line-height:1.5;}
+.pkg-includes{background:var(--dark3);border-radius:8px;padding:10px 12px;margin-bottom:12px;}
+.pkg-includes-title{font-size:10px;font-weight:600;color:var(--muted);letter-spacing:.08em;margin-bottom:6px;}
+.pkg-includes-items{font-size:12px;color:#fff;line-height:1.8;}
+.pkg-includes-items span{display:block;}
+.pkg-includes-items span::before{content:"✓ ";color:var(--green);}
+.pkg-pricing{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:12px;}
+.pkg-price-block{}
+.pkg-price-label{font-size:10px;color:var(--muted);margin-bottom:2px;}
+.pkg-price{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--gold);line-height:1;}
+.pkg-price-type{font-size:10px;color:var(--muted);margin-top:2px;}
+.pkg-savings{background:var(--green-bg);color:var(--green);font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px;white-space:nowrap;}
+.pkg-unavail{background:var(--red-bg);color:var(--red);font-size:11px;padding:4px 10px;border-radius:20px;}
+.btn-book-pkg{width:100%;background:var(--gold);color:#111;border:none;font-family:'Inter',sans-serif;font-size:13px;font-weight:700;padding:10px;border-radius:8px;cursor:pointer;transition:all .15s;}
+.btn-book-pkg:hover{background:var(--gold2);}
+.btn-book-pkg:disabled{background:var(--dark4);color:var(--muted);cursor:not-allowed;}
+
+/* BOOKING FORM */
 .form-card{background:var(--dark2);border:1px solid var(--border);border-radius:14px;padding:1.5rem;}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;}
 .form-full{grid-column:1/-1;}
@@ -108,10 +144,18 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
 .qty-ctrl{display:flex;align-items:center;gap:8px;flex-shrink:0;}
 .qty-btn{width:28px;height:28px;border-radius:50%;border:1px solid var(--border);background:var(--dark2);cursor:pointer;font-size:16px;color:var(--gold);display:flex;align-items:center;justify-content:center;touch-action:manipulation;}
 .qty-n{font-size:13px;font-weight:600;min-width:22px;text-align:center;}
-.btn-submit{width:100%;margin-top:1.25rem;background:var(--gold);color:#111;border:none;font-family:'Inter',sans-serif;font-size:15px;font-weight:600;padding:14px;border-radius:8px;cursor:pointer;transition:all .15s;}
-.btn-submit:hover{background:var(--gold2);}
+.btn-submit{width:100%;margin-top:1.25rem;background:var(--gold);color:#111;border:none;font-family:'Inter',sans-serif;font-size:15px;font-weight:600;padding:14px;border-radius:8px;cursor:pointer;}
 .btn-submit:disabled{background:var(--dark4);color:var(--muted);cursor:not-allowed;}
 
+/* package selected banner in booking */
+.pkg-selected-banner{background:var(--gold-dim);border:1px solid rgba(232,160,32,0.3);border-radius:10px;padding:12px 14px;margin-bottom:12px;display:none;}
+.pkg-selected-banner.show{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.psb-left{font-size:13px;font-weight:600;color:var(--gold);}
+.psb-right{font-size:12px;color:var(--muted);}
+.psb-clear{background:none;border:none;color:var(--red);font-size:11px;cursor:pointer;padding:4px 8px;border-radius:5px;background:var(--red-bg);}
+.extras-label{font-size:10px;font-weight:600;color:var(--muted);letter-spacing:.08em;margin-bottom:6px;margin-top:4px;}
+
+/* QUOTE */
 .q-controls{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
 .q-ctrl{background:var(--dark2);border:1px solid var(--border);border-radius:10px;padding:11px;}
 .q-ctrl label{font-size:10px;font-weight:600;color:var(--muted);letter-spacing:.07em;display:block;margin-bottom:6px;}
@@ -132,6 +176,7 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
 .q-note{font-size:11px;color:var(--muted);margin-top:10px;line-height:1.6;}
 .btn-proceed{width:100%;margin-top:12px;background:var(--gold);color:#111;border:none;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;padding:13px;border-radius:8px;cursor:pointer;}
 
+/* CONTRACT */
 .contract{background:var(--dark2);border:1px solid var(--border);border-radius:14px;padding:1.5rem;}
 .ct-head{text-align:center;border-bottom:1px solid var(--gold);padding-bottom:1rem;margin-bottom:1.25rem;}
 .ct-logo{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:.06em;}
@@ -150,6 +195,7 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
 .sig-lbl{font-size:10px;color:var(--muted);}
 .sig-name{font-size:12px;font-weight:500;margin-top:2px;}
 
+/* ADMIN LOGIN */
 .login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1.5rem;background:var(--dark);}
 .login-card{background:var(--dark2);border:1px solid var(--border);border-radius:18px;padding:2rem 1.5rem;width:100%;max-width:380px;}
 .login-logo-ring{width:70px;height:70px;border-radius:50%;background:#fff;border:3px solid var(--gold);margin:0 auto 1rem;overflow:hidden;display:flex;align-items:center;justify-content:center;}
@@ -160,15 +206,16 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
 .login-sub{font-size:11px;color:var(--muted);text-align:center;margin-top:4px;margin-bottom:2rem;}
 .login-fg{display:flex;flex-direction:column;gap:5px;margin-bottom:14px;}
 .login-fg label{font-size:10px;font-weight:600;color:var(--muted);letter-spacing:.08em;}
-.login-fg input{background:var(--dark3);border:1px solid var(--border);border-radius:8px;padding:12px;font-family:'Inter',sans-serif;font-size:16px;color:#fff;outline:none;transition:border .15s;width:100%;}
+.login-fg input{background:var(--dark3);border:1px solid var(--border);border-radius:8px;padding:12px;font-family:'Inter',sans-serif;font-size:16px;color:#fff;outline:none;width:100%;}
 .login-fg input:focus{border-color:var(--gold);}
 .login-err{font-size:12px;color:var(--red);margin-bottom:10px;display:none;text-align:center;}
 .btn-login{width:100%;background:var(--gold);color:#111;border:none;font-family:'Inter',sans-serif;font-size:15px;font-weight:700;padding:13px;border-radius:8px;cursor:pointer;margin-top:6px;}
 .btn-login:hover{background:var(--gold2);}
 .btn-login:disabled{background:var(--dark4);color:var(--muted);cursor:not-allowed;}
 
+/* ADMIN SHELL */
 .admin-shell{display:flex;height:100vh;overflow:hidden;}
-.admin-sidebar{width:210px;flex-shrink:0;background:#111;border-right:1px solid var(--border);display:flex;flex-direction:column;transition:transform .25s;}
+.admin-sidebar{width:215px;flex-shrink:0;background:#111;border-right:1px solid var(--border);display:flex;flex-direction:column;transition:transform .25s;}
 .sidebar-head{padding:1.25rem;border-bottom:1px solid var(--border);}
 .sidebar-logo{display:flex;align-items:center;gap:9px;}
 .sidebar-logo-ring{width:36px;height:36px;border-radius:50%;background:#fff;border:2px solid var(--gold);overflow:hidden;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
@@ -179,10 +226,10 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
 .sidebar-logo-sub{font-size:9px;color:var(--muted);}
 .sidebar-nav{flex:1;padding:.75rem 0;overflow-y:auto;}
 .sidebar-label{font-size:9px;font-weight:600;letter-spacing:.1em;color:var(--muted);padding:.5rem 1rem .25rem;}
-.sidebar-btn{display:flex;align-items:center;gap:9px;width:100%;background:none;border:none;color:var(--muted);font-family:'Inter',sans-serif;font-size:13px;padding:11px 1rem;cursor:pointer;transition:all .15s;text-align:left;}
+.sidebar-btn{display:flex;align-items:center;gap:9px;width:100%;background:none;border:none;color:var(--muted);font-family:'Inter',sans-serif;font-size:12px;padding:11px 1rem;cursor:pointer;transition:all .15s;text-align:left;}
 .sidebar-btn:hover{background:var(--dark2);color:#fff;}
 .sidebar-btn.active{background:var(--gold-dim);color:var(--gold);border-right:2px solid var(--gold);}
-.sidebar-icon{font-size:15px;width:18px;text-align:center;}
+.sidebar-icon{font-size:14px;width:18px;text-align:center;}
 .sidebar-footer{padding:1rem;border-top:1px solid var(--border);}
 .btn-logout{width:100%;background:var(--red-bg);color:var(--red);border:1px solid rgba(248,113,113,0.2);font-family:'Inter',sans-serif;font-size:13px;font-weight:500;padding:10px;border-radius:7px;cursor:pointer;}
 .admin-main{flex:1;overflow-y:auto;background:var(--dark);min-width:0;}
@@ -195,12 +242,14 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
 .apanel{display:none;}.apanel.active{display:block;}
 .admin-menu-btn{display:none;background:none;border:1px solid var(--border);color:var(--muted);padding:6px 10px;border-radius:6px;cursor:pointer;font-size:13px;}
 
+/* DASHBOARD */
 .dash-metrics{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-bottom:1.5rem;}
 .metric-card{background:var(--dark2);border:1px solid var(--border);border-radius:12px;padding:1rem;}
 .metric-icon{font-size:1.4rem;margin-bottom:.4rem;}
 .metric-val{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--gold);}
 .metric-lbl{font-size:11px;color:var(--muted);margin-top:2px;}
 
+/* TABLES */
 .tbl-wrap{background:var(--dark2);border:1px solid var(--border);border-radius:12px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
 .data-table{width:100%;border-collapse:collapse;font-size:12px;min-width:500px;}
 .data-table th{text-align:left;font-size:10px;font-weight:600;letter-spacing:.08em;color:var(--muted);padding:10px 12px;border-bottom:1px solid var(--border);white-space:nowrap;}
@@ -208,13 +257,13 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
 .data-table tr:last-child td{border-bottom:none;}
 .data-table tr:hover td{background:rgba(255,255,255,0.02);}
 
-/* ── ADMIN INVENTORY CARDS ── */
-.inv-admin-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;}
+/* ADMIN INVENTORY CARDS */
+.inv-admin-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:12px;}
 .inv-admin-card{background:var(--dark2);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:border .15s;}
 .inv-admin-card:hover{border-color:var(--gold);}
 .inv-admin-photo{height:120px;background:var(--dark3);display:flex;align-items:center;justify-content:center;font-size:2.5rem;overflow:hidden;position:relative;}
 .inv-admin-photo img{width:100%;height:100%;object-fit:cover;}
-.inv-admin-photo .photo-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.55);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s;cursor:pointer;}
+.photo-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.55);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s;cursor:pointer;}
 .inv-admin-card:hover .photo-overlay{opacity:1;}
 .photo-overlay span{font-size:11px;color:#fff;font-weight:600;background:var(--gold);color:#111;padding:5px 12px;border-radius:20px;}
 .inv-admin-body{padding:12px;}
@@ -222,13 +271,25 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
 .inv-admin-price{color:var(--gold);font-size:12px;margin-bottom:8px;}
 .inv-admin-row{display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;}
 .inv-admin-row span:first-child{color:var(--muted);}
-.inv-admin-actions{display:flex;gap:6px;margin-top:10px;padding:0 12px 12px;}
+.inv-admin-actions{display:flex;gap:6px;padding:0 12px 12px;}
 .btn-sm{flex:1;border:none;font-family:'Inter',sans-serif;font-size:11px;font-weight:600;padding:7px;border-radius:6px;cursor:pointer;touch-action:manipulation;}
 .btn-edit{background:var(--blue-bg);color:var(--blue);}
 .btn-confirm{background:var(--green-bg);color:var(--green);}
 .btn-del{background:var(--red-bg);color:var(--red);}
 .btn-add{background:var(--gold);color:#111;border:none;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;padding:9px 20px;border-radius:8px;cursor:pointer;margin-bottom:1rem;display:inline-flex;align-items:center;gap:6px;}
 
+/* ADMIN PACKAGE CARDS */
+.pkg-admin-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;}
+.pkg-admin-card{background:var(--dark2);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
+.pkg-admin-photo{height:120px;background:var(--dark3);display:flex;align-items:center;justify-content:center;font-size:2.5rem;overflow:hidden;position:relative;}
+.pkg-admin-photo img{width:100%;height:100%;object-fit:cover;}
+.pkg-admin-body{padding:12px;}
+.pkg-admin-name{font-size:13px;font-weight:600;margin-bottom:3px;}
+.pkg-admin-price{color:var(--gold);font-size:12px;margin-bottom:5px;}
+.pkg-admin-includes{font-size:11px;color:var(--muted);line-height:1.6;margin-bottom:8px;max-height:52px;overflow:hidden;}
+.pkg-admin-avail{display:inline-block;font-size:10px;padding:2px 8px;border-radius:20px;margin-bottom:8px;}
+
+/* STATUS */
 .status{font-size:10px;padding:3px 9px;border-radius:20px;font-weight:500;white-space:nowrap;}
 .status-pending{background:var(--gold-dim);color:var(--gold);}
 .status-confirmed{background:var(--green-bg);color:var(--green);}
@@ -236,66 +297,60 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
 .status-signed{background:var(--green-bg);color:var(--green);}
 .status-awaiting,.status-awaiting-signature{background:var(--gold-dim);color:var(--gold);}
 
+/* LOADING + TOAST + MODAL */
 .loading{display:flex;align-items:center;justify-content:center;padding:2rem;color:var(--muted);gap:8px;font-size:13px;}
 .spinner{width:16px;height:16px;border:2px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0;}
 @keyframes spin{to{transform:rotate(360deg);}}
-
 .toast{position:fixed;bottom:1.5rem;right:1rem;left:1rem;max-width:360px;margin:0 auto;background:var(--dark2);border:1px solid var(--border);border-radius:10px;padding:12px 16px;font-size:13px;z-index:9999;transform:translateY(100px);opacity:0;transition:all .3s;text-align:center;}
 .toast.show{transform:translateY(0);opacity:1;}
 .toast.success{border-color:var(--green);color:var(--green);}
 .toast.error{border-color:var(--red);color:var(--red);}
-
-/* ── ITEM MODAL (Add/Edit) ── */
 .modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);z-index:999;align-items:center;justify-content:center;padding:1rem;}
 .modal-overlay.open{display:flex;}
-.modal-box{background:var(--dark2);border:1px solid var(--border);border-radius:16px;padding:1.75rem 1.5rem;max-width:420px;width:100%;text-align:center;}
+.modal-box{background:var(--dark2);border:1px solid var(--border);border-radius:16px;padding:2rem 1.5rem;max-width:360px;width:100%;text-align:center;}
 .modal-icon{font-size:2.5rem;margin-bottom:.75rem;}
 .modal-box h3{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:.05em;margin-bottom:.5rem;}
 .modal-box p{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:1.25rem;}
 .modal-close{background:var(--gold);color:#111;border:none;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;padding:11px 28px;border-radius:7px;cursor:pointer;}
 
-/* item form modal */
-.item-modal{background:var(--dark2);border:1px solid var(--border);border-radius:16px;padding:1.5rem;max-width:460px;width:100%;max-height:90vh;overflow-y:auto;}
-.item-modal-title{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:.06em;margin-bottom:1.25rem;display:flex;align-items:center;justify-content:space-between;}
+/* ITEM/PACKAGE FORM MODAL */
+.item-modal{background:var(--dark2);border:1px solid var(--border);border-radius:16px;padding:1.5rem;max-width:480px;width:100%;max-height:92vh;overflow-y:auto;}
+.item-modal-title{font-family:'Bebas Neue',sans-serif;font-size:1.25rem;letter-spacing:.06em;margin-bottom:1.25rem;display:flex;align-items:center;justify-content:space-between;}
 .item-modal-title em{color:var(--gold);font-style:normal;}
 .modal-x{background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;padding:0 4px;}
 .item-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1rem;}
 .if-full{grid-column:1/-1;}
 .ifg{display:flex;flex-direction:column;gap:5px;}
 .ifg label{font-size:10px;font-weight:600;color:var(--muted);letter-spacing:.08em;}
-.ifg input,.ifg select{background:var(--dark3);border:1px solid var(--border);border-radius:7px;padding:9px 11px;font-family:'Inter',sans-serif;font-size:13px;color:#fff;outline:none;transition:border .15s;width:100%;}
-.ifg input:focus,.ifg select:focus{border-color:var(--gold);}
+.ifg input,.ifg select,.ifg textarea{background:var(--dark3);border:1px solid var(--border);border-radius:7px;padding:9px 11px;font-family:'Inter',sans-serif;font-size:13px;color:#fff;outline:none;transition:border .15s;width:100%;}
+.ifg input:focus,.ifg select:focus,.ifg textarea:focus{border-color:var(--gold);}
 .ifg select option{background:var(--dark3);}
-
-/* image upload area */
-.img-upload-area{border:2px dashed var(--border);border-radius:10px;padding:1rem;text-align:center;cursor:pointer;transition:border .15s;position:relative;background:var(--dark3);}
+.ifg textarea{resize:vertical;min-height:70px;}
+.img-upload-area{border:2px dashed var(--border);border-radius:10px;padding:1rem;text-align:center;cursor:pointer;transition:border .15s;background:var(--dark3);}
 .img-upload-area:hover{border-color:var(--gold);}
 .img-upload-area.has-img{border-style:solid;border-color:var(--gold);}
 .img-preview{width:100%;height:120px;object-fit:cover;border-radius:6px;margin-bottom:.5rem;}
 .img-upload-hint{font-size:11px;color:var(--muted);}
 .img-upload-hint strong{color:var(--gold);}
-.img-options{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;}
-.img-opt-btn{background:var(--dark2);border:1px solid var(--border);border-radius:7px;padding:8px;font-family:'Inter',sans-serif;font-size:11px;color:var(--muted);cursor:pointer;transition:all .15s;}
-.img-opt-btn:hover{border-color:var(--gold);color:var(--gold);}
-.img-opt-btn.active-opt{border-color:var(--gold);color:var(--gold);background:var(--gold-dim);}
 .url-input-row{margin-top:8px;}
 .url-input-row input{width:100%;background:var(--dark3);border:1px solid var(--border);border-radius:7px;padding:8px 10px;font-family:'Inter',sans-serif;font-size:12px;color:#fff;outline:none;}
 .url-input-row input:focus{border-color:var(--gold);}
 .file-input{display:none;}
-
 .modal-btns{display:flex;gap:8px;margin-top:1rem;}
 .btn-cancel{flex:1;background:none;border:1px solid var(--border);color:var(--muted);font-family:'Inter',sans-serif;font-size:13px;font-weight:500;padding:11px;border-radius:8px;cursor:pointer;}
 .btn-save{flex:2;background:var(--gold);color:#111;border:none;font-family:'Inter',sans-serif;font-size:13px;font-weight:700;padding:11px;border-radius:8px;cursor:pointer;}
 .btn-save:disabled{background:var(--dark4);color:var(--muted);cursor:not-allowed;}
-
-/* confirm delete modal */
 .confirm-modal{background:var(--dark2);border:1px solid var(--red-bg);border-radius:16px;padding:1.75rem;max-width:360px;width:100%;text-align:center;}
 .confirm-btns{display:flex;gap:8px;margin-top:1.25rem;}
 .btn-no{flex:1;background:none;border:1px solid var(--border);color:var(--muted);font-family:'Inter',sans-serif;font-size:13px;padding:10px;border-radius:8px;cursor:pointer;}
 .btn-yes-del{flex:1;background:var(--red-bg);color:var(--red);border:1px solid rgba(248,113,113,0.3);font-family:'Inter',sans-serif;font-size:13px;font-weight:600;padding:10px;border-radius:8px;cursor:pointer;}
-
 .sidebar-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:299;}
 .sidebar-backdrop.show{display:block;}
+
+/* price type toggle */
+.price-type-toggle{display:flex;gap:6px;margin-top:4px;}
+.ptt-btn{flex:1;background:var(--dark3);border:1px solid var(--border);color:var(--muted);font-family:'Inter',sans-serif;font-size:12px;padding:7px;border-radius:7px;cursor:pointer;transition:all .15s;}
+.ptt-btn.active{background:var(--gold-dim);border-color:var(--gold);color:var(--gold);}
 
 @media(max-width:768px){
   .nav-links{display:none;}
@@ -311,7 +366,7 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
   .stat:nth-child(odd){border-right:1px solid var(--border);}
   .stat:nth-last-child(-n+2){border-bottom:none;}
   .section{padding:1.25rem 1rem;}
-  .inv-grid{grid-template-columns:1fr 1fr;}
+  .inv-grid,.pkg-grid,.pkg-admin-grid{grid-template-columns:1fr;}
   .service-grid{grid-template-columns:1fr 1fr;}
   .form-grid{grid-template-columns:1fr;}
   .form-full{grid-column:1;}
@@ -340,19 +395,14 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
 
 <nav id="pub-nav">
   <div class="nav-brand">
-    <div class="nav-logo">
-      <img src="logo_colored.png" alt="J&R Logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-      <span class="nav-logo-fallback" style="display:none;">J&R</span>
-    </div>
-    <div>
-      <div class="nav-name">J<em>&</em>R <span style="color:#fff">Rentals</span></div>
-      <div class="nav-sub">METRO CEBU · TABLES · CHAIRS · CAMPING</div>
-    </div>
+    <div class="nav-logo"><img src="logo_colored.png" alt="J&R" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><span class="nav-logo-fallback" style="display:none;">J&R</span></div>
+    <div><div class="nav-name">J<em>&</em>R <span style="color:#fff">Rentals</span></div><div class="nav-sub">METRO CEBU · TABLES · CHAIRS · CAMPING</div></div>
   </div>
   <button class="hamburger" id="hamburger" onclick="toggleMobileNav()"><span></span><span></span><span></span></button>
   <div class="nav-links">
     <button class="active" onclick="pub('home')">Home</button>
     <button onclick="pub('inventory')">Inventory</button>
+    <button onclick="pub('packages')">Packages</button>
     <button onclick="pub('booking')">Book</button>
     <button onclick="pub('quotation')">Quote</button>
     <button onclick="pub('contract')">Contract</button>
@@ -362,6 +412,7 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
 <div class="mobile-nav" id="mobile-nav">
   <button class="active" onclick="pub('home');closeMobileNav()">🏠 Home</button>
   <button onclick="pub('inventory');closeMobileNav()">📦 Inventory</button>
+  <button onclick="pub('packages');closeMobileNav()">🎁 Packages</button>
   <button onclick="pub('booking');closeMobileNav()">📅 Book Now</button>
   <button onclick="pub('quotation');closeMobileNav()">💰 Get a Quote</button>
   <button onclick="pub('contract');closeMobileNav()">📄 Contract</button>
@@ -369,19 +420,18 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
 </div>
 
 <div id="public-area">
+
+  <!-- HOME -->
   <div class="page active" id="page-home">
     <div class="hero">
-      <div class="hero-ring">
-        <img src="logo_colored.png" alt="J&R" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-        <span class="hero-ring-fallback" style="display:none;">J&R</span>
-      </div>
+      <div class="hero-ring"><img src="logo_colored.png" alt="J&R" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><span class="hero-ring-fallback" style="display:none;">J&R</span></div>
       <h1>Jacky <em>&</em> Rey<br>Rentals</h1>
       <div class="hero-tagline">"From Gatherings to Camping — We've got the Essentials"</div>
-      <div class="hero-tags"><span class="hero-tag">Tables</span><span class="hero-tag">Chairs</span><span class="hero-tag">Camping Sets</span></div>
+      <div class="hero-tags"><span class="hero-tag">Tables</span><span class="hero-tag">Chairs</span><span class="hero-tag">Camping Sets</span><span class="hero-tag">Event Packages</span></div>
       <div class="hero-btns">
+        <button class="btn-gold" onclick="pub('packages')">View Packages</button>
         <button class="btn-gold" onclick="pub('booking')">Book Now</button>
-        <button class="btn-outline" onclick="pub('quotation')">Get a Quote</button>
-        <button class="btn-outline" onclick="pub('inventory')">View Items</button>
+        <button class="btn-outline" onclick="pub('inventory')">Individual Items</button>
       </div>
     </div>
     <div class="contact-bar">
@@ -397,43 +447,66 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
     </div>
     <div class="section">
       <div class="sec-title">What We <em>Offer</em></div>
-      <div class="sec-sub">Affordable rentals for every occasion in Metro Cebu</div>
+      <div class="sec-sub">Individual items or ready-made event packages</div>
       <div class="service-grid">
+        <div class="svc-card" onclick="pub('packages')"><div class="svc-icon">🎁</div><div class="svc-name">Packages</div><div class="svc-desc">All-in event bundles</div></div>
         <div class="svc-card" onclick="pub('inventory')"><div class="svc-icon">🪑</div><div class="svc-name">Chairs</div><div class="svc-desc">Monoblock, foldable & more</div></div>
         <div class="svc-card" onclick="pub('inventory')"><div class="svc-icon">🍽️</div><div class="svc-name">Tables</div><div class="svc-desc">Round, rectangular & banquet</div></div>
         <div class="svc-card" onclick="pub('inventory')"><div class="svc-icon">⛺</div><div class="svc-name">Camping Sets</div><div class="svc-desc">Tents, lights & essentials</div></div>
-        <div class="svc-card" onclick="pub('quotation')"><div class="svc-icon">📋</div><div class="svc-name">Free Quotation</div><div class="svc-desc">Instant price estimate</div></div>
       </div>
     </div>
   </div>
 
+  <!-- INVENTORY -->
   <div class="page" id="page-inventory">
     <div class="section">
       <div class="sec-title">Our <em>Inventory</em></div>
-      <div class="sec-sub">All items for rent — prices per day per piece</div>
-      <div class="inv-grid" id="pub-inv-grid"><div class="loading"><div class="spinner"></div> Loading inventory...</div></div>
+      <div class="sec-sub">Individual rental items — prices per day per piece</div>
+      <div class="inv-grid" id="pub-inv-grid"><div class="loading"><div class="spinner"></div> Loading...</div></div>
     </div>
   </div>
 
+  <!-- PACKAGES -->
+  <div class="page" id="page-packages">
+    <div class="section">
+      <div class="sec-title">Event <em>Packages</em></div>
+      <div class="sec-sub">Ready-made bundles for any occasion — add extras on top if you need more</div>
+      <div class="pkg-grid" id="pub-pkg-grid"><div class="loading"><div class="spinner"></div> Loading packages...</div></div>
+    </div>
+  </div>
+
+  <!-- BOOKING -->
   <div class="page" id="page-booking">
     <div class="section">
       <div class="sec-title">Book a <em>Rental</em></div>
       <div class="sec-sub">Fill in details and we'll confirm within 24 hours</div>
       <div class="form-card">
+        <!-- package selected banner -->
+        <div class="pkg-selected-banner" id="pkg-banner">
+          <div>
+            <div class="psb-left" id="pkg-banner-name">🎁 Package Selected</div>
+            <div class="psb-right" id="pkg-banner-price"></div>
+          </div>
+          <button class="psb-clear" onclick="clearPackage()">✕ Clear</button>
+        </div>
         <div class="form-grid">
           <div class="fg"><label>FULL NAME</label><input type="text" id="b-name" placeholder="Juan dela Cruz" autocomplete="name"></div>
           <div class="fg"><label>CONTACT NUMBER</label><input type="tel" id="b-phone" placeholder="09XX XXX XXXX"></div>
           <div class="fg"><label>EVENT DATE</label><input type="date" id="b-date"></div>
           <div class="fg"><label>RETURN DATE</label><input type="date" id="b-return"></div>
           <div class="fg form-full"><label>EVENT LOCATION</label><input type="text" id="b-location" placeholder="Barangay, City, Metro Cebu"></div>
-          <div class="fg form-full"><label>ITEMS TO RENT</label><div class="item-list" id="booking-items"><div class="loading"><div class="spinner"></div> Loading items...</div></div></div>
-          <div class="fg form-full"><label>NOTES</label><textarea id="b-notes" placeholder="Delivery address, event type, setup needs..."></textarea></div>
+          <div class="fg form-full">
+            <div class="extras-label" id="extras-label">ITEMS TO RENT</div>
+            <div class="item-list" id="booking-items"><div class="loading"><div class="spinner"></div> Loading...</div></div>
+          </div>
+          <div class="fg form-full"><label>NOTES / SPECIAL REQUESTS</label><textarea id="b-notes" placeholder="Delivery address, event type, setup needs..."></textarea></div>
         </div>
         <button class="btn-submit" id="btn-book-submit" onclick="submitBooking()">Submit Booking Request</button>
       </div>
     </div>
   </div>
 
+  <!-- QUOTATION -->
   <div class="page" id="page-quotation">
     <div class="section">
       <div class="sec-title">Get a <em>Quotation</em></div>
@@ -453,6 +526,7 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
     </div>
   </div>
 
+  <!-- CONTRACT -->
   <div class="page" id="page-contract">
     <div class="section">
       <div class="sec-title">Rental <em>Contract</em></div>
@@ -486,16 +560,15 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
       <button class="btn-proceed" style="margin-top:12px" onclick="pub('booking')">Book Now to Get Your Contract ↗</button>
     </div>
   </div>
-</div>
 
+</div><!-- /public-area -->
+
+<!-- ADMIN LOGIN -->
 <div id="login-area" style="display:none;">
   <div class="login-wrap">
     <div class="login-card">
       <div style="text-align:center;margin-bottom:1.5rem;">
-        <div class="login-logo-ring">
-          <img src="logo_colored.png" alt="J&R" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-          <span class="login-logo-fallback" style="display:none;">J&R</span>
-        </div>
+        <div class="login-logo-ring"><img src="logo_colored.png" alt="J&R" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><span class="login-logo-fallback" style="display:none;">J&R</span></div>
         <div class="login-title">Admin <em>Portal</em></div>
         <div class="login-sub">Jacky & Rey Rentals · Staff Only</div>
       </div>
@@ -503,23 +576,19 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
       <div class="login-fg"><label>PASSWORD</label><input type="password" id="l-pass" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()"></div>
       <div class="login-err" id="l-err">Incorrect username or password.</div>
       <button class="btn-login" id="btn-login" onclick="doLogin()">Login to Dashboard</button>
-      <div style="text-align:center;margin-top:1rem;">
-        <button style="background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer;padding:8px;" onclick="backToPublic()">← Back to website</button>
-      </div>
+      <div style="text-align:center;margin-top:1rem;"><button style="background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer;padding:8px;" onclick="backToPublic()">← Back to website</button></div>
     </div>
   </div>
 </div>
 
+<!-- ADMIN AREA -->
 <div id="admin-area" style="display:none;">
   <div class="sidebar-backdrop" id="sidebar-backdrop" onclick="closeSidebar()"></div>
   <div class="admin-shell">
     <div class="admin-sidebar" id="admin-sidebar">
       <div class="sidebar-head">
         <div class="sidebar-logo">
-          <div class="sidebar-logo-ring">
-            <img src="logo_colored.png" alt="J&R" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-            <span class="sidebar-logo-fallback" style="display:none;">J&R</span>
-          </div>
+          <div class="sidebar-logo-ring"><img src="logo_colored.png" alt="J&R" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><span class="sidebar-logo-fallback" style="display:none;">J&R</span></div>
           <div><div class="sidebar-logo-name">J<em>&</em>R Admin</div><div class="sidebar-logo-sub">Staff Dashboard</div></div>
         </div>
       </div>
@@ -528,6 +597,7 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
         <button class="sidebar-btn active" onclick="aPanel('dashboard',this);closeSidebar()"><span class="sidebar-icon">📊</span> Dashboard</button>
         <div class="sidebar-label">MANAGE</div>
         <button class="sidebar-btn" onclick="aPanel('inventory',this);closeSidebar()"><span class="sidebar-icon">📦</span> Inventory</button>
+        <button class="sidebar-btn" onclick="aPanel('packages',this);closeSidebar()"><span class="sidebar-icon">🎁</span> Packages</button>
         <button class="sidebar-btn" onclick="aPanel('bookings',this);closeSidebar()"><span class="sidebar-icon">📅</span> Bookings</button>
         <button class="sidebar-btn" onclick="aPanel('quotations',this);closeSidebar()"><span class="sidebar-icon">💰</span> Quotations</button>
         <button class="sidebar-btn" onclick="aPanel('contracts',this);closeSidebar()"><span class="sidebar-icon">📄</span> Contracts</button>
@@ -548,22 +618,31 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
       </div>
       <div class="admin-content">
 
+        <!-- DASHBOARD -->
         <div class="apanel active" id="apanel-dashboard">
           <div class="dash-metrics" id="dash-metrics"><div class="loading"><div class="spinner"></div> Loading...</div></div>
           <div class="sec-title" style="margin-bottom:.75rem;font-size:1.2rem;">Recent <em>Bookings</em></div>
           <div class="tbl-wrap">
             <table class="data-table">
-              <thead><tr><th>ID</th><th>Client</th><th>Items</th><th>Date</th><th>Amount</th><th>Status</th></tr></thead>
+              <thead><tr><th>ID</th><th>Client</th><th>Items / Package</th><th>Date</th><th>Amount</th><th>Status</th></tr></thead>
               <tbody id="dash-bookings"><tr><td colspan="6" class="loading"><div class="spinner"></div></td></tr></tbody>
             </table>
           </div>
         </div>
 
+        <!-- INVENTORY -->
         <div class="apanel" id="apanel-inventory">
-          <button class="btn-add" onclick="openItemModal(null)">➕ Add New Item</button>
+          <button class="btn-add" onclick="openItemModal(null,'item')">➕ Add New Item</button>
           <div class="inv-admin-grid" id="admin-inv-grid"><div class="loading"><div class="spinner"></div> Loading...</div></div>
         </div>
 
+        <!-- PACKAGES ADMIN -->
+        <div class="apanel" id="apanel-packages">
+          <button class="btn-add" onclick="openItemModal(null,'package')">➕ Add New Package</button>
+          <div class="pkg-admin-grid" id="admin-pkg-grid"><div class="loading"><div class="spinner"></div> Loading packages...</div></div>
+        </div>
+
+        <!-- BOOKINGS -->
         <div class="apanel" id="apanel-bookings">
           <div class="tbl-wrap">
             <table class="data-table">
@@ -573,6 +652,7 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
           </div>
         </div>
 
+        <!-- QUOTATIONS -->
         <div class="apanel" id="apanel-quotations">
           <div class="tbl-wrap">
             <table class="data-table">
@@ -582,6 +662,7 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
           </div>
         </div>
 
+        <!-- CONTRACTS -->
         <div class="apanel" id="apanel-contracts">
           <div class="tbl-wrap">
             <table class="data-table">
@@ -596,69 +677,90 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
   </div>
 </div>
 
-<!-- ADD / EDIT ITEM MODAL -->
+<!-- ITEM / PACKAGE FORM MODAL -->
 <div class="modal-overlay" id="item-modal-overlay">
   <div class="item-modal">
     <div class="item-modal-title">
       <span id="item-modal-title-text">Add <em>New Item</em></span>
       <button class="modal-x" onclick="closeItemModal()">✕</button>
     </div>
-    <div class="item-form-grid">
-      <div class="ifg if-full">
-        <label>ITEM NAME</label>
-        <input type="text" id="f-name" placeholder="e.g. Monobloc Chair">
-      </div>
-      <div class="ifg">
-        <label>EMOJI ICON</label>
-        <input type="text" id="f-emoji" placeholder="🪑" maxlength="4">
-      </div>
-      <div class="ifg">
-        <label>PRICE PER DAY (₱)</label>
-        <input type="number" id="f-price" placeholder="150" min="0">
-      </div>
-      <div class="ifg">
-        <label>TOTAL STOCK</label>
-        <input type="number" id="f-total" placeholder="50" min="0">
-      </div>
-      <div class="ifg">
-        <label>AVAILABLE NOW</label>
-        <input type="number" id="f-avail" placeholder="50" min="0">
-      </div>
-      <div class="ifg">
-        <label>CATEGORY</label>
-        <select id="f-cat">
-          <option value="Chairs">Chairs</option>
-          <option value="Tables">Tables</option>
-          <option value="Camping">Camping</option>
-          <option value="Other">Other</option>
-        </select>
-      </div>
-      <div class="ifg if-full">
-        <label>ITEM PHOTO</label>
-        <div class="img-upload-area" id="img-upload-area" onclick="document.getElementById('f-file').click()">
-          <img class="img-preview" id="img-preview" style="display:none;">
-          <div id="img-placeholder">
-            <div style="font-size:2rem;margin-bottom:.4rem;">📷</div>
-            <div class="img-upload-hint">Click to <strong>upload photo</strong> from your device<br>or paste an image URL below</div>
+
+    <!-- ITEM FIELDS -->
+    <div id="item-fields">
+      <div class="item-form-grid">
+        <div class="ifg if-full"><label>ITEM NAME</label><input type="text" id="f-name" placeholder="e.g. Monobloc Chair"></div>
+        <div class="ifg"><label>EMOJI ICON</label><input type="text" id="f-emoji" placeholder="🪑" maxlength="4"></div>
+        <div class="ifg"><label>PRICE PER DAY (₱)</label><input type="number" id="f-price" placeholder="150" min="0"></div>
+        <div class="ifg"><label>TOTAL STOCK</label><input type="number" id="f-total" placeholder="50" min="0"></div>
+        <div class="ifg"><label>AVAILABLE NOW</label><input type="number" id="f-avail" placeholder="50" min="0"></div>
+        <div class="ifg"><label>CATEGORY</label>
+          <select id="f-cat"><option value="Chairs">Chairs</option><option value="Tables">Tables</option><option value="Camping">Camping</option><option value="Other">Other</option></select>
+        </div>
+        <div class="ifg if-full">
+          <label>ITEM PHOTO</label>
+          <div class="img-upload-area" id="img-upload-area" onclick="document.getElementById('f-file').click()">
+            <img class="img-preview" id="img-preview" style="display:none;">
+            <div id="img-placeholder"><div style="font-size:2rem;margin-bottom:.4rem;">📷</div><div class="img-upload-hint">Click to <strong>upload photo</strong> from device</div></div>
           </div>
-        </div>
-        <input type="file" class="file-input" id="f-file" accept="image/*" onchange="handleFileUpload(this)">
-        <div class="url-input-row">
-          <input type="text" id="f-imgurl" placeholder="Or paste image URL (Google Drive, etc.)" oninput="handleUrlInput(this.value)">
-        </div>
-        <div style="font-size:10px;color:var(--muted);margin-top:5px;">
-          💡 For Google Drive: right-click image → Share → copy link → paste here
+          <input type="file" class="file-input" id="f-file" accept="image/*" onchange="handleFileUpload(this)">
+          <div class="url-input-row"><input type="text" id="f-imgurl" placeholder="Or paste image URL (Google Drive, etc.)" oninput="handleUrlInput(this.value)"></div>
+          <div style="font-size:10px;color:var(--muted);margin-top:5px;">💡 Google Drive: Share → Copy link → paste here</div>
         </div>
       </div>
     </div>
+
+    <!-- PACKAGE FIELDS -->
+    <div id="package-fields" style="display:none;">
+      <div class="item-form-grid">
+        <div class="ifg if-full"><label>PACKAGE NAME</label><input type="text" id="p-name" placeholder="e.g. Birthday Starter Package"></div>
+        <div class="ifg if-full"><label>SHORT DESCRIPTION</label><input type="text" id="p-desc" placeholder="Perfect for birthdays & small gatherings"></div>
+        <div class="ifg if-full">
+          <label>WHAT'S INCLUDED (one item per line)</label>
+          <textarea id="p-includes" placeholder="50 Monobloc Chairs&#10;5 Round Tables&#10;1 String Lights (10m)"></textarea>
+        </div>
+        <div class="ifg">
+          <label>PACKAGE PRICE (₱)</label>
+          <input type="number" id="p-price" placeholder="1500" min="0">
+        </div>
+        <div class="ifg">
+          <label>PRICE TYPE</label>
+          <div class="price-type-toggle">
+            <button class="ptt-btn active" id="ptt-fixed" onclick="setPriceType('fixed')">Fixed Total</button>
+            <button class="ptt-btn" id="ptt-perday" onclick="setPriceType('perday')">Per Day</button>
+          </div>
+        </div>
+        <div class="ifg">
+          <label>INDIVIDUAL PRICE (₱) <span style="color:var(--muted);font-weight:400">(if bought separately)</span></label>
+          <input type="number" id="p-indiv" placeholder="1750" min="0">
+        </div>
+        <div class="ifg">
+          <label>SAVINGS (₱)</label>
+          <input type="number" id="p-savings" placeholder="250" min="0" oninput="">
+        </div>
+        <div class="ifg">
+          <label>AVAILABLE?</label>
+          <select id="p-avail"><option value="Yes">Yes — available</option><option value="No">No — unavailable</option></select>
+        </div>
+        <div class="ifg if-full">
+          <label>PACKAGE PHOTO</label>
+          <div class="img-upload-area" id="pkg-img-upload-area" onclick="document.getElementById('p-file').click()">
+            <img class="img-preview" id="pkg-img-preview" style="display:none;">
+            <div id="pkg-img-placeholder"><div style="font-size:2rem;margin-bottom:.4rem;">📷</div><div class="img-upload-hint">Click to <strong>upload photo</strong> from device</div></div>
+          </div>
+          <input type="file" class="file-input" id="p-file" accept="image/*" onchange="handlePkgFileUpload(this)">
+          <div class="url-input-row"><input type="text" id="p-imgurl" placeholder="Or paste image URL" oninput="handlePkgUrlInput(this.value)"></div>
+        </div>
+      </div>
+    </div>
+
     <div class="modal-btns">
       <button class="btn-cancel" onclick="closeItemModal()">Cancel</button>
-      <button class="btn-save" id="btn-save-item" onclick="saveItem()">💾 Save Item</button>
+      <button class="btn-save" id="btn-save-item" onclick="saveItem()">💾 Save</button>
     </div>
   </div>
 </div>
 
-<!-- DELETE CONFIRM MODAL -->
+<!-- DELETE CONFIRM -->
 <div class="modal-overlay" id="del-modal-overlay">
   <div class="confirm-modal">
     <div style="font-size:2.5rem;margin-bottom:.75rem;">🗑️</div>
@@ -684,39 +786,40 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
 <div class="toast" id="toast"></div>
 
 <script>
-const API = "https://script.google.com/macros/s/AKfycbyxhstT4vDPqdVTrqcOPBCJL7JDIgzateELyfMqCrDnfnBKzaL3vtdR4982_iMrnUV4yA/exec";
-let inventoryItems=[], bookingQty={}, adminRole="";
-let editingItem=null, deleteTarget=null, currentImageUrl="";
+const API="https://script.google.com/macros/s/AKfycbyxhstT4vDPqdVTrqcOPBCJL7JDIgzateELyfMqCrDnfnBKzaL3vtdR4982_iMrnUV4yA/exec";
+let inventoryItems=[],packagesData=[],bookingQty={},adminRole="";
+let editingItem=null,editingType="item",deleteTarget=null,deleteType="item";
+let currentImageUrl="",currentPkgImageUrl="",currentPriceType="fixed";
+let selectedPackage=null;
 
 async function api(data){
-  try{
-    const res=await fetch(API,{method:"POST",body:JSON.stringify(data),headers:{"Content-Type":"text/plain"}});
-    return await res.json();
-  }catch(e){return{success:false,error:e.message};}
+  try{const res=await fetch(API,{method:"POST",body:JSON.stringify(data),headers:{"Content-Type":"text/plain"}});return await res.json();}
+  catch(e){return{success:false,error:e.message};}
 }
 
-/* ── MOBILE NAV ── */
+/* MOBILE NAV */
 function toggleMobileNav(){document.getElementById("mobile-nav").classList.toggle("open");document.getElementById("hamburger").classList.toggle("open");}
 function closeMobileNav(){document.getElementById("mobile-nav").classList.remove("open");document.getElementById("hamburger").classList.remove("open");}
 function openSidebar(){document.getElementById("admin-sidebar").classList.add("mobile-open");document.getElementById("sidebar-backdrop").classList.add("show");}
 function closeSidebar(){document.getElementById("admin-sidebar").classList.remove("mobile-open");document.getElementById("sidebar-backdrop").classList.remove("show");}
 
-/* ── NAVIGATION ── */
+/* NAVIGATION */
 function pub(id){
   document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
   document.getElementById("page-"+id).classList.add("active");
-  const pages=["home","inventory","booking","quotation","contract"];
+  const pages=["home","inventory","packages","booking","quotation","contract"];
   document.querySelectorAll(".nav-links button:not(.btn-admin-nav)").forEach((b,i)=>{b.classList.remove("active");if(pages[i]===id)b.classList.add("active");});
   document.querySelectorAll(".mobile-nav button:not(.m-admin)").forEach((b,i)=>{b.classList.remove("active");if(pages[i]===id)b.classList.add("active");});
   window.scrollTo(0,0);
   if(id==="inventory")loadPublicInventory();
+  if(id==="packages")loadPublicPackages();
   if(id==="booking")loadBookingItems();
   if(id==="quotation")loadQuoteItems();
 }
 function showLogin(){document.getElementById("public-area").style.display="none";document.getElementById("pub-nav").style.display="none";document.getElementById("login-area").style.display="block";}
 function backToPublic(){document.getElementById("public-area").style.display="block";document.getElementById("pub-nav").style.display="flex";document.getElementById("login-area").style.display="none";}
 
-/* ── INVENTORY ── */
+/* INVENTORY */
 async function loadInventory(){
   if(inventoryItems.length>0)return inventoryItems;
   const res=await api({action:"getInventory"});
@@ -724,37 +827,88 @@ async function loadInventory(){
   return inventoryItems;
 }
 
-function itemImg(item,h=110){
-  if(item.imageUrl){
-    let url=item.imageUrl;
-    // convert Google Drive share links to direct image links
-    const m=url.match(/\/d\/([a-zA-Z0-9_-]+)/);
-    if(m)url=`https://drive.google.com/thumbnail?id=${m[1]}&sz=w400`;
-    return `<img src="${url}" style="width:100%;height:${h}px;object-fit:cover;" onerror="this.parentElement.innerHTML='<span style=\\'font-size:2.2rem\\'>${item.emoji||'📦'}</span>'">`;
-  }
-  return `<span style="font-size:2.2rem">${item.emoji||"📦"}</span>`;
+function gdImg(url,fallback,h){
+  if(!url)return`<span style="font-size:2.2rem">${fallback||"📦"}</span>`;
+  let u=url;const m=url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+  if(m)u=`https://drive.google.com/thumbnail?id=${m[1]}&sz=w400`;
+  return`<img src="${u}" style="width:100%;height:${h||110}px;object-fit:cover;" onerror="this.parentElement.innerHTML='<span style=\\'font-size:2.2rem\\'>${fallback||'📦'}</span>'">`;
 }
 
 async function loadPublicInventory(){
-  const grid=document.getElementById("pub-inv-grid");
-  grid.innerHTML=`<div class="loading"><div class="spinner"></div> Loading inventory...</div>`;
+  const g=document.getElementById("pub-inv-grid");
+  g.innerHTML=`<div class="loading"><div class="spinner"></div> Loading...</div>`;
   const items=await loadInventory();
-  if(!items.length){grid.innerHTML=`<p style="color:var(--muted);padding:1rem">No items found.</p>`;return;}
-  grid.innerHTML=items.map(item=>{
-    const avail=parseInt(item.available)||0;
-    const bc=avail>20?"badge-green":avail>0?"badge-amber":"badge-red";
-    return `<div class="inv-card">
-      <div class="inv-img">${itemImg(item)}</div>
-      <div class="inv-body">
-        <div class="inv-name">${item.name}</div>
-        <div class="inv-price">₱${item.price} / day</div>
-        <span class="badge ${bc}">${avail>0?avail+" available":"Out of stock"}</span>
-        <button class="btn-book" onclick="pub('booking')" ${avail===0?"disabled style='background:var(--dark4);color:var(--muted)'":''}>${avail>0?"Book this":"Unavailable"}</button>
+  if(!items.length){g.innerHTML=`<p style="color:var(--muted);padding:1rem">No items found.</p>`;return;}
+  g.innerHTML=items.map(item=>{
+    const av=parseInt(item.available)||0;
+    const bc=av>20?"badge-green":av>0?"badge-amber":"badge-red";
+    return`<div class="inv-card"><div class="inv-img">${gdImg(item.imageUrl,item.emoji)}</div><div class="inv-body"><div class="inv-name">${item.name}</div><div class="inv-price">₱${item.price} / day</div><span class="badge ${bc}">${av>0?av+" available":"Out of stock"}</span><button class="btn-book" onclick="pub('booking')" ${av===0?"disabled style='background:var(--dark4);color:var(--muted)'":''}>${av>0?"Book this":"Unavailable"}</button></div></div>`;
+  }).join("");
+}
+
+/* PACKAGES */
+async function loadPackages(){
+  if(packagesData.length>0)return packagesData;
+  const res=await api({action:"getPackages"});
+  if(res.success)packagesData=res.packages;
+  return packagesData;
+}
+
+async function loadPublicPackages(){
+  const g=document.getElementById("pub-pkg-grid");
+  g.innerHTML=`<div class="loading"><div class="spinner"></div> Loading packages...</div>`;
+  const pkgs=await loadPackages();
+  if(!pkgs.length){g.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--muted)"><div style="font-size:2.5rem;margin-bottom:.75rem">🎁</div><div style="font-size:14px;font-weight:600;margin-bottom:.5rem">No packages yet</div><div style="font-size:12px">Check back soon or contact us directly!</div></div>`;return;}
+  g.innerHTML=pkgs.map(pkg=>{
+    const avail=(pkg.available||"Yes")==="Yes";
+    const inclLines=(pkg.includes||"").split("\n").filter(Boolean);
+    const priceLabel=pkg.priceType==="perday"?"per day":"fixed price";
+    return`<div class="pkg-card ${avail?'':''}">
+      <div class="pkg-photo">${gdImg(pkg.imageUrl,"🎁",150)}${pkg.savings?`<div class="pkg-badge">Save ₱${parseInt(pkg.savings).toLocaleString()}</div>`:''}</div>
+      <div class="pkg-body">
+        <div class="pkg-name">${pkg.name}</div>
+        <div class="pkg-desc">${pkg.description||""}</div>
+        <div class="pkg-includes">
+          <div class="pkg-includes-title">WHAT'S INCLUDED</div>
+          <div class="pkg-includes-items">${inclLines.map(l=>`<span>${l}</span>`).join("")}</div>
+        </div>
+        <div class="pkg-pricing">
+          <div class="pkg-price-block">
+            <div class="pkg-price-label">PACKAGE PRICE</div>
+            <div class="pkg-price">₱${parseInt(pkg.packagePrice).toLocaleString()}</div>
+            <div class="pkg-price-type">${priceLabel}${pkg.individualPrice?` · Individual: ₱${parseInt(pkg.individualPrice).toLocaleString()}`:""}</div>
+          </div>
+          ${avail&&pkg.savings?`<div class="pkg-savings">Save ₱${parseInt(pkg.savings).toLocaleString()}</div>`:''}
+          ${!avail?`<div class="pkg-unavail">Unavailable</div>`:''}
+        </div>
+        <button class="btn-book-pkg" onclick="bookPackage(${JSON.stringify(pkg).replace(/"/g,'&quot;')})" ${!avail?"disabled":""}>
+          ${avail?"📅 Book this Package":"Currently Unavailable"}
+        </button>
       </div>
     </div>`;
   }).join("");
 }
 
+function bookPackage(pkg){
+  selectedPackage=pkg;
+  pub('booking');
+  setTimeout(()=>{
+    const banner=document.getElementById("pkg-banner");
+    const label=document.getElementById("extras-label");
+    banner.classList.add("show");
+    document.getElementById("pkg-banner-name").textContent=`🎁 ${pkg.name}`;
+    document.getElementById("pkg-banner-price").textContent=`₱${parseInt(pkg.packagePrice).toLocaleString()} ${pkg.priceType==="perday"?"/ day":"fixed"}`;
+    label.textContent="ADD EXTRA ITEMS (optional)";
+  },100);
+}
+
+function clearPackage(){
+  selectedPackage=null;
+  document.getElementById("pkg-banner").classList.remove("show");
+  document.getElementById("extras-label").textContent="ITEMS TO RENT";
+}
+
+/* BOOKING */
 async function loadBookingItems(){
   const c=document.getElementById("booking-items");
   c.innerHTML=`<div class="loading"><div class="spinner"></div> Loading...</div>`;
@@ -785,20 +939,31 @@ async function submitBooking(){
   const location=document.getElementById("b-location").value.trim();
   const notes=document.getElementById("b-notes").value.trim();
   if(!name||!phone||!date){showToast("Please fill in your name, contact, and event date.","error");return;}
-  const itemsList=Object.entries(bookingQty).filter(([k,v])=>v>0).map(([k,v])=>`${v}x ${k}`).join(", ");
-  if(!itemsList){showToast("Please select at least one item.","error");return;}
-  const total=Object.entries(bookingQty).reduce((s,[k,v])=>{const i=inventoryItems.find(x=>x.name===k);return s+(v*(i?parseInt(i.price):0));},0);
-  const btn=document.getElementById("btn-book-submit");
-  btn.disabled=true;btn.textContent="Submitting...";
+
+  let itemsList="";let total=0;
+  if(selectedPackage){
+    itemsList=`PACKAGE: ${selectedPackage.name}`;
+    total=parseInt(selectedPackage.packagePrice)||0;
+    const extras=Object.entries(bookingQty).filter(([k,v])=>v>0).map(([k,v])=>`${v}x ${k}`).join(", ");
+    const extrasTotal=Object.entries(bookingQty).reduce((s,[k,v])=>{const i=inventoryItems.find(x=>x.name===k);return s+(v*(i?parseInt(i.price):0));},0);
+    if(extras){itemsList+=` + Extras: ${extras}`;total+=extrasTotal;}
+  }else{
+    itemsList=Object.entries(bookingQty).filter(([k,v])=>v>0).map(([k,v])=>`${v}x ${k}`).join(", ");
+    if(!itemsList){showToast("Please select at least one item or package.","error");return;}
+    total=Object.entries(bookingQty).reduce((s,[k,v])=>{const i=inventoryItems.find(x=>x.name===k);return s+(v*(i?parseInt(i.price):0));},0);
+  }
+
+  const btn=document.getElementById("btn-book-submit");btn.disabled=true;btn.textContent="Submitting...";
   const res=await api({action:"submitBooking",name,phone,location,eventDate:date,returnDate,items:itemsList,total,notes});
   btn.disabled=false;btn.textContent="Submit Booking Request";
   if(res.success){
     openMod("✅","Booking Submitted!",`Your booking (${res.bookingId}) has been received! We will contact you at ${phone} within 24 hours. Thank you for choosing Jacky & Rey Rentals!`);
     Object.keys(bookingQty).forEach(k=>{bookingQty[k]=0;});
-    loadBookingItems();inventoryItems=[];
+    clearPackage();loadBookingItems();inventoryItems=[];
   }else showToast("Submission failed. Please try again.","error");
 }
 
+/* QUOTATION */
 async function loadQuoteItems(){
   const c=document.getElementById("q-controls");
   c.innerHTML=`<div class="q-ctrl" style="grid-column:1/-1"><label>NUMBER OF DAYS</label><input type="number" min="1" value="1" id="q-days" oninput="calcQ()"></div><div class="loading" style="grid-column:1/-1"><div class="spinner"></div> Loading...</div>`;
@@ -807,19 +972,14 @@ async function loadQuoteItems(){
     +items.map(i=>`<div class="q-ctrl"><label>${i.emoji||""} ${i.name.toUpperCase()}</label><input type="number" min="0" value="0" id="qq-${i.name.replace(/\s/g,'_')}" oninput="calcQ()"></div>`).join("");
   calcQ();
 }
-
 function calcQ(){
   if(!inventoryItems.length)return;
   const days=Math.max(1,parseInt(document.getElementById("q-days")?.value)||1);
   let total=0,html="";
-  inventoryItems.forEach(i=>{
-    const qty=parseInt(document.getElementById("qq-"+i.name.replace(/\s/g,'_'))?.value)||0;
-    if(qty>0){const sub=qty*parseInt(i.price)*days;total+=sub;html+=`<div class="q-line"><span>${i.name}</span><span class="q-line-calc">${qty}×₱${i.price}×${days}d</span><span class="q-line-amt">₱${sub.toLocaleString()}</span></div>`;}
-  });
+  inventoryItems.forEach(i=>{const qty=parseInt(document.getElementById("qq-"+i.name.replace(/\s/g,'_'))?.value)||0;if(qty>0){const sub=qty*parseInt(i.price)*days;total+=sub;html+=`<div class="q-line"><span>${i.name}</span><span class="q-line-calc">${qty}×₱${i.price}×${days}d</span><span class="q-line-amt">₱${sub.toLocaleString()}</span></div>`;}});
   document.getElementById("q-lines").innerHTML=html||`<p style="font-size:12px;color:var(--muted);padding:6px 0">Select items above to see your estimate.</p>`;
   document.getElementById("q-total").textContent="₱"+total.toLocaleString();
 }
-
 async function quoteToBooking(){
   if(!inventoryItems.length){pub('booking');return;}
   const days=Math.max(1,parseInt(document.getElementById("q-days")?.value)||1);
@@ -829,7 +989,7 @@ async function quoteToBooking(){
   pub('booking');
 }
 
-/* ── ADMIN LOGIN ── */
+/* ADMIN LOGIN */
 async function doLogin(){
   const username=document.getElementById("l-user").value.trim();
   const password=document.getElementById("l-pass").value;
@@ -844,32 +1004,33 @@ async function doLogin(){
     document.getElementById("admin-area").style.display="block";
     document.getElementById("admin-role-badge").textContent=adminRole;
     loadAdminDashboard();
-  }else{document.getElementById("l-err").style.display="block";}
+  }else document.getElementById("l-err").style.display="block";
 }
-
 function doLogout(){
   document.getElementById("admin-area").style.display="none";
   document.getElementById("public-area").style.display="block";
   document.getElementById("pub-nav").style.display="flex";
   document.getElementById("l-user").value="";document.getElementById("l-pass").value="";
-  adminRole="";inventoryItems=[];
+  adminRole="";inventoryItems=[];packagesData=[];
 }
 
+/* ADMIN PANELS */
 function aPanel(id,btn){
   document.querySelectorAll(".apanel").forEach(p=>p.classList.remove("active"));
   document.getElementById("apanel-"+id).classList.add("active");
   document.querySelectorAll(".sidebar-btn").forEach(b=>b.classList.remove("active"));
   btn.classList.add("active");
-  const titles={dashboard:"Dashboard <em>Overview</em>",inventory:"Inventory <em>Management</em>",bookings:"Booking <em>Records</em>",quotations:"Quotation <em>Manager</em>",contracts:"Contract <em>Records</em>"};
+  const titles={dashboard:"Dashboard <em>Overview</em>",inventory:"Inventory <em>Management</em>",packages:"Package <em>Management</em>",bookings:"Booking <em>Records</em>",quotations:"Quotation <em>Manager</em>",contracts:"Contract <em>Records</em>"};
   document.getElementById("a-page-title").innerHTML=titles[id];
   if(id==="inventory")loadAdminInventory();
+  if(id==="packages")loadAdminPackages();
   if(id==="bookings")loadAdminBookings();
   if(id==="quotations")loadAdminQuotations();
   if(id==="contracts")loadAdminContracts();
 }
+function refreshAdminData(){inventoryItems=[];packagesData=[];loadAdminDashboard();const active=document.querySelector(".apanel.active")?.id?.replace("apanel-","");if(active&&active!=="dashboard")aPanel(active,document.querySelector(".sidebar-btn.active"));showToast("Data refreshed!","success");}
 
-function refreshAdminData(){inventoryItems=[];loadAdminDashboard();const active=document.querySelector(".apanel.active")?.id?.replace("apanel-","");if(active&&active!=="dashboard")aPanel(active,document.querySelector(".sidebar-btn.active"));showToast("Data refreshed!","success");}
-
+/* DASHBOARD */
 async function loadAdminDashboard(){
   const[invRes,bkRes]=await Promise.all([api({action:"getInventory"}),api({action:"getBookings"})]);
   const items=invRes.success?invRes.items:[];const bookings=bkRes.success?bkRes.bookings:[];
@@ -887,161 +1048,205 @@ async function loadAdminDashboard(){
     ||`<tr><td colspan="6" style="color:var(--muted);text-align:center;padding:1rem">No bookings yet</td></tr>`;
 }
 
-/* ══ INVENTORY CRUD ══ */
+/* ADMIN INVENTORY */
 async function loadAdminInventory(){
-  const grid=document.getElementById("admin-inv-grid");
-  grid.innerHTML=`<div class="loading"><div class="spinner"></div> Loading...</div>`;
+  const g=document.getElementById("admin-inv-grid");
+  g.innerHTML=`<div class="loading"><div class="spinner"></div> Loading...</div>`;
   inventoryItems=[];await loadInventory();
-  if(!inventoryItems.length){grid.innerHTML=`<p style="color:var(--muted)">No inventory found.</p>`;return;}
-  grid.innerHTML=inventoryItems.map(item=>`
+  if(!inventoryItems.length){g.innerHTML=`<p style="color:var(--muted)">No inventory found.</p>`;return;}
+  g.innerHTML=inventoryItems.map(item=>`
     <div class="inv-admin-card">
-      <div class="inv-admin-photo">
-        ${itemImg(item,120)}
-        <div class="photo-overlay" onclick="openItemModal(${JSON.stringify(item).replace(/"/g,'&quot;')})"><span>✏️ Edit</span></div>
-      </div>
+      <div class="inv-admin-photo">${gdImg(item.imageUrl,item.emoji,120)}<div class="photo-overlay" onclick="openItemModal(${JSON.stringify(item).replace(/"/g,'&quot;')},'item')"><span>✏️ Edit</span></div></div>
       <div class="inv-admin-body">
         <div class="inv-admin-name">${item.name}</div>
         <div class="inv-admin-price">₱${item.price} / day</div>
         <div class="inv-admin-row"><span>Total stock</span><span>${item.total}</span></div>
         <div class="inv-admin-row"><span>Available</span><span style="color:var(--green);font-weight:600">${item.available}</span></div>
         <div class="inv-admin-row"><span>Rented out</span><span style="color:var(--gold);font-weight:600">${item.rented}</span></div>
-        <div class="inv-admin-row"><span>Category</span><span>${item.category}</span></div>
       </div>
       <div class="inv-admin-actions">
-        <button class="btn-sm btn-edit" onclick="openItemModal(${JSON.stringify(item).replace(/"/g,'&quot;')})">✏️ Edit</button>
-        <button class="btn-sm btn-del" onclick="openDelModal('${item.name}')">🗑️ Delete</button>
+        <button class="btn-sm btn-edit" onclick="openItemModal(${JSON.stringify(item).replace(/"/g,'&quot;')},'item')">✏️ Edit</button>
+        <button class="btn-sm btn-del" onclick="openDelModal('${item.name}','item')">🗑️ Delete</button>
       </div>
     </div>`).join("");
 }
 
-/* ── ADD / EDIT MODAL ── */
-function openItemModal(item){
-  editingItem=item;currentImageUrl=item?item.imageUrl||"":"";
-  document.getElementById("item-modal-title-text").innerHTML=item?`Edit <em>Item</em>`:`Add <em>New Item</em>`;
-  document.getElementById("f-name").value=item?item.name:"";
-  document.getElementById("f-emoji").value=item?item.emoji:"";
-  document.getElementById("f-price").value=item?item.price:"";
-  document.getElementById("f-total").value=item?item.total:"";
-  document.getElementById("f-avail").value=item?item.available:"";
-  document.getElementById("f-cat").value=item?item.category:"Chairs";
-  document.getElementById("f-imgurl").value=item?item.imageUrl||"":"";
-  updateImgPreview(currentImageUrl);
+/* ADMIN PACKAGES */
+async function loadAdminPackages(){
+  const g=document.getElementById("admin-pkg-grid");
+  g.innerHTML=`<div class="loading"><div class="spinner"></div> Loading packages...</div>`;
+  packagesData=[];await loadPackages();
+  if(!packagesData.length){g.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--muted)"><div style="font-size:2rem;margin-bottom:.5rem">🎁</div><div>No packages yet. Click "Add New Package" to create your first one!</div></div>`;return;}
+  g.innerHTML=packagesData.map(pkg=>`
+    <div class="pkg-admin-card">
+      <div class="pkg-admin-photo">${gdImg(pkg.imageUrl,"🎁",120)}</div>
+      <div class="pkg-admin-body">
+        <div class="pkg-admin-name">${pkg.name}</div>
+        <div class="pkg-admin-price">₱${parseInt(pkg.packagePrice).toLocaleString()} ${pkg.priceType==="perday"?"/ day":"fixed"}</div>
+        <div class="pkg-admin-includes">${(pkg.includes||"").replace(/\n/g," · ")}</div>
+        <span class="pkg-admin-avail badge ${pkg.available==="Yes"?"badge-green":"badge-red"}">${pkg.available==="Yes"?"Available":"Unavailable"}</span>
+      </div>
+      <div class="inv-admin-actions">
+        <button class="btn-sm btn-edit" onclick="openItemModal(${JSON.stringify(pkg).replace(/"/g,'&quot;')},'package')">✏️ Edit</button>
+        <button class="btn-sm btn-del" onclick="openDelModal('${pkg.name}','package')">🗑️ Delete</button>
+      </div>
+    </div>`).join("");
+}
+
+/* ITEM / PACKAGE MODAL */
+function setPriceType(type){
+  currentPriceType=type;
+  document.getElementById("ptt-fixed").classList.toggle("active",type==="fixed");
+  document.getElementById("ptt-perday").classList.toggle("active",type==="perday");
+}
+
+function openItemModal(item,type){
+  editingItem=item;editingType=type||"item";
+  currentImageUrl=item?item.imageUrl||"":"";
+  currentPkgImageUrl=item?item.imageUrl||"":"";
+  const isPackage=editingType==="package";
+  document.getElementById("item-fields").style.display=isPackage?"none":"block";
+  document.getElementById("package-fields").style.display=isPackage?"block":"none";
+  document.getElementById("item-modal-title-text").innerHTML=item?(isPackage?`Edit <em>Package</em>`:`Edit <em>Item</em>`):(isPackage?`Add <em>New Package</em>`:`Add <em>New Item</em>`);
+
+  if(!isPackage){
+    document.getElementById("f-name").value=item?item.name:"";
+    document.getElementById("f-emoji").value=item?item.emoji:"";
+    document.getElementById("f-price").value=item?item.price:"";
+    document.getElementById("f-total").value=item?item.total:"";
+    document.getElementById("f-avail").value=item?item.available:"";
+    document.getElementById("f-cat").value=item?item.category:"Chairs";
+    document.getElementById("f-imgurl").value=item?item.imageUrl||"":"";
+    updateImgPreview(currentImageUrl,"img-upload-area","img-preview","img-placeholder");
+  }else{
+    document.getElementById("p-name").value=item?item.name:"";
+    document.getElementById("p-desc").value=item?item.description||"":"";
+    document.getElementById("p-includes").value=item?item.includes||"":"";
+    document.getElementById("p-price").value=item?item.packagePrice:"";
+    document.getElementById("p-indiv").value=item?item.individualPrice||"":"";
+    document.getElementById("p-savings").value=item?item.savings||"":"";
+    document.getElementById("p-avail").value=item?item.available||"Yes":"Yes";
+    document.getElementById("p-imgurl").value=item?item.imageUrl||"":"";
+    setPriceType(item?item.priceType||"fixed":"fixed");
+    updateImgPreview(currentPkgImageUrl,"pkg-img-upload-area","pkg-img-preview","pkg-img-placeholder");
+  }
   document.getElementById("item-modal-overlay").classList.add("open");
 }
-function closeItemModal(){document.getElementById("item-modal-overlay").classList.remove("open");editingItem=null;currentImageUrl="";}
+function closeItemModal(){document.getElementById("item-modal-overlay").classList.remove("open");editingItem=null;currentImageUrl="";currentPkgImageUrl="";}
 
-function handleFileUpload(input){
-  const file=input.files[0];if(!file)return;
-  const reader=new FileReader();
-  reader.onload=e=>{currentImageUrl=e.target.result;updateImgPreview(currentImageUrl);document.getElementById("f-imgurl").value="(uploaded from device)";};
-  reader.readAsDataURL(file);
-}
+function handleFileUpload(input){const f=input.files[0];if(!f)return;const r=new FileReader();r.onload=e=>{currentImageUrl=e.target.result;updateImgPreview(currentImageUrl,"img-upload-area","img-preview","img-placeholder");document.getElementById("f-imgurl").value="(uploaded)";};r.readAsDataURL(f);}
+function handlePkgFileUpload(input){const f=input.files[0];if(!f)return;const r=new FileReader();r.onload=e=>{currentPkgImageUrl=e.target.result;updateImgPreview(currentPkgImageUrl,"pkg-img-upload-area","pkg-img-preview","pkg-img-placeholder");document.getElementById("p-imgurl").value="(uploaded)";};r.readAsDataURL(f);}
+function handleUrlInput(url){currentImageUrl=url;if(url.trim())updateImgPreview(url,"img-upload-area","img-preview","img-placeholder");}
+function handlePkgUrlInput(url){currentPkgImageUrl=url;if(url.trim())updateImgPreview(url,"pkg-img-upload-area","pkg-img-preview","pkg-img-placeholder");}
 
-function handleUrlInput(url){
-  currentImageUrl=url;
-  if(url.trim())updateImgPreview(url);
-}
-
-function updateImgPreview(url){
-  const area=document.getElementById("img-upload-area");
-  const preview=document.getElementById("img-preview");
-  const placeholder=document.getElementById("img-placeholder");
-  if(url&&url.trim()&&!url.includes("uploaded from")){
-    let displayUrl=url;
-    const m=url.match(/\/d\/([a-zA-Z0-9_-]+)/);
-    if(m)displayUrl=`https://drive.google.com/thumbnail?id=${m[1]}&sz=w400`;
-    preview.src=displayUrl;preview.style.display="block";
-    placeholder.style.display="none";area.classList.add("has-img");
+function updateImgPreview(url,areaId,previewId,placeholderId){
+  const area=document.getElementById(areaId);
+  const preview=document.getElementById(previewId);
+  const placeholder=document.getElementById(placeholderId);
+  if(!area)return;
+  if(url&&url.trim()&&!url.includes("uploaded")){
+    let u=url;const m=url.match(/\/d\/([a-zA-Z0-9_-]+)/);if(m)u=`https://drive.google.com/thumbnail?id=${m[1]}&sz=w400`;
+    preview.src=u;preview.style.display="block";placeholder.style.display="none";area.classList.add("has-img");
   }else if(url&&url.includes("data:")){
-    preview.src=url;preview.style.display="block";
-    placeholder.style.display="none";area.classList.add("has-img");
+    preview.src=url;preview.style.display="block";placeholder.style.display="none";area.classList.add("has-img");
   }else{
     preview.style.display="none";placeholder.style.display="block";area.classList.remove("has-img");
   }
 }
 
 async function saveItem(){
-  const name=document.getElementById("f-name").value.trim();
-  const emoji=document.getElementById("f-emoji").value.trim();
-  const price=document.getElementById("f-price").value;
-  const total=document.getElementById("f-total").value;
-  const available=document.getElementById("f-avail").value;
-  const category=document.getElementById("f-cat").value;
-  const imgUrlField=document.getElementById("f-imgurl").value.trim();
-  const imageUrl=currentImageUrl.startsWith("data:")?currentImageUrl:(imgUrlField==="(uploaded from device)"?"":imgUrlField||currentImageUrl);
-  if(!name||!price||!total){showToast("Please fill in name, price, and stock.","error");return;}
   const btn=document.getElementById("btn-save-item");btn.disabled=true;btn.textContent="Saving...";
-  const payload=editingItem
-    ?{action:"editItem",originalName:editingItem.name,name,emoji,price:parseInt(price),total:parseInt(total),available:parseInt(available),rented:parseInt(total)-parseInt(available),category,imageUrl}
-    :{action:"addItem",name,emoji,price:parseInt(price),total:parseInt(total),category,imageUrl};
-  const res=await api(payload);
-  btn.disabled=false;btn.textContent="💾 Save Item";
-  if(res.success){
-    showToast(editingItem?"Item updated!":"Item added!","success");
-    closeItemModal();inventoryItems=[];loadAdminInventory();
+  let res;
+  if(editingType==="package"){
+    const name=document.getElementById("p-name").value.trim();
+    const description=document.getElementById("p-desc").value.trim();
+    const includes=document.getElementById("p-includes").value.trim();
+    const packagePrice=document.getElementById("p-price").value;
+    const individualPrice=document.getElementById("p-indiv").value;
+    const savings=document.getElementById("p-savings").value;
+    const available=document.getElementById("p-avail").value;
+    const imgUrl=document.getElementById("p-imgurl").value.trim();
+    const imageUrl=currentPkgImageUrl.startsWith("data:")?currentPkgImageUrl:(imgUrl==="(uploaded)"?"":imgUrl||currentPkgImageUrl);
+    if(!name||!packagePrice||!includes){showToast("Please fill in name, price and what's included.","error");btn.disabled=false;btn.textContent="💾 Save";return;}
+    const payload=editingItem
+      ?{action:"editPackage",originalName:editingItem.name,name,description,includes,packagePrice:parseInt(packagePrice),priceType:currentPriceType,individualPrice:parseInt(individualPrice)||0,savings:parseInt(savings)||0,available,imageUrl}
+      :{action:"addPackage",name,description,includes,packagePrice:parseInt(packagePrice),priceType:currentPriceType,individualPrice:parseInt(individualPrice)||0,savings:parseInt(savings)||0,available,imageUrl};
+    res=await api(payload);
+  }else{
+    const name=document.getElementById("f-name").value.trim();
+    const emoji=document.getElementById("f-emoji").value.trim();
+    const price=document.getElementById("f-price").value;
+    const total=document.getElementById("f-total").value;
+    const available=document.getElementById("f-avail").value;
+    const category=document.getElementById("f-cat").value;
+    const imgUrl=document.getElementById("f-imgurl").value.trim();
+    const imageUrl=currentImageUrl.startsWith("data:")?currentImageUrl:(imgUrl==="(uploaded)"?"":imgUrl||currentImageUrl);
+    if(!name||!price||!total){showToast("Please fill in name, price and stock.","error");btn.disabled=false;btn.textContent="💾 Save";return;}
+    const payload=editingItem
+      ?{action:"editItem",originalName:editingItem.name,name,emoji,price:parseInt(price),total:parseInt(total),available:parseInt(available),rented:parseInt(total)-parseInt(available),category,imageUrl}
+      :{action:"addItem",name,emoji,price:parseInt(price),total:parseInt(total),category,imageUrl};
+    res=await api(payload);
+  }
+  btn.disabled=false;btn.textContent="💾 Save";
+  if(res&&res.success){
+    showToast(editingItem?"Updated successfully!":"Added successfully!","success");
+    closeItemModal();
+    if(editingType==="package"){packagesData=[];loadAdminPackages();}
+    else{inventoryItems=[];loadAdminInventory();}
   }else showToast("Save failed. Please try again.","error");
 }
 
-/* ── DELETE MODAL ── */
-function openDelModal(name){deleteTarget=name;document.getElementById("del-item-name").textContent=name;document.getElementById("del-modal-overlay").classList.add("open");}
+/* DELETE */
+function openDelModal(name,type){deleteTarget=name;deleteType=type||"item";document.getElementById("del-item-name").textContent=name;document.getElementById("del-modal-overlay").classList.add("open");}
 function closeDelModal(){document.getElementById("del-modal-overlay").classList.remove("open");deleteTarget=null;}
 async function confirmDelete(){
   if(!deleteTarget)return;
   const btn=document.getElementById("btn-confirm-del");btn.disabled=true;btn.textContent="Deleting...";
-  const res=await api({action:"deleteItem",name:deleteTarget});
+  const action=deleteType==="package"?"deletePackage":"deleteItem";
+  const res=await api({action,name:deleteTarget});
   btn.disabled=false;btn.textContent="Yes, Delete";
-  if(res.success){showToast("Item deleted!","success");closeDelModal();inventoryItems=[];loadAdminInventory();}
-  else showToast("Delete failed.","error");
+  if(res.success){
+    showToast("Deleted successfully!","success");closeDelModal();
+    if(deleteType==="package"){packagesData=[];loadAdminPackages();}
+    else{inventoryItems=[];loadAdminInventory();}
+  }else showToast("Delete failed.","error");
 }
 
-/* ── BOOKINGS ── */
+/* BOOKINGS */
 async function loadAdminBookings(){
   const tbody=document.getElementById("admin-bookings-tbody");
   tbody.innerHTML=`<tr><td colspan="9" class="loading"><div class="spinner"></div></td></tr>`;
   const res=await api({action:"getBookings"});
   if(!res.success||!res.bookings.length){tbody.innerHTML=`<tr><td colspan="9" style="color:var(--muted);text-align:center;padding:1rem">No bookings yet</td></tr>`;return;}
   tbody.innerHTML=res.bookings.reverse().map(b=>`
-    <tr>
-      <td>${b.id}</td><td>${b.name}</td><td>${b.phone}</td><td>${b.location}</td>
-      <td>${b.eventDate}</td><td style="max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${b.items}</td>
-      <td style="color:var(--gold);font-weight:600">₱${parseInt(b.total||0).toLocaleString()}</td>
-      <td><span class="status status-${(b.status||'pending').toLowerCase().replace(/\s/g,'-')}">${b.status}</span></td>
-      <td style="white-space:nowrap">
-        <button class="btn-sm btn-confirm" style="padding:4px 8px" onclick="updateStatus('Bookings',${JSON.stringify(b.id)},9,'Confirmed')">✓</button>
-        <button class="btn-sm btn-edit" style="padding:4px 8px;margin:0 2px" onclick="updateStatus('Bookings',${JSON.stringify(b.id)},9,'Completed')">Done</button>
-      </td>
-    </tr>`).join("");
+    <tr><td>${b.id}</td><td>${b.name}</td><td>${b.phone}</td><td>${b.location}</td>
+    <td>${b.eventDate}</td><td style="max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${b.items}</td>
+    <td style="color:var(--gold);font-weight:600">₱${parseInt(b.total||0).toLocaleString()}</td>
+    <td><span class="status status-${(b.status||'pending').toLowerCase().replace(/\s/g,'-')}">${b.status}</span></td>
+    <td style="white-space:nowrap">
+      <button class="btn-sm btn-confirm" style="padding:4px 8px" onclick="updateStatus('Bookings',${JSON.stringify(b.id)},9,'Confirmed')">✓</button>
+      <button class="btn-sm btn-edit" style="padding:4px 8px;margin:0 2px" onclick="updateStatus('Bookings',${JSON.stringify(b.id)},9,'Completed')">Done</button>
+    </td></tr>`).join("");
 }
-
 async function updateStatus(sheet,id,col,status){
   showToast("Updating...","");
   const res=await api({action:"updateStatus",sheetName:sheet,id,statusCol:col,status});
   if(res.success){showToast(`Updated to "${status}"!`,"success");loadAdminBookings();}
   else showToast("Update failed.","error");
 }
-
 async function loadAdminQuotations(){
   const tbody=document.getElementById("admin-quotations-tbody");
   tbody.innerHTML=`<tr><td colspan="7" class="loading"><div class="spinner"></div></td></tr>`;
   const res=await api({action:"getQuotations"});
   if(!res.success||!res.quotations?.length){tbody.innerHTML=`<tr><td colspan="7" style="color:var(--muted);text-align:center;padding:1rem">No quotations yet</td></tr>`;return;}
-  tbody.innerHTML=res.quotations.reverse().map(q=>`
-    <tr><td>${q.ref}</td><td>${q.name}</td><td>${q.phone}</td>
-    <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${q.items}</td>
-    <td>${q.days}</td><td style="color:var(--gold);font-weight:600">₱${parseInt(q.total||0).toLocaleString()}</td>
-    <td>${q.date}</td></tr>`).join("");
+  tbody.innerHTML=res.quotations.reverse().map(q=>`<tr><td>${q.ref}</td><td>${q.name}</td><td>${q.phone}</td><td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${q.items}</td><td>${q.days}</td><td style="color:var(--gold);font-weight:600">₱${parseInt(q.total||0).toLocaleString()}</td><td>${q.date}</td></tr>`).join("");
 }
-
 async function loadAdminContracts(){
   const tbody=document.getElementById("admin-contracts-tbody");
   tbody.innerHTML=`<tr><td colspan="7" class="loading"><div class="spinner"></div></td></tr>`;
   const res=await api({action:"getContracts"});
   if(!res.success||!res.contracts?.length){tbody.innerHTML=`<tr><td colspan="7" style="color:var(--muted);text-align:center;padding:1rem">No contracts yet</td></tr>`;return;}
-  tbody.innerHTML=res.contracts.reverse().map(c=>`
-    <tr><td>${c.contractNo}</td><td>${c.name}</td><td>${c.phone}</td>
-    <td>${c.eventDate}</td><td>${c.returnDate}</td>
-    <td style="color:var(--gold);font-weight:600">₱${parseInt(c.total||0).toLocaleString()}</td>
-    <td><span class="status status-${(c.status||'').toLowerCase().replace(/\s/g,'-')}">${c.status}</span></td></tr>`).join("");
+  tbody.innerHTML=res.contracts.reverse().map(c=>`<tr><td>${c.contractNo}</td><td>${c.name}</td><td>${c.phone}</td><td>${c.eventDate}</td><td>${c.returnDate}</td><td style="color:var(--gold);font-weight:600">₱${parseInt(c.total||0).toLocaleString()}</td><td><span class="status status-${(c.status||'').toLowerCase().replace(/\s/g,'-')}">${c.status}</span></td></tr>`).join("");
 }
 
 function showToast(msg,type){const t=document.getElementById("toast");t.textContent=msg;t.className="toast show "+(type||"");setTimeout(()=>t.classList.remove("show"),3500);}
