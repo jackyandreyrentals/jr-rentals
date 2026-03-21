@@ -572,6 +572,7 @@ canvas#sign-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
         <div class="form-grid">
           <div class="fg"><label>FULL NAME</label><input type="text" id="b-name" placeholder="Juan dela Cruz" autocomplete="name"></div>
           <div class="fg"><label>CONTACT NUMBER</label><input type="tel" id="b-phone" placeholder="09XX XXX XXXX"></div>
+          <div class="fg form-full"><label>EMAIL ADDRESS <span style="color:var(--gold);font-size:9px">(for booking confirmation & payment instructions)</span></label><input type="email" id="b-email" placeholder="youremail@gmail.com" autocomplete="email"></div>
           <div class="fg"><label>EVENT DATE</label><input type="date" id="b-date" onchange="checkDateAvailability()"></div>
           <div class="fg"><label>RETURN DATE</label><input type="date" id="b-return" onchange="checkDateAvailability()"></div>
           <div class="fg form-full"><label>EVENT LOCATION / ADDRESS</label><input type="text" id="b-location" placeholder="Barangay, City, Metro Cebu"></div>
@@ -1270,11 +1271,13 @@ function chgBooking(name,delta,max){
 async function submitBooking(){
   const name=document.getElementById("b-name").value.trim();
   const phone=document.getElementById("b-phone").value.trim();
+  const email=document.getElementById("b-email").value.trim();
   const date=document.getElementById("b-date").value;
   const returnDate=document.getElementById("b-return").value;
   const location=document.getElementById("b-location").value.trim();
   const notes=document.getElementById("b-notes").value.trim();
   if(!name||!phone||!date){showToast("Please fill in your name, contact, and event date.","error");return;}
+  if(!email){showToast("Please enter your email address for booking confirmation.","error");return;}
 
   // Delivery details
   const delivAddress=deliveryType==="delivery"?(document.getElementById("b-deliv-address")?.value.trim()||""):"";
@@ -1302,7 +1305,7 @@ async function submitBooking(){
   const btn=document.getElementById("btn-book-submit");btn.disabled=true;btn.textContent="Submitting...";
   const res=await api({
     action:"submitBooking",
-    name,phone,location,eventDate:date,returnDate,
+    name,phone,email,location,eventDate:date,returnDate,
     items:itemsList,total,
     deliveryType,deliveryAddress:delivAddress,deliveryMethod:delivMethod,
     notes:(notes?(notes+"\n"):"")+"Delivery: "+deliveryLabel
@@ -1310,7 +1313,7 @@ async function submitBooking(){
   btn.disabled=false;btn.textContent="Submit Booking Request";
   if(res.success){
     const delivMsg=deliveryType==="delivery"?" Our team will contact you to confirm the delivery fee.":"";
-    openMod("✅","Booking Submitted!",`Your booking (${res.bookingId}) has been received!${delivMsg} We will contact you at ${phone} within 24 hours. Thank you for choosing Jacky & Rey Rentals!`);
+    openMod("✅","Booking Submitted!",`Your booking (${res.bookingId}) has been received!${delivMsg} A confirmation email with payment instructions has been sent to ${email}. Thank you for choosing Jacky & Rey Rentals!`);
     Object.keys(bookingQty).forEach(k=>{bookingQty[k]=0;});
     clearPackage();setDelivery("pickup");loadBookingItems();inventoryItems=[];
     document.getElementById("booking-total-bar").style.display="none";
