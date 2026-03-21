@@ -296,6 +296,7 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
 .status-completed{background:var(--blue-bg);color:var(--blue);}
 .status-signed{background:var(--green-bg);color:var(--green);}
 .status-awaiting,.status-awaiting-signature{background:var(--gold-dim);color:var(--gold);}
+.status-cancelled{background:var(--red-bg);color:var(--red);}
 
 /* LOADING + TOAST + MODAL */
 .loading{display:flex;align-items:center;justify-content:center;padding:2rem;color:var(--muted);gap:8px;font-size:13px;}
@@ -656,7 +657,7 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
         <div class="apanel" id="apanel-quotations">
           <div class="tbl-wrap">
             <table class="data-table">
-              <thead><tr><th>Ref</th><th>Client</th><th>Contact</th><th>Items</th><th>Days</th><th>Est. Total</th><th>Date</th></tr></thead>
+              <thead><tr><th>Ref</th><th>Client</th><th>Contact</th><th>Items</th><th>Days</th><th>Est. Total</th><th>Date</th><th>Action</th></tr></thead>
               <tbody id="admin-quotations-tbody"><tr><td colspan="7" class="loading"><div class="spinner"></div></td></tr></tbody>
             </table>
           </div>
@@ -1224,8 +1225,9 @@ async function loadAdminBookings(){
     <td style="color:var(--gold);font-weight:600">₱${parseInt(b.total||0).toLocaleString()}</td>
     <td><span class="status status-${(b.status||'pending').toLowerCase().replace(/\s/g,'-')}">${b.status}</span></td>
     <td style="white-space:nowrap">
-      <button class="btn-sm btn-confirm" style="padding:4px 8px" onclick="updateStatus('Bookings',${JSON.stringify(b.id)},9,'Confirmed')">✓</button>
-      <button class="btn-sm btn-edit" style="padding:4px 8px;margin:0 2px" onclick="updateStatus('Bookings',${JSON.stringify(b.id)},9,'Completed')">Done</button>
+      <button class="btn-sm btn-confirm" style="padding:4px 8px" onclick="updateStatus('Bookings',${JSON.stringify(b.id)},9,'Confirmed')">✓ Confirm</button>
+        <button class="btn-sm btn-edit" style="padding:3px 7px;font-size:10px;display:block;width:100%;margin-bottom:2px" onclick="updateStatus(\'Bookings\',${JSON.stringify(b.id)},9,\'Completed\')">🏁 Done</button>
+        <button class="btn-sm btn-del" style="padding:3px 7px;font-size:10px;display:block;width:100%" onclick="updateStatus(\'Bookings\',${JSON.stringify(b.id)},9,\'Cancelled\')">✕ Cancel</button>
     </td></tr>`).join("");
 }
 async function updateStatus(sheet,id,col,status){
@@ -1239,7 +1241,14 @@ async function loadAdminQuotations(){
   tbody.innerHTML=`<tr><td colspan="7" class="loading"><div class="spinner"></div></td></tr>`;
   const res=await api({action:"getQuotations"});
   if(!res.success||!res.quotations?.length){tbody.innerHTML=`<tr><td colspan="7" style="color:var(--muted);text-align:center;padding:1rem">No quotations yet</td></tr>`;return;}
-  tbody.innerHTML=res.quotations.reverse().map(q=>`<tr><td>${q.ref}</td><td>${q.name}</td><td>${q.phone}</td><td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${q.items}</td><td>${q.days}</td><td style="color:var(--gold);font-weight:600">₱${parseInt(q.total||0).toLocaleString()}</td><td>${q.date}</td></tr>`).join("");
+  tbody.innerHTML=res.quotations.reverse().map(q=>`<tr>
+    <td>${q.ref}</td><td>${q.name}</td><td>${q.phone}</td>
+    <td style="max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${q.items}</td>
+    <td>${q.days}</td>
+    <td style="color:var(--gold);font-weight:600">₱${parseInt(q.total||0).toLocaleString()}</td>
+    <td>${q.date}</td>
+    <td><button class="btn-sm btn-confirm" style="padding:5px 10px;white-space:nowrap" onclick="convertToBooking(${JSON.stringify(q).replace(/"/g,'&quot;')})">📅 Book</button></td>
+  </tr>`).join("");
 }
 async function loadAdminContracts(){
   const tbody=document.getElementById("admin-contracts-tbody");
@@ -1247,6 +1256,35 @@ async function loadAdminContracts(){
   const res=await api({action:"getContracts"});
   if(!res.success||!res.contracts?.length){tbody.innerHTML=`<tr><td colspan="7" style="color:var(--muted);text-align:center;padding:1rem">No contracts yet</td></tr>`;return;}
   tbody.innerHTML=res.contracts.reverse().map(c=>`<tr><td>${c.contractNo}</td><td>${c.name}</td><td>${c.phone}</td><td>${c.eventDate}</td><td>${c.returnDate}</td><td style="color:var(--gold);font-weight:600">₱${parseInt(c.total||0).toLocaleString()}</td><td><span class="status status-${(c.status||'').toLowerCase().replace(/\s/g,'-')}">${c.status}</span></td></tr>`).join("");
+}
+
+/* CONVERT QUOTATION TO BOOKING */
+function convertToBooking(q){
+  // pre-fill booking form with quote data and navigate
+  selectedPackage=null;
+  pub('booking');
+  setTimeout(()=>{
+    // try fill name/phone if available
+    if(q.name&&q.name!=="Website Visitor")document.getElementById("b-name").value=q.name;
+    if(q.phone&&q.phone!=="-")document.getElementById("b-phone").value=q.phone;
+    // set notes with quote ref
+    document.getElementById("b-notes").value=`From quotation ${q.ref}. Items: ${q.items}. Est. total: ₱${parseInt(q.total||0).toLocaleString()} for ${q.days} day(s).`;
+    showToast(`Quote ${q.ref} loaded into booking form. Fill in remaining details and submit!`,"success");
+    // set quantities from quote items string
+    // parse "2x Monobloc Chair, 5x Round Table" etc
+    const parts=(q.items||"").split(",");
+    parts.forEach(part=>{
+      const m=part.trim().match(/^(\d+)x?\s+(.+)$/i);
+      if(m){
+        const qty=parseInt(m[1]);const name=m[2].trim();
+        if(bookingQty.hasOwnProperty(name)){
+          bookingQty[name]=qty;
+          const el=document.getElementById("bqty-"+name.replace(/\s/g,"_"));
+          if(el)el.textContent=qty;
+        }
+      }
+    });
+  },300);
 }
 
 function showToast(msg,type){const t=document.getElementById("toast");t.textContent=msg;t.className="toast show "+(type||"");setTimeout(()=>t.classList.remove("show"),3500);}
