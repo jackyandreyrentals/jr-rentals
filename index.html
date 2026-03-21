@@ -833,12 +833,12 @@ canvas#sign-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
           <div class="tbl-wrap">
             <table class="data-table" id="bookings-table">
               <thead><tr>
-                <th>ID</th><th>Client</th><th>Contact</th><th>Email</th>
+                <th>ID</th><th>Client + Email</th><th>Contact</th>
                 <th>Location</th><th>Event Date</th><th>Return Date</th>
-                <th>Items</th><th>Delivery</th><th>Total</th>
+                <th>Items</th><th>Delivery</th><th>Total + Deposits</th>
                 <th>Sec. Deposit</th><th>Status</th><th>Notes</th><th>Action</th>
               </tr></thead>
-              <tbody id="admin-bookings-tbody"><tr><td colspan="14" class="loading"><div class="spinner"></div></td></tr></tbody>
+              <tbody id="admin-bookings-tbody"><tr><td colspan="13" class="loading"><div class="spinner"></div></td></tr></tbody>
             </table>
           </div>
         </div>
@@ -1728,15 +1728,16 @@ async function confirmDelete(){
 /* BOOKINGS */
 async function loadAdminBookings(){
   const tbody=document.getElementById("admin-bookings-tbody");
-  tbody.innerHTML=`<tr><td colspan="14" class="loading"><div class="spinner"></div></td></tr>`;
+  tbody.innerHTML=`<tr><td colspan="13" class="loading"><div class="spinner"></div></td></tr>`;
   const res=await api({action:"getBookings"});
   if(!res.success||!res.bookings.length){
-    tbody.innerHTML=`<tr><td colspan="14" style="color:var(--muted);text-align:center;padding:1.5rem">No bookings yet. Click ➕ Add Booking to create one.</td></tr>`;
+    tbody.innerHTML=`<tr><td colspan="13" style="color:var(--muted);text-align:center;padding:1.5rem">No bookings yet. Click ➕ Add Booking to create one.</td></tr>`;
     return;
   }
   allBookings=res.bookings;
   tbody.innerHTML=res.bookings.slice().reverse().map(b=>{
     const secDep=parseInt(b.securityDeposit||0);
+    const bkDep=parseInt(b.bookingDeposit||0);
     const sdStatus=b.secDepStatus||"Held";
     const secStyle=sdStatus==="Pending Release"?"color:var(--gold);font-weight:600":
       sdStatus==="Released"?"color:var(--green);font-weight:600":
@@ -1745,42 +1746,43 @@ async function loadAdminBookings(){
     const secLabel=secDep>0
       ?`<div style="font-size:11px;${secStyle}">₱${secDep.toLocaleString()}</div><div style="font-size:9px;color:var(--muted)">${sdStatus}</div>`
       :`<span style="color:var(--muted)">—</span>`;
-    const releaseBtn=sdStatus==="Pending Release"||sdStatus==="Return to Client"
+    const releaseBtn=(sdStatus==="Pending Release"||sdStatus==="Return to Client")&&secDep>0
       ?`<button class="btn-sm btn-confirm" style="padding:3px 7px;font-size:10px;display:block;width:100%;margin-bottom:2px" onclick="releaseSecurityDeposit('${b.id}','${b.name}',${secDep})">🛡️ Release ₱${secDep.toLocaleString()}</button>`
       :"";
     const delivLabel=b.deliveryType==="delivery"
-      ?`<div style="font-size:11px;color:var(--gold)">🚚 Delivery</div><div style="font-size:10px;color:var(--muted);max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${b.deliveryAddress||""}</div>`
+      ?`<div style="font-size:11px;color:var(--gold)">🚚 Delivery</div><div style="font-size:10px;color:var(--muted);max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${b.deliveryAddress||''}">${b.deliveryAddress||""}</div>`
       :`<span style="font-size:11px;color:var(--muted)">🏠 Pickup</span>`;
     const searchStr=`${b.id} ${b.name} ${b.phone} ${b.items} ${b.email||""}`.toLowerCase();
+    const bObj=JSON.stringify(b).replace(/"/g,'&quot;');
     return `<tr data-status="${b.status||''}" data-id="${b.id}" data-search="${searchStr}">
       <td style="font-size:11px;font-weight:600;color:var(--gold)">${b.id}</td>
       <td>
         <div style="font-weight:600;font-size:12px">${b.name}</div>
-        ${b.email?`<div style="font-size:10px;color:var(--muted)">${b.email}</div>`:""}
+        ${b.email?`<div style="font-size:10px;color:var(--blue)">${b.email}</div>`:""}
       </td>
       <td style="font-size:11px">${b.phone}</td>
-      <td style="font-size:11px;max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${b.location||"—"}</td>
+      <td style="font-size:11px;max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${b.location||''}">${b.location||"—"}</td>
       <td style="font-size:11px;white-space:nowrap">${b.eventDate||"—"}</td>
       <td style="font-size:11px;white-space:nowrap">${b.returnDate||"—"}</td>
       <td style="max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px" title="${b.items}">${b.items||"—"}</td>
       <td>${delivLabel}</td>
-      <td style="color:var(--gold);font-weight:600;white-space:nowrap">
-        ₱${parseInt(b.total||0).toLocaleString()}
-        ${b.bookingDeposit?`<div style="font-size:9px;color:var(--muted)">Dep: ₱${parseInt(b.bookingDeposit).toLocaleString()}</div>`:""}
+      <td style="white-space:nowrap">
+        <div style="color:var(--gold);font-weight:600;font-size:13px">₱${parseInt(b.total||0).toLocaleString()}</div>
+        ${bkDep>0?`<div style="font-size:9px;color:var(--muted)">50% dep: ₱${bkDep.toLocaleString()}</div>`:""}
       </td>
       <td>${secLabel}</td>
       <td><span class="status" style="${statusStyle(b.status||'')}">${b.status||"—"}</span></td>
       <td style="font-size:10px;color:var(--muted);max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${b.notes||''}">${b.notes||"—"}</td>
-      <td style="min-width:120px">
-        <button class="btn-sm btn-edit" style="padding:3px 7px;font-size:10px;display:block;width:100%;margin-bottom:2px" onclick="openBookingModal(${JSON.stringify(b).replace(/"/g,'&quot;')})">✏️ Edit</button>
-        <button class="btn-sm btn-confirm" style="padding:3px 7px;font-size:10px;display:block;width:100%;margin-bottom:2px" onclick="updateStatus('Bookings','${b.id}',9,'Confirmed')">✓ Confirm</button>
-        <button class="btn-sm btn-del" style="padding:3px 7px;font-size:10px;display:block;width:100%;margin-bottom:2px;background:rgba(192,132,252,0.15);color:#c084fc" onclick="updateStatusAndContract('${b.id}','${b.name}','${b.phone}','${b.location}','${b.eventDate}','${b.returnDate}','${b.items}','${b.total}')">💳 Paid+Contract</button>
-        <button class="btn-sm" style="padding:3px 7px;font-size:10px;display:block;width:100%;margin-bottom:2px;background:rgba(251,146,60,0.15);color:#fb923c;border:none;border-radius:6px;cursor:pointer;font-weight:600;font-family:Inter,sans-serif" onclick="updateStatus('Bookings','${b.id}',9,'Out / Rented')">🚚 Out</button>
-        <button class="btn-sm btn-edit" style="padding:3px 7px;font-size:10px;display:block;width:100%;margin-bottom:2px" onclick="updateStatus('Bookings','${b.id}',9,'Returned')">📦 Returned</button>
+      <td style="min-width:130px">
+        <button class="btn-sm btn-edit" style="padding:4px 8px;font-size:11px;display:block;width:100%;margin-bottom:2px" onclick="openBookingModal(${bObj})">✏️ Edit</button>
+        <button class="btn-sm btn-confirm" style="padding:4px 8px;font-size:11px;display:block;width:100%;margin-bottom:2px" onclick="updateStatus('Bookings','${b.id}',9,'Confirmed')">✓ Confirm</button>
+        <button class="btn-sm" style="padding:4px 8px;font-size:11px;display:block;width:100%;margin-bottom:2px;background:rgba(192,132,252,0.15);color:#c084fc;border:none;border-radius:6px;cursor:pointer;font-weight:600;font-family:Inter,sans-serif" onclick="updateStatusAndContract('${b.id}','${b.name}','${b.phone}','${b.location}','${b.eventDate}','${b.returnDate}','${b.items}','${b.total}')">💳 Paid+Contract</button>
+        <button class="btn-sm" style="padding:4px 8px;font-size:11px;display:block;width:100%;margin-bottom:2px;background:rgba(251,146,60,0.15);color:#fb923c;border:none;border-radius:6px;cursor:pointer;font-weight:600;font-family:Inter,sans-serif" onclick="updateStatus('Bookings','${b.id}',9,'Out / Rented')">🚚 Out</button>
+        <button class="btn-sm btn-edit" style="padding:4px 8px;font-size:11px;display:block;width:100%;margin-bottom:2px" onclick="updateStatus('Bookings','${b.id}',9,'Returned')">📦 Returned</button>
         ${releaseBtn}
-        <button class="btn-sm btn-confirm" style="padding:3px 7px;font-size:10px;display:block;width:100%;margin-bottom:2px" onclick="updateStatus('Bookings','${b.id}',9,'Completed')">🏁 Completed</button>
-        <button class="btn-sm btn-del" style="padding:3px 7px;font-size:10px;display:block;width:100%;margin-bottom:2px" onclick="updateStatus('Bookings','${b.id}',9,'Cancelled')">✕ Cancel</button>
-        <button class="btn-sm btn-del" style="padding:3px 7px;font-size:10px;display:block;width:100%" onclick="confirmDeleteBooking('${b.id}','${b.name}')">🗑️ Delete</button>
+        <button class="btn-sm btn-confirm" style="padding:4px 8px;font-size:11px;display:block;width:100%;margin-bottom:2px" onclick="updateStatus('Bookings','${b.id}',9,'Completed')">🏁 Completed</button>
+        <button class="btn-sm btn-del" style="padding:4px 8px;font-size:11px;display:block;width:100%;margin-bottom:2px" onclick="updateStatus('Bookings','${b.id}',9,'Cancelled')">✕ Cancel</button>
+        <button class="btn-sm btn-del" style="padding:4px 8px;font-size:11px;display:block;width:100%" onclick="confirmDeleteBooking('${b.id}','${b.name}')">🗑️ Delete</button>
       </td>
     </tr>`;
   }).join("");
