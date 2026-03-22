@@ -199,6 +199,23 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
 .privacy-contact strong{color:var(--gold);}
 .privacy-updated{font-size:10px;color:var(--muted);text-align:center;margin-top:1rem;font-style:italic;}
 
+/* ── FACEBOOK MESSENGER WIDGET ── */
+.messenger-fab{position:fixed;bottom:80px;right:20px;z-index:9998;display:flex;flex-direction:column;align-items:flex-end;gap:8px;}
+.messenger-btn{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#0084ff,#0099ff);border:none;cursor:pointer;box-shadow:0 4px 20px rgba(0,132,255,0.4);display:flex;align-items:center;justify-content:center;transition:all .2s;position:relative;}
+.messenger-btn:hover{transform:scale(1.08);box-shadow:0 6px 24px rgba(0,132,255,0.55);}
+.messenger-btn svg{width:30px;height:30px;fill:#fff;}
+.messenger-tooltip{background:#1a1a1a;color:#fff;font-size:12px;font-weight:600;padding:6px 12px;border-radius:20px;white-space:nowrap;opacity:0;transform:translateX(10px);transition:all .2s;pointer-events:none;border:1px solid rgba(255,255,255,0.1);}
+.messenger-fab:hover .messenger-tooltip{opacity:1;transform:translateX(0);}
+.messenger-pulse{position:absolute;inset:0;border-radius:50%;background:rgba(0,132,255,0.4);animation:pulse-ring 2s ease-out infinite;}
+@keyframes pulse-ring{0%{transform:scale(1);opacity:0.8;}100%{transform:scale(1.5);opacity:0;}}
+
+/* ── NOTIFICATION BADGE ── */
+.notif-badge{display:none;position:absolute;top:-4px;right:-4px;background:var(--red);color:#fff;font-size:9px;font-weight:700;min-width:18px;height:18px;border-radius:9px;display:flex;align-items:center;justify-content:center;padding:0 4px;border:2px solid var(--dark);animation:badge-pop .3s cubic-bezier(.175,.885,.32,1.275);}
+@keyframes badge-pop{0%{transform:scale(0);}100%{transform:scale(1);}}
+.sidebar-btn{position:relative;}
+.sb-notif{display:none;position:absolute;top:6px;right:10px;background:var(--red);color:#fff;font-size:9px;font-weight:700;min-width:17px;height:17px;border-radius:9px;align-items:center;justify-content:center;padding:0 4px;border:2px solid #111;}
+.sb-notif.show{display:flex;}
+
 /* ── SITE FOOTER ── */
 .site-footer{background:#0f1520;border-top:1px solid var(--border);padding:2.5rem 2rem 1.5rem;margin-top:3rem;}
 .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:2rem;max-width:960px;margin:0 auto 2rem;}
@@ -1139,7 +1156,7 @@ canvas#sign-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
         <div class="sidebar-label">MANAGE</div>
         <button class="sidebar-btn" onclick="aPanel('inventory',this);closeSidebar()"><span class="sidebar-icon">📦</span> Inventory</button>
         <button class="sidebar-btn" onclick="aPanel('packages',this);closeSidebar()"><span class="sidebar-icon">🎁</span> Packages</button>
-        <button class="sidebar-btn" onclick="aPanel('bookings',this);closeSidebar()"><span class="sidebar-icon">📅</span> Bookings</button>
+        <button class="sidebar-btn" id="sb-bookings-btn" onclick="aPanel('bookings',this);closeSidebar()"><span class="sidebar-icon">📅</span> Bookings<span class="sb-notif" id="sb-pending-badge"></span></button>
         <button class="sidebar-btn" onclick="aPanel('quotations',this);closeSidebar()"><span class="sidebar-icon">💰</span> Quotations</button>
         <button class="sidebar-btn" onclick="aPanel('contracts',this);closeSidebar()"><span class="sidebar-icon">📄</span> Contracts</button>
       </div>
@@ -1563,6 +1580,18 @@ canvas#sign-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
   </div>
 </div>
 
+<!-- FACEBOOK MESSENGER WIDGET -->
+<div class="messenger-fab" id="messenger-fab">
+  <div class="messenger-tooltip">Chat with us on Messenger!</div>
+  <button class="messenger-btn" onclick="openMessenger()" title="Chat on Facebook Messenger">
+    <div class="messenger-pulse"></div>
+    <!-- Official Messenger SVG icon -->
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 2C6.477 2 2 6.145 2 11.243c0 2.908 1.438 5.504 3.686 7.205V22l3.368-1.85c.9.249 1.853.384 2.846.384 5.523 0 10-4.144 10-9.291C22 6.145 17.523 2 12 2zm1.008 12.508l-2.548-2.717-4.976 2.717 5.473-5.813 2.611 2.717 4.913-2.717-5.473 5.813z"/>
+    </svg>
+  </button>
+</div>
+
 <!-- PRIVACY BANNER (first visit) -->
 <div class="privacy-banner" id="privacy-banner" style="display:none">
   <p>🔒 This website collects personal data (name, phone, email) to process rental bookings. By continuing to use this site, you acknowledge our <a onclick="pub('privacy');hideBanner()">Privacy Notice</a> in compliance with RA 10173 (Data Privacy Act).</p>
@@ -1647,6 +1676,7 @@ function showLogin(){
   document.getElementById("pub-nav").style.display="none";
   document.getElementById("login-area").style.display="block";
   const sf=document.getElementById("site-footer");if(sf)sf.style.display="none";
+  hideMessengerFab();
 }
 function backToPublic(){
   document.getElementById("public-area").style.display="block";
@@ -1654,6 +1684,8 @@ function backToPublic(){
   document.getElementById("login-area").style.display="none";
   document.getElementById("admin-area").style.display="none";
   const sf=document.getElementById("site-footer");if(sf)sf.style.display="block";
+  showMessengerFab();
+  stopPendingPoll();
 }
 
 /* INVENTORY */
@@ -2053,6 +2085,8 @@ async function doLogin(){
     document.getElementById("admin-area").style.display="block";
     document.getElementById("admin-role-badge").textContent=adminRole;
     const sf=document.getElementById("site-footer");if(sf)sf.style.display="none";
+    hideMessengerFab();
+    startPendingPoll();
     loadAdminDashboard();
   }else document.getElementById("l-err").style.display="block";
 }
@@ -2061,6 +2095,8 @@ function doLogout(){
   document.getElementById("public-area").style.display="block";
   document.getElementById("pub-nav").style.display="flex";
   const sf=document.getElementById("site-footer");if(sf)sf.style.display="block";
+  showMessengerFab();
+  stopPendingPoll();
   document.getElementById("l-user").value="";document.getElementById("l-pass").value="";
   adminRole="";inventoryItems=[];packagesData=[];
 }
@@ -2826,6 +2862,80 @@ function formatDate(val){
 // Set footer year
 const footerYear = document.getElementById("footer-year");
 if(footerYear) footerYear.textContent = new Date().getFullYear();
+
+/* ══════════════════════════════════════════════
+   FACEBOOK MESSENGER WIDGET
+   Replace PAGE_ID below with your actual
+   Facebook Page ID (found in Page Settings)
+══════════════════════════════════════════════ */
+const FB_PAGE_ID = "YOUR_FACEBOOK_PAGE_ID"; // ← Replace this!
+const FB_PAGE_URL = "https://m.me/" + FB_PAGE_ID;
+// Alternative: use your Facebook page username
+// e.g. "https://m.me/jackyandreyrentals"
+
+function openMessenger(){
+  // Opens Messenger in a new tab
+  // Replace YOUR_FACEBOOK_PAGE_ID with your actual page ID or username
+  window.open("https://www.facebook.com/profile.php?id=61579549797935", "_blank");
+}
+
+// Hide Messenger FAB when in admin, show on public
+function showMessengerFab(){
+  const fab=document.getElementById("messenger-fab");
+  if(fab)fab.style.display="flex";
+}
+function hideMessengerFab(){
+  const fab=document.getElementById("messenger-fab");
+  if(fab)fab.style.display="none";
+}
+
+/* ══════════════════════════════════════════════
+   PENDING BOOKINGS NOTIFICATION BADGE
+══════════════════════════════════════════════ */
+let pendingCount = 0;
+
+function updatePendingBadge(count){
+  pendingCount = count;
+  const badge = document.getElementById("sb-pending-badge");
+  if(!badge) return;
+  if(count > 0){
+    badge.textContent = count > 99 ? "99+" : count;
+    badge.classList.add("show");
+  } else {
+    badge.classList.remove("show");
+  }
+}
+
+// Poll for pending bookings every 60 seconds when admin is logged in
+let pendingPollInterval = null;
+
+async function startPendingPoll(){
+  // Check immediately
+  await checkPendingBookings();
+  // Then every 60 seconds
+  if(pendingPollInterval) clearInterval(pendingPollInterval);
+  pendingPollInterval = setInterval(checkPendingBookings, 60000);
+}
+
+function stopPendingPoll(){
+  if(pendingPollInterval){
+    clearInterval(pendingPollInterval);
+    pendingPollInterval = null;
+  }
+  updatePendingBadge(0);
+}
+
+async function checkPendingBookings(){
+  try {
+    const res = await api({action:"getBookings"});
+    if(res.success && res.bookings){
+      const pending = res.bookings.filter(b => b.status === "Pending").length;
+      updatePendingBadge(pending);
+    }
+  } catch(e) {
+    // Silent fail — badge just won't update
+  }
+}
 
 function initPrivacyBanner(){
   try {
