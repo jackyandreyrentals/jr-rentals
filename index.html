@@ -2932,8 +2932,7 @@ function exportBookingsCSV(){
     b.deliveryType||"pickup",b.deliveryAddress||"",b.status,
     '"'+(b.notes||"").replace(/"/g,'""')+'"'
   ].join(","));
-  const csv=[headers.join(","),...rows].join("
-");
+  const csv=[headers.join(","),...rows].join("\n");
   const blob=new Blob([csv],{type:"text/csv;charset=utf-8;"});
   const url=URL.createObjectURL(blob);
   const a=document.createElement("a");
@@ -3243,7 +3242,7 @@ if(footerYear) footerYear.textContent = new Date().getFullYear();
 const FB_PAGE_ID = "YOUR_FACEBOOK_PAGE_ID"; // ← Replace this!
 const FB_PAGE_URL = "https://m.me/" + FB_PAGE_ID;
 // Alternative: use your Facebook page username
-// e.g. "https://m.me/jackyandreyrentals"
+// Facebook Page: https://www.facebook.com/profile.php?id=61579549797935
 
 function openMessenger(){
   // Opens Messenger in a new tab
