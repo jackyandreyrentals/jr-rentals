@@ -3325,13 +3325,24 @@ function setFinPeriod(period, btn) {
 
 async function loadFinancePanel() {
   document.getElementById('fin-metrics').innerHTML = '<div class="loading"><div class="spinner"></div> Loading...</div>';
-  const [summaryRes, expRes] = await Promise.all([
-    api({ action: 'getFinanceSummary' }),
-    api({ action: 'getExpenses' })
-  ]);
-  if (summaryRes.success) financeData = summaryRes;
-  if (expRes.success) allExpenses = expRes.expenses;
-  renderFinancePanel();
+  try {
+    const [summaryRes, expRes] = await Promise.all([
+      api({ action: 'getFinanceSummary' }),
+      api({ action: 'getExpenses' })
+    ]);
+    if (summaryRes.success) {
+      financeData = summaryRes;
+    } else {
+      document.getElementById('fin-metrics').innerHTML =
+        '<p style="color:var(--red);font-size:12px;padding:.5rem">Error loading finance data: ' + (summaryRes.error||'Unknown error') + '</p>';
+      return;
+    }
+    if (expRes.success) allExpenses = expRes.expenses || [];
+    renderFinancePanel();
+  } catch(e) {
+    document.getElementById('fin-metrics').innerHTML =
+      '<p style="color:var(--red);font-size:12px;padding:.5rem">Failed to load. Check your Apps Script deployment.</p>';
+  }
 }
 
 function getFilteredData() {
@@ -3358,7 +3369,15 @@ function getFilteredData() {
 function renderFinancePanel() {
   if (!financeData) return;
   const { expenses, monthlyData } = getFilteredData();
-  const s = financeData.summary;
+  const s = financeData.summary || {};
+
+  // Guard: if summary is empty, show empty state
+  if (!Object.keys(s).length) {
+    document.getElementById('fin-metrics').innerHTML =
+      '<p style="color:var(--muted);font-size:12px;padding:.5rem">No booking data yet. Metrics will appear once you have confirmed bookings.</p>';
+    renderExpenseTable([]);
+    return;
+  }
 
   // Recalculate for filtered period
   const totalIncome = monthlyData.reduce((sum, m) => sum + m.income, 0);
@@ -3393,12 +3412,12 @@ function renderFinancePanel() {
     </div>
     <div class="metric-card">
       <div class="metric-icon">🛡️</div>
-      <div class="metric-val" style="color:var(--gold)">₱${Math.round(s.depositsHeld).toLocaleString()}</div>
+      <div class="metric-val" style="color:var(--gold)">₱${Math.round(s.depositsHeld||0).toLocaleString()}</div>
       <div class="metric-lbl">Deposits Held</div>
     </div>
     <div class="metric-card">
       <div class="metric-icon">⏳</div>
-      <div class="metric-val" style="color:var(--orange)">₱${Math.round(s.depositsPendingRelease).toLocaleString()}</div>
+      <div class="metric-val" style="color:var(--orange)">₱${Math.round(s.depositsPendingRelease||0).toLocaleString()}</div>
       <div class="metric-lbl">Pending Release</div>
     </div>`;
 
@@ -3451,9 +3470,7 @@ function renderFinancePanel() {
     <tr style="border-top:1px solid var(--border)">
       <td style="padding:6px 0;font-weight:600;font-size:12px">Total</td>
       <td style="text-align:right;padding:6px 0;font-weight:700;color:var(--green)">₱${last6.reduce((s,m)=>s+m.income,0).toLocaleString()}</td>
-      <td style="text-align:right;padding:6px 0;font-weight:700;color:var(--red)">₱${Math.round(last6.reduce((s,m)=>{
-        return s + allExpenses.filter(e=>String(e.date).substring(0,7)===m.month).reduce((es,e)=>es+e.amount,0);
-      }, 0)).toLocaleString()}</td>
+      <td style="text-align:right;padding:6px 0;font-weight:700;color:var(--red)">₱${Math.round(totalExpenses).toLocaleString()}</td>
       <td style="text-align:right;padding:6px 0;font-weight:700;color:var(--gold)">₱${Math.round(netProfit).toLocaleString()}</td>
     </tr>
   </table>`;
