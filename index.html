@@ -1201,6 +1201,7 @@ canvas#sign-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
         <button class="sidebar-btn" id="sb-bookings-btn" onclick="aPanel('bookings',this);closeSidebar()"><span class="sidebar-icon">📅</span> Bookings<span class="sb-notif" id="sb-pending-badge"></span></button>
         <button class="sidebar-btn" onclick="aPanel('quotations',this);closeSidebar()"><span class="sidebar-icon">💰</span> Quotations</button>
         <button class="sidebar-btn" onclick="aPanel('contracts',this);closeSidebar()"><span class="sidebar-icon">📄</span> Contracts</button>
+        <button class="sidebar-btn" onclick="aPanel('finance',this);closeSidebar()"><span class="sidebar-icon">💹</span> Finance</button>
       </div>
       <div class="sidebar-footer"><button class="btn-logout" onclick="doLogout()">⬡ Logout</button></div>
     </div>
@@ -1360,6 +1361,70 @@ canvas#sign-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
               <thead><tr><th>Contract No.</th><th>Client</th><th>Contact</th><th>Event Date</th><th>Return Date</th><th>Total</th><th>Status</th><th>Signed At</th><th>Action</th></tr></thead>
               <tbody id="admin-contracts-tbody"><tr><td colspan="7" class="loading"><div class="spinner"></div></td></tr></tbody>
             </table>
+          </div>
+        </div>
+
+      </div>
+
+        <!-- FINANCE -->
+        <div class="apanel" id="apanel-finance">
+          <!-- PERIOD SELECTOR -->
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
+            <div style="display:flex;gap:8px;flex-wrap:wrap;" id="fin-period-btns">
+              <button class="bk-filter active" onclick="setFinPeriod('all',this)">All Time</button>
+              <button class="bk-filter" onclick="setFinPeriod('year',this)">This Year</button>
+              <button class="bk-filter" onclick="setFinPeriod('month',this)">This Month</button>
+            </div>
+            <div style="display:flex;gap:8px;">
+              <button onclick="openExpenseModal(null)" style="background:var(--gold);color:#111;border:none;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;padding:9px 16px;border-radius:8px;cursor:pointer;">➕ Add Expense</button>
+              <button onclick="exportFinanceCSV()" style="background:var(--dark3);border:1px solid var(--border);color:var(--muted);font-family:'Inter',sans-serif;font-size:13px;font-weight:600;padding:9px 16px;border-radius:8px;cursor:pointer;" onmouseover="this.style.borderColor='var(--green)';this.style.color='var(--green)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">⬇ Export</button>
+            </div>
+          </div>
+
+          <!-- SUMMARY CARDS -->
+          <div class="dash-metrics" id="fin-metrics" style="margin-bottom:14px;">
+            <div class="loading"><div class="spinner"></div> Loading...</div>
+          </div>
+
+          <!-- CHARTS ROW -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+            <!-- Income vs Expense chart -->
+            <div class="dash-card" style="grid-column:span 2">
+              <div class="dash-card-title">📈 Income vs Expenses — Last 6 Months</div>
+              <div style="position:relative;width:100%;height:180px;">
+                <canvas id="fin-chart"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+            <!-- Expense by category -->
+            <div class="dash-card">
+              <div class="dash-card-title">🗂️ Expenses by Category</div>
+              <div id="fin-by-category"><p style="color:var(--muted);font-size:12px">No expense data yet</p></div>
+            </div>
+            <!-- Monthly P&L -->
+            <div class="dash-card">
+              <div class="dash-card-title">📊 Monthly P&L Summary</div>
+              <div id="fin-monthly-pl"></div>
+            </div>
+          </div>
+
+          <!-- EXPENSE LOG -->
+          <div class="dash-card" style="margin-bottom:14px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+              <div class="dash-card-title" style="margin-bottom:0">💸 Expense Log</div>
+              <input type="text" id="exp-search" placeholder="Search expenses..." oninput="filterExpenses(this.value)"
+                style="background:var(--dark3);border:1px solid var(--border);border-radius:7px;padding:6px 10px;font-family:Inter,sans-serif;font-size:12px;color:#fff;outline:none;width:200px;">
+            </div>
+            <div class="tbl-wrap">
+              <table class="data-table" id="expense-table">
+                <thead><tr>
+                  <th>ID</th><th>Date</th><th>Category</th><th>Description</th><th>Amount</th><th>Notes</th><th>Action</th>
+                </tr></thead>
+                <tbody id="expense-tbody"><tr><td colspan="7" class="loading"><div class="spinner"></div></td></tr></tbody>
+              </table>
+            </div>
           </div>
         </div>
 
@@ -1575,6 +1640,39 @@ canvas#sign-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
   </div>
 </div>
 
+<!-- EXPENSE FORM MODAL -->
+<div class="modal-overlay" id="expense-modal-overlay">
+  <div class="item-modal" style="max-width:440px;">
+    <div class="item-modal-title">
+      <span id="exp-modal-title">Add <em>Expense</em></span>
+      <button class="modal-x" onclick="closeExpenseModal()">✕</button>
+    </div>
+    <div class="item-form-grid">
+      <div class="ifg"><label>DATE</label><input type="date" id="exp-date"></div>
+      <div class="ifg"><label>AMOUNT (₱)</label><input type="number" id="exp-amount" placeholder="0.00" min="0" step="0.01"></div>
+      <div class="ifg if-full"><label>CATEGORY</label>
+        <select id="exp-category">
+          <option value="Delivery / Transport">Delivery / Transport</option>
+          <option value="Equipment Purchase">Equipment Purchase</option>
+          <option value="Equipment Repair">Equipment Repair</option>
+          <option value="Fuel / Gas">Fuel / Gas</option>
+          <option value="Packaging / Supplies">Packaging / Supplies</option>
+          <option value="Marketing">Marketing</option>
+          <option value="Utilities">Utilities</option>
+          <option value="Labor / Staff">Labor / Staff</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div class="ifg if-full"><label>DESCRIPTION</label><input type="text" id="exp-desc" placeholder="e.g. Lalamove fee for BK-005 delivery"></div>
+      <div class="ifg if-full"><label>NOTES (optional)</label><textarea id="exp-notes" style="min-height:55px" placeholder="Any additional details..."></textarea></div>
+    </div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeExpenseModal()">Cancel</button>
+      <button class="btn-save" id="btn-save-expense" onclick="saveExpense()">💾 Save Expense</button>
+    </div>
+  </div>
+</div>
+
 <!-- DELETE CONFIRM -->
 <div class="modal-overlay" id="del-modal-overlay">
   <div class="confirm-modal">
@@ -1712,6 +1810,8 @@ canvas#sign-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
 
 <div class="toast" id="toast"></div>
 
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
 const API="https://script.google.com/macros/s/AKfycbyxhstT4vDPqdVTrqcOPBCJL7JDIgzateELyfMqCrDnfnBKzaL3vtdR4982_iMrnUV4yA/exec";
 const API_TOKEN="JR1BB2778D4844221D1EF560FEB5C8CFE0"; // Security token — must match Apps Script
@@ -2216,13 +2316,14 @@ function aPanel(id,btn){
   document.getElementById("apanel-"+id).classList.add("active");
   document.querySelectorAll(".sidebar-btn").forEach(b=>b.classList.remove("active"));
   btn.classList.add("active");
-  const titles={dashboard:"Dashboard <em>Overview</em>",inventory:"Inventory <em>Management</em>",packages:"Package <em>Management</em>",bookings:"Booking <em>Records</em>",quotations:"Quotation <em>Manager</em>",contracts:"Contract <em>Records</em>"};
+  const titles={dashboard:"Dashboard <em>Overview</em>",inventory:"Inventory <em>Management</em>",packages:"Package <em>Management</em>",bookings:"Booking <em>Records</em>",quotations:"Quotation <em>Manager</em>",contracts:"Contract <em>Records</em>",finance:"Finance <em>Reports</em>"};
   document.getElementById("a-page-title").innerHTML=titles[id];
   if(id==="inventory")loadAdminInventory();
   if(id==="packages")loadAdminPackages();
   if(id==="bookings")loadAdminBookings();
   if(id==="quotations")loadAdminQuotations();
   if(id==="contracts")loadAdminContracts();
+  if(id==="finance")loadFinancePanel();
 }
 function refreshAdminData(){inventoryItems=[];packagesData=[];loadAdminDashboard();const active=document.querySelector(".apanel.active")?.id?.replace("apanel-","");if(active&&active!=="dashboard")aPanel(active,document.querySelector(".sidebar-btn.active"));showToast("Data refreshed!","success");}
 
@@ -3205,6 +3306,312 @@ function closeBkDropdown(){
 document.addEventListener("click", function(e){
   if(!e.target.closest(".bk-action-wrap")) closeBkDropdown();
 });
+
+/* ══════════════════════════════════════════════
+   FINANCE MODULE
+══════════════════════════════════════════════ */
+let financeData = null;
+let allExpenses = [];
+let finPeriod = 'all';
+let editingExpenseId = null;
+let finChart = null;
+
+function setFinPeriod(period, btn) {
+  finPeriod = period;
+  document.querySelectorAll('#fin-period-btns .bk-filter').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderFinancePanel();
+}
+
+async function loadFinancePanel() {
+  document.getElementById('fin-metrics').innerHTML = '<div class="loading"><div class="spinner"></div> Loading...</div>';
+  const [summaryRes, expRes] = await Promise.all([
+    api({ action: 'getFinanceSummary' }),
+    api({ action: 'getExpenses' })
+  ]);
+  if (summaryRes.success) financeData = summaryRes;
+  if (expRes.success) allExpenses = expRes.expenses;
+  renderFinancePanel();
+}
+
+function getFilteredData() {
+  const now = new Date();
+  const thisYear = now.getFullYear();
+  const thisMonth = now.getMonth() + 1;
+  const monthKey = thisYear + '-' + String(thisMonth).padStart(2, '0');
+  const yearStr = String(thisYear);
+
+  let expenses = allExpenses;
+  let monthlyData = financeData ? financeData.monthly : [];
+
+  if (finPeriod === 'month') {
+    expenses = allExpenses.filter(e => String(e.date).substring(0, 7) === monthKey);
+    monthlyData = (financeData ? financeData.monthly : []).filter(m => m.month === monthKey);
+  } else if (finPeriod === 'year') {
+    expenses = allExpenses.filter(e => String(e.date).startsWith(yearStr));
+    monthlyData = (financeData ? financeData.monthly : []).filter(m => m.month.startsWith(yearStr));
+  }
+
+  return { expenses, monthlyData };
+}
+
+function renderFinancePanel() {
+  if (!financeData) return;
+  const { expenses, monthlyData } = getFilteredData();
+  const s = financeData.summary;
+
+  // Recalculate for filtered period
+  const totalIncome = monthlyData.reduce((sum, m) => sum + m.income, 0);
+  const totalExpenses = expenses.reduce((sum, e) => sum + e.amount, 0);
+  const netProfit = totalIncome - totalExpenses;
+  const margin = totalIncome > 0 ? Math.round((netProfit / totalIncome) * 100) : 0;
+  const profitColor = netProfit >= 0 ? 'var(--green)' : 'var(--red)';
+
+  // ── METRICS ──
+  document.getElementById('fin-metrics').innerHTML = `
+    <div class="metric-card">
+      <div class="metric-icon">💰</div>
+      <div class="metric-val" style="color:var(--green)">₱${Math.round(totalIncome).toLocaleString()}</div>
+      <div class="metric-lbl">Total Income</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-icon">💸</div>
+      <div class="metric-val" style="color:var(--red)">₱${Math.round(totalExpenses).toLocaleString()}</div>
+      <div class="metric-lbl">Total Expenses</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-icon">${netProfit >= 0 ? '📈' : '📉'}</div>
+      <div class="metric-val" style="color:${profitColor}">₱${Math.round(Math.abs(netProfit)).toLocaleString()}</div>
+      <div class="metric-lbl">Net ${netProfit >= 0 ? 'Profit' : 'Loss'}</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-icon">📊</div>
+      <div class="metric-val" style="color:${margin >= 50 ? 'var(--green)' : margin >= 20 ? 'var(--gold)' : 'var(--red)'}">
+        ${margin}%
+      </div>
+      <div class="metric-lbl">Profit Margin</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-icon">🛡️</div>
+      <div class="metric-val" style="color:var(--gold)">₱${Math.round(s.depositsHeld).toLocaleString()}</div>
+      <div class="metric-lbl">Deposits Held</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-icon">⏳</div>
+      <div class="metric-val" style="color:var(--orange)">₱${Math.round(s.depositsPendingRelease).toLocaleString()}</div>
+      <div class="metric-lbl">Pending Release</div>
+    </div>`;
+
+  // ── INCOME vs EXPENSE CHART ──
+  buildFinChart(financeData.monthly.slice(-6));
+
+  // ── BY CATEGORY ──
+  const catEl = document.getElementById('fin-by-category');
+  const byCategory = {};
+  expenses.forEach(e => { byCategory[e.category] = (byCategory[e.category] || 0) + e.amount; });
+  const sortedCats = Object.entries(byCategory).sort((a, b) => b[1] - a[1]);
+  const maxCat = sortedCats[0] ? sortedCats[0][1] : 1;
+  if (sortedCats.length) {
+    catEl.innerHTML = sortedCats.map(([cat, amt]) => `
+      <div style="margin-bottom:8px;">
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:3px;">
+          <span>${cat}</span><span style="color:var(--red);font-weight:600">₱${Math.round(amt).toLocaleString()}</span>
+        </div>
+        <div style="background:var(--dark3);border-radius:20px;height:6px;overflow:hidden;">
+          <div style="height:100%;border-radius:20px;background:var(--red);opacity:.7;width:${Math.round(amt/maxCat*100)}%"></div>
+        </div>
+      </div>`).join('');
+  } else {
+    catEl.innerHTML = '<p style="color:var(--muted);font-size:12px">No expenses yet</p>';
+  }
+
+  // ── MONTHLY P&L TABLE ──
+  const plEl = document.getElementById('fin-monthly-pl');
+  const last6 = financeData.monthly.slice(-6);
+  plEl.innerHTML = `<table style="width:100%;border-collapse:collapse;font-size:11px;">
+    <tr style="border-bottom:1px solid var(--border)">
+      <th style="text-align:left;padding:5px 0;color:var(--muted);font-weight:600">Month</th>
+      <th style="text-align:right;padding:5px 0;color:var(--muted);font-weight:600">Income</th>
+      <th style="text-align:right;padding:5px 0;color:var(--muted);font-weight:600">Expenses</th>
+      <th style="text-align:right;padding:5px 0;color:var(--muted);font-weight:600">Profit</th>
+    </tr>
+    ${last6.map(m => {
+      const expForMonth = allExpenses.filter(e => String(e.date).substring(0,7) === m.month)
+        .reduce((s, e) => s + e.amount, 0);
+      const profit = m.income - expForMonth;
+      const pColor = profit >= 0 ? 'var(--green)' : 'var(--red)';
+      const mLabel = new Date(m.month + '-01').toLocaleDateString('en-PH', {month:'short', year:'2-digit'});
+      return `<tr style="border-bottom:1px solid rgba(255,255,255,0.04)">
+        <td style="padding:5px 0;color:var(--muted)">${mLabel}</td>
+        <td style="text-align:right;padding:5px 0;color:var(--green)">₱${m.income.toLocaleString()}</td>
+        <td style="text-align:right;padding:5px 0;color:var(--red)">₱${Math.round(expForMonth).toLocaleString()}</td>
+        <td style="text-align:right;padding:5px 0;color:${pColor};font-weight:600">${profit >= 0 ? '+' : ''}₱${Math.round(profit).toLocaleString()}</td>
+      </tr>`;
+    }).join('')}
+    <tr style="border-top:1px solid var(--border)">
+      <td style="padding:6px 0;font-weight:600;font-size:12px">Total</td>
+      <td style="text-align:right;padding:6px 0;font-weight:700;color:var(--green)">₱${last6.reduce((s,m)=>s+m.income,0).toLocaleString()}</td>
+      <td style="text-align:right;padding:6px 0;font-weight:700;color:var(--red)">₱${Math.round(last6.reduce((s,m)=>{
+        return s + allExpenses.filter(e=>String(e.date).substring(0,7)===m.month).reduce((es,e)=>es+e.amount,0);
+      }, 0)).toLocaleString()}</td>
+      <td style="text-align:right;padding:6px 0;font-weight:700;color:var(--gold)">₱${Math.round(netProfit).toLocaleString()}</td>
+    </tr>
+  </table>`;
+
+  // ── EXPENSE TABLE ──
+  renderExpenseTable(expenses);
+}
+
+function buildFinChart(monthly) {
+  const canvas = document.getElementById('fin-chart');
+  if (!canvas) return;
+  if (finChart) { finChart.destroy(); finChart = null; }
+  const labels = monthly.map(m => {
+    const d = new Date(m.month + '-01');
+    return d.toLocaleDateString('en-PH', { month:'short', year:'2-digit' });
+  });
+  const incomeData = monthly.map(m => m.income);
+  const expData = monthly.map(m => {
+    return allExpenses.filter(e => String(e.date).substring(0,7) === m.month)
+      .reduce((s, e) => s + e.amount, 0);
+  });
+  finChart = new Chart(canvas, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        { label: 'Income', data: incomeData, backgroundColor: 'rgba(111,207,151,0.7)', borderRadius: 4 },
+        { label: 'Expenses', data: expData, backgroundColor: 'rgba(248,113,113,0.7)', borderRadius: 4 }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { ticks: { color:'#a0a0a0', font:{size:11} }, grid:{ color:'rgba(255,255,255,0.05)' } },
+        y: { ticks: { color:'#a0a0a0', font:{size:11}, callback: v => '₱'+v.toLocaleString() }, grid:{ color:'rgba(255,255,255,0.05)' }, beginAtZero:true }
+      }
+    }
+  });
+}
+
+function renderExpenseTable(expenses) {
+  const tbody = document.getElementById('expense-tbody');
+  if (!expenses.length) {
+    tbody.innerHTML = '<tr><td colspan="7" style="color:var(--muted);text-align:center;padding:1rem">No expenses yet. Click ➕ Add Expense to log one.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = expenses.slice().reverse().map(e => `
+    <tr>
+      <td style="font-size:11px;color:var(--gold);font-weight:600">${e.id}</td>
+      <td style="font-size:11px">${e.date}</td>
+      <td><span style="font-size:10px;background:var(--red-bg);color:var(--red);padding:2px 8px;border-radius:20px;">${e.category}</span></td>
+      <td style="font-size:11px">${e.description||'—'}</td>
+      <td style="color:var(--red);font-weight:600;font-size:13px">₱${parseFloat(e.amount).toLocaleString()}</td>
+      <td style="font-size:10px;color:var(--muted)">${e.notes||'—'}</td>
+      <td>
+        <div style="display:flex;gap:5px;">
+          <button class="btn-sm btn-edit" onclick="openExpenseModal(${JSON.stringify(e).replace(/"/g,'&quot;')})" style="padding:5px 8px;font-size:10px">✏️ Edit</button>
+          <button class="btn-sm btn-del" onclick="deleteExpense('${e.id}')" style="padding:5px 8px;font-size:10px">🗑️</button>
+        </div>
+      </td>
+    </tr>`).join('');
+}
+
+function filterExpenses(q) {
+  const term = q.toLowerCase().trim();
+  const rows = document.querySelectorAll('#expense-tbody tr');
+  rows.forEach(r => {
+    r.style.display = (!term || r.textContent.toLowerCase().includes(term)) ? '' : 'none';
+  });
+}
+
+// ── EXPENSE MODAL ──
+function openExpenseModal(exp) {
+  editingExpenseId = exp ? exp.id : null;
+  document.getElementById('exp-modal-title').innerHTML = exp ? 'Edit <em>Expense</em>' : 'Add <em>Expense</em>';
+  document.getElementById('exp-date').value = exp ? exp.date : new Date().toISOString().substring(0,10);
+  document.getElementById('exp-amount').value = exp ? exp.amount : '';
+  document.getElementById('exp-category').value = exp ? exp.category : 'Delivery / Transport';
+  document.getElementById('exp-desc').value = exp ? exp.description : '';
+  document.getElementById('exp-notes').value = exp ? exp.notes : '';
+  document.getElementById('expense-modal-overlay').classList.add('open');
+  setTimeout(() => document.getElementById('exp-amount').focus(), 100);
+}
+
+function closeExpenseModal() {
+  document.getElementById('expense-modal-overlay').classList.remove('open');
+  editingExpenseId = null;
+}
+
+async function saveExpense() {
+  const date = document.getElementById('exp-date').value;
+  const amount = parseFloat(document.getElementById('exp-amount').value);
+  const category = document.getElementById('exp-category').value;
+  const description = document.getElementById('exp-desc').value.trim();
+  const notes = document.getElementById('exp-notes').value.trim();
+  if (!date || !amount || amount <= 0) { showToast('Please enter a valid date and amount.', 'error'); return; }
+  if (!description) { showToast('Please enter a description.', 'error'); return; }
+  const btn = document.getElementById('btn-save-expense');
+  btn.disabled = true; btn.textContent = 'Saving...';
+  const payload = editingExpenseId
+    ? { action:'editExpense', expenseId:editingExpenseId, date, amount, category, description, notes }
+    : { action:'addExpense', date, amount, category, description, notes };
+  const res = await api(payload);
+  btn.disabled = false; btn.textContent = '💾 Save Expense';
+  if (res.success) {
+    showToast(editingExpenseId ? 'Expense updated!' : 'Expense added!', 'success');
+    closeExpenseModal();
+    await loadFinancePanel();
+  } else {
+    showToast('Save failed. Please try again.', 'error');
+  }
+}
+
+async function deleteExpense(expenseId) {
+  if (!confirm('Delete this expense entry? This cannot be undone.')) return;
+  const res = await api({ action:'deleteExpense', expenseId });
+  if (res.success) {
+    showToast('Expense deleted!', 'success');
+    await loadFinancePanel();
+  } else {
+    showToast('Delete failed.', 'error');
+  }
+}
+
+// ── EXPORT FINANCE CSV ──
+function exportFinanceCSV() {
+  const { expenses, monthlyData } = getFilteredData();
+  const totalIncome = monthlyData.reduce((s, m) => s + m.income, 0);
+  const totalExpenses = expenses.reduce((s, e) => s + e.amount, 0);
+
+  let csv = 'JACKY & REY RENTALS — FINANCE REPORT\n';
+  csv += 'Period:,' + finPeriod.toUpperCase() + '\n';
+  csv += 'Generated:,' + new Date().toLocaleString() + '\n\n';
+  csv += 'SUMMARY\n';
+  csv += 'Total Income,₱' + Math.round(totalIncome).toLocaleString() + '\n';
+  csv += 'Total Expenses,₱' + Math.round(totalExpenses).toLocaleString() + '\n';
+  csv += 'Net Profit,₱' + Math.round(totalIncome - totalExpenses).toLocaleString() + '\n';
+  csv += 'Profit Margin,' + (totalIncome > 0 ? Math.round(((totalIncome-totalExpenses)/totalIncome)*100) : 0) + '%\n\n';
+  csv += 'MONTHLY P&L\n';
+  csv += 'Month,Income,Expenses,Profit\n';
+  financeData.monthly.slice(-12).forEach(m => {
+    const expForMonth = allExpenses.filter(e => String(e.date).substring(0,7) === m.month)
+      .reduce((s, e) => s + e.amount, 0);
+    csv += m.month + ',₱' + m.income + ',₱' + Math.round(expForMonth) + ',₱' + Math.round(m.income - expForMonth) + '\n';
+  });
+  csv += '\nEXPENSE LOG\n';
+  csv += 'Expense ID,Date,Category,Description,Amount,Notes\n';
+  allExpenses.forEach(e => {
+    csv += e.id + ',' + e.date + ',"' + (e.category||'') + '","' + (e.description||'').replace(/"/g,'""') + '",₱' + e.amount + ',"' + (e.notes||'').replace(/"/g,'""') + '"\n';
+  });
+  const blob = new Blob([csv], { type:'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'JR_Finance_' + new Date().toISOString().substring(0,10) + '.csv';
+  a.click(); URL.revokeObjectURL(url);
+  showToast('Finance report exported!', 'success');
+}
 
 function showToast(msg,type){const t=document.getElementById("toast");t.textContent=msg;t.className="toast show "+(type||"");setTimeout(()=>t.classList.remove("show"),3500);}
 function openMod(icon,title,msg){document.getElementById("m-icon").textContent=icon;document.getElementById("m-title").textContent=title;document.getElementById("m-msg").textContent=msg;document.getElementById("modal").classList.add("open");}
