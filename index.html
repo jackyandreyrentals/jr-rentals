@@ -198,6 +198,38 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
 .privacy-contact p{font-size:12px;color:var(--muted);line-height:1.8;}
 .privacy-contact strong{color:var(--gold);}
 .privacy-updated{font-size:10px;color:var(--muted);text-align:center;margin-top:1rem;font-style:italic;}
+
+/* ── SITE FOOTER ── */
+.site-footer{background:#0f1520;border-top:1px solid var(--border);padding:2.5rem 2rem 1.5rem;margin-top:3rem;}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:2rem;max-width:960px;margin:0 auto 2rem;}
+.footer-brand{}
+.footer-logo-row{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.footer-logo-img{width:48px;height:48px;border-radius:50%;border:2px solid var(--gold);object-fit:cover;flex-shrink:0;}
+.footer-logo-fallback{width:48px;height:48px;border-radius:50%;border:2px solid var(--gold);background:var(--dark2);display:none;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--gold);flex-shrink:0;}
+.footer-biz-name{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:.06em;color:#fff;}
+.footer-biz-name em{color:var(--gold);font-style:normal;}
+.footer-tagline{font-size:11px;color:var(--muted);line-height:1.6;margin-top:4px;max-width:260px;}
+.footer-contact-list{margin-top:12px;display:flex;flex-direction:column;gap:5px;}
+.footer-contact-item{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);}
+.footer-contact-item span:first-child{font-size:14px;flex-shrink:0;}
+.footer-col-title{font-size:10px;font-weight:700;letter-spacing:.1em;color:var(--gold);text-transform:uppercase;margin-bottom:12px;}
+.footer-nav-links{display:flex;flex-direction:column;gap:7px;}
+.footer-nav-link{background:none;border:none;color:var(--muted);font-family:'Inter',sans-serif;font-size:12px;cursor:pointer;text-align:left;padding:0;transition:color .15s;}
+.footer-nav-link:hover{color:var(--gold);}
+.footer-legal-links{display:flex;flex-direction:column;gap:7px;}
+.footer-legal-link{background:none;border:none;color:var(--muted);font-family:'Inter',sans-serif;font-size:12px;cursor:pointer;text-align:left;padding:0;transition:color .15s;}
+.footer-legal-link:hover{color:var(--gold);}
+.footer-divider{height:1px;background:var(--border);max-width:960px;margin:0 auto 1.25rem;}
+.footer-bottom{max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.footer-copyright{font-size:11px;color:var(--muted);}
+.footer-copyright strong{color:#fff;}
+.footer-dpa-badge{display:flex;align-items:center;gap:6px;background:var(--dark2);border:1px solid var(--border);border-radius:20px;padding:5px 12px;}
+.footer-dpa-badge span{font-size:10px;color:var(--muted);}
+.footer-dpa-badge strong{font-size:10px;color:var(--gold);}
+@media(max-width:640px){
+  .footer-grid{grid-template-columns:1fr;gap:1.5rem;}
+  .footer-bottom{flex-direction:column;align-items:flex-start;}
+}
 /* ── CONSENT CHECKBOX ── */
 .consent-wrap{background:var(--dark3);border:1.5px solid rgba(232,160,32,0.3);border-radius:10px;padding:12px 14px;margin:14px 0;}
 .consent-row{display:flex;align-items:flex-start;gap:10px;}
@@ -568,6 +600,7 @@ canvas#sign-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
     <button onclick="pub('booking')">Book</button>
     <button onclick="pub('quotation')">Quote</button>
     <button onclick="pub('contract')">Contract</button>
+    <button onclick="pub('privacy')" style="font-size:11px;opacity:.8">🔒 Privacy</button>
     <button class="btn-admin-nav" onclick="showLogin()">⚙ Admin</button>
   </div>
 </nav>
@@ -989,6 +1022,76 @@ canvas#sign-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
     </div>
   </div>
 </div>
+
+  <!-- ══ SITE FOOTER ══ -->
+  <footer class="site-footer" id="site-footer">
+    <div class="footer-grid">
+      <!-- Brand + Contact -->
+      <div class="footer-brand">
+        <div class="footer-logo-row">
+          <img class="footer-logo-img" src="logo_colored.png" alt="J&R" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+          <div class="footer-logo-fallback">J&R</div>
+          <div>
+            <div class="footer-biz-name">Jacky <em>&</em> Rey Rentals</div>
+          </div>
+        </div>
+        <p class="footer-tagline">"From Gatherings to Camping — We've got the Essentials"<br>Serving Metro Cebu for all your event rental needs.</p>
+        <div class="footer-contact-list">
+          <div class="footer-contact-item"><span>📞</span><span>09912094757 / 09500167754</span></div>
+          <div class="footer-contact-item"><span>📧</span><span>jackyandreyrentals@gmail.com</span></div>
+          <div class="footer-contact-item"><span>📍</span><span>Metro Cebu, Philippines</span></div>
+          <div class="footer-contact-item"><span>🕐</span><span>Mon–Sun · 7:00 AM – 8:00 PM</span></div>
+        </div>
+      </div>
+      <!-- Quick Links -->
+      <div>
+        <div class="footer-col-title">Quick Links</div>
+        <div class="footer-nav-links">
+          <button class="footer-nav-link" onclick="pub('home');window.scrollTo(0,0)">🏠 Home</button>
+          <button class="footer-nav-link" onclick="pub('inventory');window.scrollTo(0,0)">📦 Inventory</button>
+          <button class="footer-nav-link" onclick="pub('packages');window.scrollTo(0,0)">🎁 Packages</button>
+          <button class="footer-nav-link" onclick="pub('booking');window.scrollTo(0,0)">📅 Book Now</button>
+          <button class="footer-nav-link" onclick="pub('quotation');window.scrollTo(0,0)">💰 Get a Quote</button>
+          <button class="footer-nav-link" onclick="pub('contract');window.scrollTo(0,0)">📝 Contract</button>
+        </div>
+      </div>
+      <!-- Legal -->
+      <div>
+        <div class="footer-col-title">Legal & Policy</div>
+        <div class="footer-legal-links">
+          <button class="footer-legal-link" onclick="pub('privacy');window.scrollTo(0,0)">🔒 Privacy Notice</button>
+          <button class="footer-legal-link" onclick="pub('contract');window.scrollTo(0,0)">📋 Rental Terms</button>
+          <button class="footer-legal-link" onclick="pub('privacy');window.scrollTo(0,0)">⚖️ RA 10173 (DPA)</button>
+          <button class="footer-legal-link" onclick="pub('privacy');window.scrollTo(0,0)">🛡️ Data Rights</button>
+        </div>
+        <div style="margin-top:1rem;padding:10px;background:var(--dark2);border-radius:8px;border:1px solid var(--border);">
+          <div style="font-size:10px;color:var(--muted);line-height:1.8;">
+            <strong style="color:#fff;font-size:11px;display:block;margin-bottom:3px">We Accept</strong>
+            📱 GCash &nbsp;·&nbsp; 🏦 MariBank<br>
+            💵 Cash &nbsp;·&nbsp; 🏛️ Bank Transfer
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-divider"></div>
+    <div class="footer-bottom">
+      <div class="footer-copyright">
+        © <span id="footer-year"></span> <strong>Jacky & Rey Rentals</strong>. All rights reserved. Metro Cebu, Philippines.
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+        <div class="footer-dpa-badge">
+          <span>🔒</span>
+          <strong>RA 10173 Compliant</strong>
+          <span>· Data Privacy Act</span>
+        </div>
+        <div class="footer-dpa-badge">
+          <span>🇵🇭</span>
+          <span>Made in the</span>
+          <strong>Philippines</strong>
+        </div>
+      </div>
+    </div>
+  </footer>
 
 <!-- ADMIN AREA -->
 <div id="admin-area" style="display:none;">
@@ -2554,6 +2657,10 @@ function formatDate(val){
 ══════════════════════════════════════════════ */
 
 // ── Privacy banner ──
+// Set footer year
+const footerYear = document.getElementById("footer-year");
+if(footerYear) footerYear.textContent = new Date().getFullYear();
+
 function initPrivacyBanner(){
   try {
     const accepted = localStorage.getItem("jr_privacy_accepted");
