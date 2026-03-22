@@ -1625,8 +1625,19 @@ function pub(id){
     }
   }
 }
-function showLogin(){document.getElementById("public-area").style.display="none";document.getElementById("pub-nav").style.display="none";document.getElementById("login-area").style.display="block";}
-function backToPublic(){document.getElementById("public-area").style.display="block";document.getElementById("pub-nav").style.display="flex";document.getElementById("login-area").style.display="none";}
+function showLogin(){
+  document.getElementById("public-area").style.display="none";
+  document.getElementById("pub-nav").style.display="none";
+  document.getElementById("login-area").style.display="block";
+  const sf=document.getElementById("site-footer");if(sf)sf.style.display="none";
+}
+function backToPublic(){
+  document.getElementById("public-area").style.display="block";
+  document.getElementById("pub-nav").style.display="flex";
+  document.getElementById("login-area").style.display="none";
+  document.getElementById("admin-area").style.display="none";
+  const sf=document.getElementById("site-footer");if(sf)sf.style.display="block";
+}
 
 /* INVENTORY */
 // ── CACHE CONSTANTS ──
@@ -2024,6 +2035,7 @@ async function doLogin(){
     document.getElementById("login-area").style.display="none";
     document.getElementById("admin-area").style.display="block";
     document.getElementById("admin-role-badge").textContent=adminRole;
+    const sf=document.getElementById("site-footer");if(sf)sf.style.display="none";
     loadAdminDashboard();
   }else document.getElementById("l-err").style.display="block";
 }
@@ -2031,6 +2043,7 @@ function doLogout(){
   document.getElementById("admin-area").style.display="none";
   document.getElementById("public-area").style.display="block";
   document.getElementById("pub-nav").style.display="flex";
+  const sf=document.getElementById("site-footer");if(sf)sf.style.display="block";
   document.getElementById("l-user").value="";document.getElementById("l-pass").value="";
   adminRole="";inventoryItems=[];packagesData=[];
 }
