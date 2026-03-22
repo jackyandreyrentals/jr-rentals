@@ -174,6 +174,43 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
 .q-total-lbl{font-size:13px;font-weight:600;}
 .q-total-amt{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--gold);}
 .q-note{font-size:11px;color:var(--muted);margin-top:10px;line-height:1.6;}
+
+/* ── PRIVACY PAGE ── */
+.privacy-page{max-width:720px;margin:0 auto;padding:0 0 2rem;}
+.privacy-hero{background:var(--dark2);border:1px solid rgba(232,160,32,0.3);border-radius:14px;padding:1.5rem;margin-bottom:1.25rem;display:flex;align-items:center;gap:16px;}
+.privacy-hero-icon{font-size:2.5rem;flex-shrink:0;}
+.privacy-hero h2{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:.06em;margin-bottom:4px;}
+.privacy-hero h2 em{color:var(--gold);font-style:normal;}
+.privacy-hero p{font-size:12px;color:var(--muted);line-height:1.6;}
+.privacy-section{background:var(--dark2);border:1px solid var(--border);border-radius:12px;padding:1.25rem;margin-bottom:.85rem;}
+.privacy-section-title{font-family:'Bebas Neue',sans-serif;font-size:.95rem;letter-spacing:.06em;color:var(--gold);margin-bottom:.65rem;display:flex;align-items:center;gap:8px;}
+.privacy-section p{font-size:12px;color:var(--muted);line-height:1.8;margin-bottom:.5rem;}
+.privacy-section p:last-child{margin-bottom:0;}
+.privacy-section ul,.privacy-section ol{font-size:12px;color:var(--muted);line-height:1.9;padding-left:1.25rem;}
+.privacy-section li{margin-bottom:2px;}
+.privacy-section strong{color:#fff;}
+.privacy-highlight{background:var(--gold-dim);border:1px solid rgba(232,160,32,0.25);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--gold);line-height:1.6;margin-top:.75rem;}
+.privacy-rights-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:.5rem;}
+.prg-item{background:var(--dark3);border-radius:8px;padding:10px 12px;}
+.prg-title{font-size:11px;font-weight:700;color:#fff;margin-bottom:3px;}
+.prg-desc{font-size:10px;color:var(--muted);line-height:1.5;}
+.privacy-contact{background:var(--dark3);border-radius:10px;padding:12px 14px;margin-top:.75rem;}
+.privacy-contact p{font-size:12px;color:var(--muted);line-height:1.8;}
+.privacy-contact strong{color:var(--gold);}
+.privacy-updated{font-size:10px;color:var(--muted);text-align:center;margin-top:1rem;font-style:italic;}
+/* ── CONSENT CHECKBOX ── */
+.consent-wrap{background:var(--dark3);border:1.5px solid rgba(232,160,32,0.3);border-radius:10px;padding:12px 14px;margin:14px 0;}
+.consent-row{display:flex;align-items:flex-start;gap:10px;}
+.consent-row input[type=checkbox]{width:18px;height:18px;accent-color:var(--gold);flex-shrink:0;margin-top:3px;cursor:pointer;}
+.consent-row label{font-size:12px;color:var(--muted);line-height:1.6;cursor:pointer;}
+.consent-row label a{color:var(--gold);text-decoration:underline;cursor:pointer;}
+/* ── PRIVACY BANNER ── */
+.privacy-banner{position:fixed;bottom:0;left:0;right:0;background:rgba(26,26,26,0.97);border-top:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;z-index:9999;flex-wrap:wrap;backdrop-filter:blur(8px);}
+.privacy-banner p{font-size:12px;color:var(--muted);line-height:1.5;flex:1;min-width:200px;}
+.privacy-banner p a{color:var(--gold);text-decoration:underline;cursor:pointer;}
+.privacy-banner-btns{display:flex;gap:8px;flex-shrink:0;}
+.pb-accept{background:var(--gold);color:#111;border:none;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;padding:7px 18px;border-radius:7px;cursor:pointer;}
+.pb-decline{background:none;border:1px solid var(--border);color:var(--muted);font-family:'Inter',sans-serif;font-size:12px;padding:7px 14px;border-radius:7px;cursor:pointer;}
 .btn-proceed{width:100%;margin-top:12px;background:var(--gold);color:#111;border:none;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;padding:13px;border-radius:8px;cursor:pointer;}
 
 /* CONTRACT */
@@ -692,7 +729,13 @@ canvas#sign-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
           <div class="sdb-note">Security deposit of <strong id="sdb-security-note">₱0</strong> is fully refundable once all items are returned in good condition. Any damage or loss will be deducted from this amount.</div>
         </div>
 
-        <button class="btn-submit" id="btn-book-submit" onclick="submitBooking()">Submit Booking Request</button>
+        <div class="consent-wrap">
+          <div class="consent-row">
+            <input type="checkbox" id="b-consent" onchange="toggleBookingConsent()">
+            <label for="b-consent">I have read and agree to the <a onclick="pub('privacy')" style="color:var(--gold)">Privacy Notice</a> of Jacky & Rey Rentals. I consent to the collection and processing of my personal information for this rental transaction in accordance with <strong>Republic Act No. 10173</strong> (Data Privacy Act of 2012).</label>
+          </div>
+        </div>
+        <button class="btn-submit" id="btn-book-submit" onclick="submitBooking()" disabled style="opacity:.5;cursor:not-allowed">Submit Booking Request</button>
       </div>
     </div>
   </div>
@@ -730,7 +773,165 @@ canvas#sign-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
         <div class="q-total"><span class="q-total-lbl">Estimated Total</span><span class="q-total-amt" id="q-total">₱0</span></div>
         <p class="q-note" id="q-note-text">* Prices are per day. Final amount confirmed upon booking.</p>
       </div>
-      <button class="btn-proceed" onclick="quoteToBooking()">Proceed to Booking ↗</button>
+      <div class="consent-wrap" style="margin-top:12px">
+        <div class="consent-row">
+          <input type="checkbox" id="q-consent" onchange="toggleQuoteConsent()">
+          <label for="q-consent">I have read and agree to the <a onclick="pub('privacy')" style="color:var(--gold)">Privacy Notice</a>. I consent to J&R Rentals collecting my information for this quotation request. (<strong>RA 10173</strong>)</label>
+        </div>
+      </div>
+      <button class="btn-proceed" id="btn-quote-proceed" onclick="quoteToBooking()" disabled style="opacity:.5;cursor:not-allowed">Proceed to Booking ↗</button>
+    </div>
+  </div>
+
+  <!-- PRIVACY NOTICE PAGE -->
+  <div class="page" id="page-privacy">
+    <div class="section">
+      <div class="privacy-page">
+
+        <div class="privacy-hero">
+          <div class="privacy-hero-icon">🔒</div>
+          <div>
+            <h2>Privacy <em>Notice</em></h2>
+            <p>Jacky & Rey Rentals is committed to protecting your personal information in compliance with the <strong style="color:#fff">Data Privacy Act of 2012 (Republic Act No. 10173)</strong> of the Philippines.</p>
+          </div>
+        </div>
+
+        <div class="privacy-section">
+          <div class="privacy-section-title">📋 Who We Are (Data Controller)</div>
+          <p><strong>Business Name:</strong> Jacky & Rey Rentals</p>
+          <p><strong>Nature of Business:</strong> Event equipment and camping gear rental — tables, chairs, camping sets, and related items for events in Metro Cebu.</p>
+          <p><strong>Contact:</strong> jackyandreyrentals@gmail.com | 09912094757 / 09500167754</p>
+          <p><strong>Location:</strong> Metro Cebu, Philippines</p>
+          <div class="privacy-highlight">As a Personal Information Controller (PIC) under RA 10173, we are responsible for the personal data you share with us when making bookings or inquiries.</div>
+        </div>
+
+        <div class="privacy-section">
+          <div class="privacy-section-title">📥 What Personal Data We Collect</div>
+          <p>When you use our booking or quotation services, we collect the following:</p>
+          <ul>
+            <li><strong>Identity information:</strong> Full name</li>
+            <li><strong>Contact information:</strong> Phone number, email address</li>
+            <li><strong>Location information:</strong> Event location, delivery address</li>
+            <li><strong>Transaction information:</strong> Items rented, event dates, rental amount, payment method and reference</li>
+            <li><strong>Digital signature:</strong> Drawn signature for rental contracts</li>
+            <li><strong>Communication records:</strong> Notes and special requests you provide</li>
+          </ul>
+        </div>
+
+        <div class="privacy-section">
+          <div class="privacy-section-title">🎯 Why We Collect Your Data (Purpose)</div>
+          <p>We collect and process your personal data solely for the following purposes:</p>
+          <ul>
+            <li>To process and confirm your rental booking</li>
+            <li>To send booking confirmation and payment instructions to your email</li>
+            <li>To generate and manage your rental contract</li>
+            <li>To coordinate delivery and pickup of rental items</li>
+            <li>To track rental inventory and availability</li>
+            <li>To process payments and security deposit refunds</li>
+            <li>To contact you regarding your rental transaction</li>
+          </ul>
+          <div class="privacy-highlight">We will <strong>never</strong> use your personal data for marketing purposes without your explicit consent, and we will <strong>never sell</strong> your data to third parties.</div>
+        </div>
+
+        <div class="privacy-section">
+          <div class="privacy-section-title">🗄️ How We Store Your Data</div>
+          <p>Your personal data is stored in the following secure platforms:</p>
+          <ul>
+            <li><strong>Google Sheets</strong> — booking records, contact information, transaction details (protected by Google's security infrastructure)</li>
+            <li><strong>Google Drive</strong> — signed rental contracts in PDF format (access-controlled, viewable only by you and J&R Rentals)</li>
+            <li><strong>Gmail</strong> — email communications related to your booking</li>
+          </ul>
+          <p>All platforms used are operated by Google LLC and are subject to Google's Privacy Policy and security standards. Data is not stored on any third-party server outside of Google's infrastructure.</p>
+        </div>
+
+        <div class="privacy-section">
+          <div class="privacy-section-title">⏱️ How Long We Keep Your Data</div>
+          <p>We retain your personal data for <strong>two (2) years</strong> from the date of your last transaction with us. This is to comply with business record-keeping requirements and to handle any post-rental concerns such as damage claims or deposit refunds.</p>
+          <p>After the retention period, your data will be deleted from our records. You may also request earlier deletion (see Your Rights below).</p>
+        </div>
+
+        <div class="privacy-section">
+          <div class="privacy-section-title">🔗 Data Sharing</div>
+          <p>We do not share your personal data with third parties except in the following limited circumstances:</p>
+          <ul>
+            <li><strong>Delivery partners</strong> — if you request delivery, your address and contact number may be shared with the delivery service (Lalamove, taxi, etc.) solely for the purpose of completing your delivery</li>
+            <li><strong>Legal compliance</strong> — if required by law, court order, or government authority</li>
+          </ul>
+          <p>In all cases, we only share the minimum necessary information.</p>
+        </div>
+
+        <div class="privacy-section">
+          <div class="privacy-section-title">⚖️ Your Rights Under RA 10173</div>
+          <p>As a data subject, you have the following rights:</p>
+          <div class="privacy-rights-grid">
+            <div class="prg-item">
+              <div class="prg-title">📣 Right to be Informed</div>
+              <div class="prg-desc">You have the right to know what personal data we collect and how it is used — which is the purpose of this Privacy Notice.</div>
+            </div>
+            <div class="prg-item">
+              <div class="prg-title">🔍 Right to Access</div>
+              <div class="prg-desc">You may request a copy of the personal data we hold about you at any time.</div>
+            </div>
+            <div class="prg-item">
+              <div class="prg-title">✏️ Right to Correction</div>
+              <div class="prg-desc">You may request correction of any inaccurate or incomplete personal data we hold.</div>
+            </div>
+            <div class="prg-item">
+              <div class="prg-title">🗑️ Right to Erasure</div>
+              <div class="prg-desc">You may request deletion of your personal data, subject to our legal retention obligations.</div>
+            </div>
+            <div class="prg-item">
+              <div class="prg-title">🚫 Right to Object</div>
+              <div class="prg-desc">You may object to the processing of your personal data in certain circumstances.</div>
+            </div>
+            <div class="prg-item">
+              <div class="prg-title">📦 Right to Data Portability</div>
+              <div class="prg-desc">You may request a copy of your data in a structured, commonly used format.</div>
+            </div>
+          </div>
+          <div class="privacy-contact">
+            <p>To exercise any of these rights, please contact us at:<br>
+            <strong>📧 jackyandreyrentals@gmail.com</strong><br>
+            <strong>📞 09912094757 / 09500167754</strong><br>
+            We will respond to your request within <strong>15 business days</strong> as required by the NPC.</p>
+          </div>
+        </div>
+
+        <div class="privacy-section">
+          <div class="privacy-section-title">🛡️ Data Security</div>
+          <p>We take reasonable measures to protect your personal data from unauthorized access, disclosure, or loss. These include:</p>
+          <ul>
+            <li>Access to our booking system is password-protected (admin only)</li>
+            <li>Signed contracts are stored in access-controlled Google Drive folders</li>
+            <li>We do not store payment card information — payments are processed through GCash and MariBank directly</li>
+          </ul>
+        </div>
+
+        <div class="privacy-section">
+          <div class="privacy-section-title">🔄 Changes to This Privacy Notice</div>
+          <p>We may update this Privacy Notice from time to time to reflect changes in our practices or legal requirements. We will post the updated notice on this page with a revised date.</p>
+          <p>Continued use of our booking services after any changes constitutes your acceptance of the updated Privacy Notice.</p>
+        </div>
+
+        <div class="privacy-section">
+          <div class="privacy-section-title">📮 Contact & Complaints</div>
+          <p>If you have concerns about how we handle your personal data, or if you believe your data privacy rights have been violated, you may:</p>
+          <ul>
+            <li>Contact us directly at <strong>jackyandreyrentals@gmail.com</strong></li>
+            <li>File a complaint with the <strong>National Privacy Commission (NPC)</strong> at <strong>privacy.gov.ph</strong></li>
+          </ul>
+          <div class="privacy-contact">
+            <p><strong>Data Privacy Officer / Contact Person:</strong><br>
+            Jacky & Rey Rentals Management<br>
+            <strong>📧 jackyandreyrentals@gmail.com</strong><br>
+            <strong>📞 09912094757 / 09500167754</strong><br>
+            <strong>📍 Metro Cebu, Philippines</strong></p>
+          </div>
+        </div>
+
+        <p class="privacy-updated">This Privacy Notice was last updated on March 2026. Effective upon posting.</p>
+
+      </div>
     </div>
   </div>
 
@@ -1200,7 +1401,7 @@ canvas#sign-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
         </div>
         <div class="sign-agree">
           <input type="checkbox" id="sign-agree-check">
-          <label for="sign-agree-check">I, <strong id="sign-agree-name">the renter</strong>, have read and agree to all the terms and conditions above. I understand this serves as my digital signature for this rental contract.</label>
+          <label for="sign-agree-check">I, <strong id="sign-agree-name">the renter</strong>, have read and agree to all the terms and conditions above. I understand this serves as my digital signature for this rental contract. I also consent to Jacky & Rey Rentals retaining this signed contract and my personal data in accordance with their <span style="color:var(--gold);text-decoration:underline;cursor:pointer" onclick="window.open(window.location.origin+window.location.pathname,'_blank')">Privacy Notice</span> (RA 10173).</label>
         </div>
         <button class="btn-sign-submit" id="btn-sign-submit" onclick="submitSignature()">✍️ Sign & Submit Contract</button>
       </div>
@@ -1230,6 +1431,15 @@ canvas#sign-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
   </div>
 </div>
 
+<!-- PRIVACY BANNER (first visit) -->
+<div class="privacy-banner" id="privacy-banner" style="display:none">
+  <p>🔒 This website collects personal data (name, phone, email) to process rental bookings. By continuing to use this site, you acknowledge our <a onclick="pub('privacy');hideBanner()">Privacy Notice</a> in compliance with RA 10173 (Data Privacy Act).</p>
+  <div class="privacy-banner-btns">
+    <button class="pb-accept" onclick="acceptPrivacy()">✓ I Understand</button>
+    <button class="pb-decline" onclick="hideBanner()">Dismiss</button>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -1254,7 +1464,7 @@ function closeSidebar(){document.getElementById("admin-sidebar").classList.remov
 function pub(id){
   document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
   document.getElementById("page-"+id).classList.add("active");
-  const pages=["home","inventory","packages","booking","quotation","contract"];
+  const pages=["home","inventory","packages","booking","quotation","contract","privacy"];
   document.querySelectorAll(".nav-links button:not(.btn-admin-nav)").forEach((b,i)=>{b.classList.remove("active");if(pages[i]===id)b.classList.add("active");});
   document.querySelectorAll(".mobile-nav button:not(.m-admin)").forEach((b,i)=>{b.classList.remove("active");if(pages[i]===id)b.classList.add("active");});
   window.scrollTo(0,0);
@@ -2339,6 +2549,65 @@ function formatDate(val){
   }catch(e){return String(val);}
 }
 
+/* ══════════════════════════════════════════════
+   DATA PRIVACY ACT COMPLIANCE
+══════════════════════════════════════════════ */
+
+// ── Privacy banner ──
+function initPrivacyBanner(){
+  try {
+    const accepted = localStorage.getItem("jr_privacy_accepted");
+    if(!accepted){
+      document.getElementById("privacy-banner").style.display="flex";
+    }
+  } catch(e) {
+    document.getElementById("privacy-banner").style.display="flex";
+  }
+}
+function acceptPrivacy(){
+  try { localStorage.setItem("jr_privacy_accepted","1"); } catch(e){}
+  hideBanner();
+}
+function hideBanner(){
+  document.getElementById("privacy-banner").style.display="none";
+}
+
+// ── Booking form consent toggle ──
+function toggleBookingConsent(){
+  const checked=document.getElementById("b-consent").checked;
+  const btn=document.getElementById("btn-book-submit");
+  btn.disabled=!checked;
+  btn.style.opacity=checked?"1":"0.5";
+  btn.style.cursor=checked?"pointer":"not-allowed";
+}
+
+// ── Quotation consent toggle ──
+function toggleQuoteConsent(){
+  const checked=document.getElementById("q-consent").checked;
+  const btn=document.getElementById("btn-quote-proceed");
+  btn.disabled=!checked;
+  btn.style.opacity=checked?"1":"0.5";
+  btn.style.cursor=checked?"pointer":"not-allowed";
+}
+
+// Reset consent when navigating away from booking/quote
+function resetConsents(){
+  const bc=document.getElementById("b-consent");
+  const qc=document.getElementById("q-consent");
+  const bb=document.getElementById("btn-book-submit");
+  const qb=document.getElementById("btn-quote-proceed");
+  if(bc){bc.checked=false;}
+  if(qc){qc.checked=false;}
+  if(bb){bb.disabled=true;bb.style.opacity="0.5";bb.style.cursor="not-allowed";}
+  if(qb){qb.disabled=true;qb.style.opacity="0.5";qb.style.cursor="not-allowed";}
+}
+
+// ── Init on load ──
+window.addEventListener("load", ()=>{
+  initPrivacyBanner();
+  checkSignUrl();
+});
+
 // ── Check URL for ?sign= on page load ──
 function checkSignUrl(){
   const params=new URLSearchParams(window.location.search);
@@ -2472,8 +2741,7 @@ function copySignLink(contractId){
   });
 }
 
-// Init on page load
-window.addEventListener("load", checkSignUrl);
+// Privacy init handles checkSignUrl on load
 </script>
 </body>
 </html>
