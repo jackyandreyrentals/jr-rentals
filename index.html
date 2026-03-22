@@ -655,8 +655,14 @@ canvas#sign-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
   <!-- INVENTORY -->
   <div class="page" id="page-inventory">
     <div class="section">
-      <div class="sec-title">Our <em>Inventory</em></div>
-      <div class="sec-sub">Individual rental items — prices per day per piece</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:.25rem;">
+        <div class="sec-title" style="margin-bottom:0">Our <em>Inventory</em></div>
+        <button onclick="clearCache();loadPublicInventory();"
+          style="background:none;border:1px solid var(--border);color:var(--muted);font-family:Inter,sans-serif;font-size:11px;padding:4px 12px;border-radius:20px;cursor:pointer;">
+          🔄 Refresh
+        </button>
+      </div>
+      <div class="sec-sub" id="inv-cache-label">Individual rental items — prices per day per piece</div>
       <div class="inv-grid" id="pub-inv-grid"><div class="loading"><div class="spinner"></div> Loading...</div></div>
     </div>
   </div>
@@ -664,7 +670,13 @@ canvas#sign-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
   <!-- PACKAGES -->
   <div class="page" id="page-packages">
     <div class="section">
-      <div class="sec-title">Event <em>Packages</em></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:.25rem;">
+        <div class="sec-title" style="margin-bottom:0">Event <em>Packages</em></div>
+        <button onclick="clearCache();loadPublicPackages();"
+          style="background:none;border:1px solid var(--border);color:var(--muted);font-family:Inter,sans-serif;font-size:11px;padding:4px 12px;border-radius:20px;cursor:pointer;">
+          🔄 Refresh
+        </button>
+      </div>
       <div class="sec-sub">Ready-made bundles for any occasion — add extras on top if you need more</div>
       <div class="pkg-grid" id="pub-pkg-grid"><div class="loading"><div class="spinner"></div> Loading packages...</div></div>
     </div>
@@ -1570,6 +1582,9 @@ function openSidebar(){document.getElementById("admin-sidebar").classList.add("m
 function closeSidebar(){document.getElementById("admin-sidebar").classList.remove("mobile-open");document.getElementById("sidebar-backdrop").classList.remove("show");}
 
 /* NAVIGATION */
+// Track which pages have been loaded this session
+const pagesLoaded = {};
+
 function pub(id){
   document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
   document.getElementById("page-"+id).classList.add("active");
@@ -1577,19 +1592,72 @@ function pub(id){
   document.querySelectorAll(".nav-links button:not(.btn-admin-nav)").forEach((b,i)=>{b.classList.remove("active");if(pages[i]===id)b.classList.add("active");});
   document.querySelectorAll(".mobile-nav button:not(.m-admin)").forEach((b,i)=>{b.classList.remove("active");if(pages[i]===id)b.classList.add("active");});
   window.scrollTo(0,0);
-  if(id==="inventory")loadPublicInventory();
-  if(id==="packages")loadPublicPackages();
-  if(id==="booking"){loadBookingItems();loadPackageSelectorOnBooking();}
-  if(id==="quotation")loadQuoteItems();
+
+  // ── LAZY LOAD — only fetch when page is opened ──
+  if(id==="inventory"){
+    // Load fresh if cache expired, otherwise use cache instantly
+    loadPublicInventory();
+  }
+  if(id==="packages"){
+    loadPublicPackages();
+  }
+  if(id==="booking"){
+    // Only reload items if cache is stale or first visit
+    if(!isCacheValid(inventoryCache)){
+      loadBookingItems();
+    } else {
+      // Use cached data instantly — no API call
+      loadBookingItems(null); // null = use existing inventoryItems
+    }
+    // Only load package selector if packages not cached
+    if(!isCacheValid(packagesCache)){
+      loadPackageSelectorOnBooking();
+    } else {
+      loadPackageSelectorOnBooking(); // fast — uses cache
+    }
+  }
+  if(id==="quotation"){
+    // Only reload quote items if cache is stale
+    if(!isCacheValid(inventoryCache)){
+      loadQuoteItems();
+    } else {
+      loadQuoteItems(); // fast — uses cache
+    }
+  }
 }
 function showLogin(){document.getElementById("public-area").style.display="none";document.getElementById("pub-nav").style.display="none";document.getElementById("login-area").style.display="block";}
 function backToPublic(){document.getElementById("public-area").style.display="block";document.getElementById("pub-nav").style.display="flex";document.getElementById("login-area").style.display="none";}
 
 /* INVENTORY */
-async function loadInventory(){
-  if(inventoryItems.length>0)return inventoryItems;
+// ── CACHE CONSTANTS ──
+const CACHE_TTL = 5 * 60 * 1000; // 5 minutes in ms
+let inventoryCache = { data:[], timestamp:0 };
+let packagesCache  = { data:[], timestamp:0 };
+
+function isCacheValid(cache){
+  return cache.data.length > 0 && (Date.now() - cache.timestamp) < CACHE_TTL;
+}
+
+function clearCache(){
+  inventoryCache = { data:[], timestamp:0 };
+  packagesCache  = { data:[], timestamp:0 };
+  inventoryItems = [];
+  packagesData   = [];
+}
+
+async function loadInventory(forceRefresh=false){
+  // Return cached data if still fresh
+  if(!forceRefresh && isCacheValid(inventoryCache)){
+    inventoryItems = inventoryCache.data;
+    return inventoryItems;
+  }
   const res=await api({action:"getInventory"});
-  if(res.success){inventoryItems=res.items;inventoryItems.forEach(i=>{bookingQty[i.name]=0;});}
+  if(res.success){
+    inventoryItems=res.items;
+    inventoryItems.forEach(i=>{ if(bookingQty[i.name]===undefined) bookingQty[i.name]=0; });
+    // Save to cache with timestamp
+    inventoryCache = { data:inventoryItems, timestamp:Date.now() };
+  }
   return inventoryItems;
 }
 
@@ -1602,8 +1670,16 @@ function gdImg(url,fallback,h){
 
 async function loadPublicInventory(){
   const g=document.getElementById("pub-inv-grid");
-  g.innerHTML=`<div class="loading"><div class="spinner"></div> Loading...</div>`;
+  const cacheLabel=document.getElementById("inv-cache-label");
+  const wasCached=isCacheValid(inventoryCache);
+  if(!wasCached) g.innerHTML=`<div class="loading"><div class="spinner"></div> Loading...</div>`;
   const items=await loadInventory();
+  if(cacheLabel){
+    const age=Math.round((Date.now()-inventoryCache.timestamp)/1000);
+    cacheLabel.textContent=wasCached
+      ?`Individual rental items — cached ${age<60?age+"s":Math.round(age/60)+"m"} ago · 🔄 Refresh to update`
+      :`Individual rental items — prices per day per piece`;
+  }
   if(!items.length){g.innerHTML=`<p style="color:var(--muted);padding:1rem">No items found.</p>`;return;}
   g.innerHTML=items.map(item=>{
     const av=parseInt(item.available)||0;
@@ -1613,10 +1689,17 @@ async function loadPublicInventory(){
 }
 
 /* PACKAGES */
-async function loadPackages(){
-  if(packagesData.length>0)return packagesData;
+async function loadPackages(forceRefresh=false){
+  // Return cached data if still fresh
+  if(!forceRefresh && isCacheValid(packagesCache)){
+    packagesData = packagesCache.data;
+    return packagesData;
+  }
   const res=await api({action:"getPackages"});
-  if(res.success)packagesData=res.packages;
+  if(res.success){
+    packagesData=res.packages;
+    packagesCache = { data:packagesData, timestamp:Date.now() };
+  }
   return packagesData;
 }
 
@@ -2152,8 +2235,8 @@ async function confirmDelete(){
   if(res&&res.success){
     showToast("Deleted successfully!","success");closeDelModal();
     if(deleteType==="booking")loadAdminBookings();
-    else if(deleteType==="package"){packagesData=[];loadAdminPackages();}
-    else{inventoryItems=[];loadAdminInventory();}
+    else if(deleteType==="package"){clearCache();loadAdminPackages();}
+    else{clearCache();loadAdminInventory();}
   }else showToast("Delete failed.","error");
 }
 
