@@ -363,6 +363,48 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
 .btn-confirm{background:var(--green-bg);color:var(--green);}
 .btn-del{background:var(--red-bg);color:var(--red);}
 .btn-add{background:var(--gold);color:#111;border:none;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;padding:9px 20px;border-radius:8px;cursor:pointer;margin-bottom:1rem;display:inline-flex;align-items:center;gap:6px;}
+.dash-card{background:var(--dark2);border:1px solid var(--border);border-radius:12px;padding:14px;}
+.dash-card-title{font-size:11px;font-weight:700;letter-spacing:.07em;color:var(--gold);margin-bottom:10px;text-transform:uppercase;}
+.dash-stats-list{display:flex;flex-direction:column;gap:6px;}
+.dsl-row{display:flex;justify-content:space-between;align-items:center;font-size:12px;padding:5px 0;border-bottom:1px solid var(--border);}
+.dsl-row:last-child{border-bottom:none;}
+.dsl-label{color:var(--muted);}
+.dsl-val{font-weight:700;}
+.upcoming-item{display:flex;gap:10px;padding:6px 0;border-bottom:1px solid var(--border);align-items:flex-start;}
+.upcoming-item:last-child{border-bottom:none;}
+.upcoming-date{background:var(--gold-dim);color:var(--gold);font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;white-space:nowrap;flex-shrink:0;}
+.upcoming-name{font-size:12px;font-weight:600;}
+.upcoming-items{font-size:10px;color:var(--muted);margin-top:1px;}
+.top-item-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--border);}
+.top-item-row:last-child{border-bottom:none;}
+.top-item-bar-wrap{flex:1;background:var(--dark3);border-radius:20px;height:6px;overflow:hidden;}
+.top-item-bar{height:100%;border-radius:20px;background:var(--gold);}
+.top-item-name{font-size:11px;color:var(--muted);width:120px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.top-item-count{font-size:11px;font-weight:700;width:30px;text-align:right;flex-shrink:0;}
+.dep-stat{text-align:center;padding:8px 16px;background:var(--dark3);border-radius:9px;}
+.dep-stat-val{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:var(--gold);}
+.dep-stat-lbl{font-size:10px;color:var(--muted);margin-top:2px;}
+
+/* ── CALENDAR ── */
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;}
+.cal-day-header{text-align:center;font-size:10px;font-weight:700;color:var(--muted);padding:6px 0;letter-spacing:.08em;}
+.cal-day{background:var(--dark2);border:1px solid var(--border);border-radius:7px;padding:6px;min-height:72px;cursor:pointer;transition:border-color .15s;position:relative;}
+.cal-day:hover{border-color:var(--gold);}
+.cal-day.today{border-color:var(--gold);background:var(--gold-dim);}
+.cal-day.other-month{opacity:.35;}
+.cal-day.has-events{border-color:rgba(96,165,250,0.4);}
+.cal-day-num{font-size:12px;font-weight:600;margin-bottom:3px;}
+.cal-day.today .cal-day-num{color:var(--gold);}
+.cal-event{font-size:9px;padding:2px 5px;border-radius:4px;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600;cursor:pointer;}
+.cal-ev-pending{background:rgba(232,160,32,0.2);color:var(--gold);}
+.cal-ev-confirmed{background:rgba(45,110,78,0.25);color:var(--green);}
+.cal-ev-paid{background:rgba(192,132,252,0.2);color:#c084fc;}
+.cal-ev-out{background:rgba(251,146,60,0.2);color:var(--orange);}
+.cal-ev-completed{background:rgba(96,165,250,0.2);color:var(--blue);}
+.cal-ev-other{background:var(--dark3);color:var(--muted);}
+.cal-more{font-size:9px;color:var(--muted);font-weight:600;}
+@media(max-width:700px){.dash-grid{grid-template-columns:1fr !important;}.dash-grid .dash-card{grid-column:span 1 !important;}}
+
 .bk-filter{background:var(--dark3);border:1px solid var(--border);color:var(--muted);font-family:'Inter',sans-serif;font-size:11px;font-weight:600;padding:5px 12px;border-radius:20px;cursor:pointer;transition:all .15s;}
 .bk-filter:hover{border-color:var(--gold);color:var(--gold);}
 .bk-filter.active{background:var(--gold-dim);border-color:var(--gold);color:var(--gold);}
@@ -1178,7 +1220,44 @@ canvas#sign-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
 
         <!-- DASHBOARD -->
         <div class="apanel active" id="apanel-dashboard">
+          <!-- METRICS ROW -->
           <div class="dash-metrics" id="dash-metrics"><div class="loading"><div class="spinner"></div> Loading...</div></div>
+
+          <!-- CHARTS + STATS ROW -->
+          <div class="dash-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin:16px 0;">
+            <!-- Monthly Revenue Chart -->
+            <div class="dash-card" style="grid-column:span 2">
+              <div class="dash-card-title">📈 Monthly Revenue (Last 6 Months)</div>
+              <canvas id="revenue-chart" height="130"></canvas>
+            </div>
+            <!-- Quick Stats -->
+            <div class="dash-card">
+              <div class="dash-card-title">📊 Booking Stats</div>
+              <div id="dash-stats" class="dash-stats-list"></div>
+            </div>
+          </div>
+
+          <!-- SECOND ROW: Upcoming + Top Items -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;">
+            <!-- Upcoming events this week -->
+            <div class="dash-card">
+              <div class="dash-card-title">📅 Upcoming Events (Next 7 Days)</div>
+              <div id="dash-upcoming"></div>
+            </div>
+            <!-- Top rented items -->
+            <div class="dash-card">
+              <div class="dash-card-title">🏆 Top Rented Items</div>
+              <div id="dash-top-items"></div>
+            </div>
+          </div>
+
+          <!-- SECURITY DEPOSITS HELD -->
+          <div class="dash-card" style="margin-bottom:16px">
+            <div class="dash-card-title">🛡️ Security Deposits</div>
+            <div id="dash-deposits" style="display:flex;gap:20px;flex-wrap:wrap;padding:8px 0;"></div>
+          </div>
+
+          <!-- RECENT BOOKINGS TABLE -->
           <div class="sec-title" style="margin-bottom:.75rem;font-size:1.2rem;">Recent <em>Bookings</em></div>
           <div class="tbl-wrap">
             <table class="data-table">
@@ -1202,8 +1281,14 @@ canvas#sign-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
 
         <!-- BOOKINGS -->
         <div class="apanel" id="apanel-bookings">
+          <!-- VIEW TOGGLE -->
+          <div style="display:flex;gap:6px;margin-bottom:12px;">
+            <button id="bk-view-list" class="bk-filter active" onclick="setBkView('list')">☰ List View</button>
+            <button id="bk-view-cal" class="bk-filter" onclick="setBkView('calendar')">📅 Calendar View</button>
+          </div>
+
           <!-- FILTERS + ADD -->
-          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:12px;">
+          <div id="bk-list-controls" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:12px;">
             <div style="display:flex;gap:8px;flex-wrap:wrap;">
               <button class="bk-filter active" onclick="filterBookings('all',this)">All</button>
               <button class="bk-filter" onclick="filterBookings('Pending',this)">⏳ Pending</button>
@@ -1214,13 +1299,36 @@ canvas#sign-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
               <button class="bk-filter" onclick="filterBookings('Completed',this)">🏁 Done</button>
               <button class="bk-filter" onclick="filterBookings('Cancelled',this)" style="color:var(--red)">✕ Cancelled</button>
             </div>
-            <button class="btn-add" onclick="openBookingModal(null)">➕ Add Booking</button>
+            <div style="display:flex;gap:8px;">
+              <button class="btn-add" onclick="openBookingModal(null)">➕ Add Booking</button>
+              <button onclick="exportBookingsCSV()" style="background:var(--dark3);border:1px solid var(--border);color:var(--muted);font-family:'Inter',sans-serif;font-size:13px;font-weight:600;padding:9px 16px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:6px;" onmouseover="this.style.borderColor='var(--green)';this.style.color='var(--green)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">⬇ Export CSV</button>
+              <button onclick="printBookings()" style="background:var(--dark3);border:1px solid var(--border);color:var(--muted);font-family:'Inter',sans-serif;font-size:13px;font-weight:600;padding:9px 16px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:6px;" onmouseover="this.style.borderColor='var(--blue)';this.style.color='var(--blue)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">🖨️ Print</button>
+            </div>
           </div>
           <!-- SEARCH -->
           <div style="margin-bottom:10px;">
             <input type="text" id="bk-search" placeholder="🔍 Search by name, phone, ID, or items..." oninput="searchBookings(this.value)"
               style="width:100%;background:var(--dark3);border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-family:Inter,sans-serif;font-size:13px;color:#fff;outline:none;">
           </div>
+          <!-- CALENDAR VIEW -->
+          <div id="bk-calendar-view" style="display:none;">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+              <button onclick="calNav(-1)" style="background:var(--dark3);border:1px solid var(--border);color:#fff;padding:6px 14px;border-radius:7px;cursor:pointer;font-size:16px;">‹</button>
+              <div id="cal-month-label" style="font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:.06em;flex:1;text-align:center;"></div>
+              <button onclick="calNav(1)" style="background:var(--dark3);border:1px solid var(--border);color:#fff;padding:6px 14px;border-radius:7px;cursor:pointer;font-size:16px;">›</button>
+              <button onclick="calNav(0)" style="background:var(--gold-dim);border:1px solid var(--gold);color:var(--gold);padding:6px 14px;border-radius:7px;cursor:pointer;font-size:12px;font-weight:600;">Today</button>
+            </div>
+            <div id="cal-grid" class="cal-grid"></div>
+            <div id="cal-detail" style="display:none;margin-top:12px;background:var(--dark2);border:1px solid var(--border);border-radius:10px;padding:14px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                <div id="cal-detail-date" style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.06em;color:var(--gold);"></div>
+                <button onclick="document.getElementById('cal-detail').style.display='none'" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;">✕</button>
+              </div>
+              <div id="cal-detail-list"></div>
+            </div>
+          </div>
+
+          <div id="bk-list-view">
           <div class="tbl-wrap">
             <table class="data-table" id="bookings-table">
               <thead><tr>
@@ -1232,6 +1340,7 @@ canvas#sign-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
               <tbody id="admin-bookings-tbody"><tr><td colspan="13" class="loading"><div class="spinner"></div></td></tr></tbody>
             </table>
           </div>
+          </div><!-- end bk-list-view -->
         </div>
 
         <!-- QUOTATIONS -->
@@ -2120,22 +2229,144 @@ function refreshAdminData(){inventoryItems=[];packagesData=[];loadAdminDashboard
 /* DASHBOARD */
 async function loadAdminDashboard(){
   const[invRes,bkRes]=await Promise.all([api({action:"getInventory"}),api({action:"getBookings"})]);
-  const items=invRes.success?invRes.items:[];const bookings=bkRes.success?bkRes.bookings:[];
+  const items=invRes.success?invRes.items:[];
+  const bookings=bkRes.success?bkRes.bookings:[];
+
+  // ── METRICS ──
   const pending=bookings.filter(b=>b.status==="Pending").length;
-  const revenue=bookings.filter(b=>b.status!=="Pending").reduce((s,b)=>s+(parseInt(b.total)||0),0);
+  const confirmed=bookings.filter(b=>b.status==="Confirmed").length;
+  const paid=bookings.filter(b=>["Paid","Out / Rented"].includes(b.status)).length;
+  const completed=bookings.filter(b=>b.status==="Completed").length;
+  const revenue=bookings.filter(b=>!["Pending","Cancelled"].includes(b.status)).reduce((s,b)=>s+(parseInt(b.total)||0),0);
   document.getElementById("dash-metrics").innerHTML=`
     <div class="metric-card"><div class="metric-icon">📅</div><div class="metric-val">${bookings.length}</div><div class="metric-lbl">Total Bookings</div></div>
-    <div class="metric-card"><div class="metric-icon">⏳</div><div class="metric-val">${pending}</div><div class="metric-lbl">Pending</div></div>
+    <div class="metric-card"><div class="metric-icon">⏳</div><div class="metric-val" style="color:var(--gold)">${pending}</div><div class="metric-lbl">Pending</div></div>
     <div class="metric-card"><div class="metric-icon">📦</div><div class="metric-val">${items.length}</div><div class="metric-lbl">Item Types</div></div>
-    <div class="metric-card"><div class="metric-icon">💰</div><div class="metric-val">₱${revenue.toLocaleString()}</div><div class="metric-lbl">Revenue</div></div>`;
-  document.getElementById("dash-bookings").innerHTML=bookings.slice(-5).reverse().map(b=>`
-    <tr><td>${b.id}</td><td>${b.name}</td><td>${b.items}</td><td>${b.eventDate}</td>
-    <td style="color:var(--gold);font-weight:600">₱${parseInt(b.total||0).toLocaleString()}</td>
-    <td><span class="status" style="${statusStyle(b.status)}">${b.status}</span></td></tr>`).join("")
-    ||`<tr><td colspan="6" style="color:var(--muted);text-align:center;padding:1rem">No bookings yet</td></tr>`;
+    <div class="metric-card"><div class="metric-icon">💰</div><div class="metric-val" style="color:var(--gold)">₱${revenue.toLocaleString()}</div><div class="metric-lbl">Revenue</div></div>`;
+
+  // ── BOOKING STATS ──
+  const cancelled=bookings.filter(b=>b.status==="Cancelled").length;
+  const statEl=document.getElementById("dash-stats");
+  if(statEl) statEl.innerHTML=[
+    ["✅ Confirmed",confirmed],["💳 Paid / Out",paid],
+    ["🏁 Completed",completed],["✕ Cancelled",cancelled],
+    ["📦 Item Types",items.length],
+    ["🛡️ Deposits Held","₱"+bookings.filter(b=>["Paid","Out / Rented","Confirmed"].includes(b.status)).reduce((s,b)=>s+(parseInt(b.securityDeposit)||0),0).toLocaleString()]
+  ].map(([l,v])=>`<div class="dsl-row"><span class="dsl-label">${l}</span><span class="dsl-val">${v}</span></div>`).join("");
+
+  // ── MONTHLY REVENUE CHART ──
+  buildRevenueChart(bookings);
+
+  // ── UPCOMING EVENTS (next 7 days) ──
+  const today=new Date();today.setHours(0,0,0,0);
+  const next7=new Date(today);next7.setDate(today.getDate()+7);
+  const upcoming=bookings.filter(b=>{
+    if(["Cancelled"].includes(b.status))return false;
+    const d=new Date(b.eventDate);
+    return d>=today&&d<=next7;
+  }).sort((a,b)=>new Date(a.eventDate)-new Date(b.eventDate));
+  const upEl=document.getElementById("dash-upcoming");
+  if(upEl) upEl.innerHTML=upcoming.length
+    ?upcoming.map(b=>`<div class="upcoming-item">
+        <div class="upcoming-date">${new Date(b.eventDate).toLocaleDateString("en-PH",{month:"short",day:"numeric"})}</div>
+        <div><div class="upcoming-name">${b.name}</div>
+        <div class="upcoming-items">${(b.items||"").substring(0,45)}${(b.items||"").length>45?"...":""}</div></div>
+      </div>`).join("")
+    :`<p style="color:var(--muted);font-size:12px;padding:8px 0">No upcoming events in the next 7 days</p>`;
+
+  // ── TOP RENTED ITEMS ──
+  const itemCounts={};
+  bookings.filter(b=>b.status!=="Cancelled").forEach(b=>{
+    const str=b.items||"";
+    str.split(",").forEach(part=>{
+      const m=part.trim().match(/^(\d+)\s*x?\s+(.+)$/i);
+      if(m){const name=m[2].trim().substring(0,25);itemCounts[name]=(itemCounts[name]||0)+parseInt(m[1]);}
+    });
+  });
+  const topItems=Object.entries(itemCounts).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const maxCount=topItems[0]?topItems[0][1]:1;
+  const topEl=document.getElementById("dash-top-items");
+  if(topEl) topEl.innerHTML=topItems.length
+    ?topItems.map(([name,count])=>`<div class="top-item-row">
+        <div class="top-item-name">${name}</div>
+        <div class="top-item-bar-wrap"><div class="top-item-bar" style="width:${Math.round(count/maxCount*100)}%"></div></div>
+        <div class="top-item-count">${count}</div>
+      </div>`).join("")
+    :`<p style="color:var(--muted);font-size:12px">No data yet</p>`;
+
+  // ── SECURITY DEPOSITS ──
+  const held=bookings.filter(b=>["Confirmed","Paid","Out / Rented"].includes(b.status)).reduce((s,b)=>s+(parseInt(b.securityDeposit)||0),0);
+  const pendingRelease=bookings.filter(b=>b.secDepStatus==="Pending Release").reduce((s,b)=>s+(parseInt(b.securityDeposit)||0),0);
+  const depEl=document.getElementById("dash-deposits");
+  if(depEl) depEl.innerHTML=[
+    ["₱"+held.toLocaleString(),"Currently Held"],
+    ["₱"+pendingRelease.toLocaleString(),"Pending Release"],
+    [bookings.filter(b=>b.secDepStatus==="Pending Release").length+" booking(s)","Awaiting Return"],
+  ].map(([v,l])=>`<div class="dep-stat"><div class="dep-stat-val">${v}</div><div class="dep-stat-lbl">${l}</div></div>`).join("");
+
+  // ── RECENT BOOKINGS TABLE ──
+  const recent=bookings.slice(-5).reverse();
+  document.getElementById("dash-bookings").innerHTML=recent.length
+    ?recent.map(b=>`<tr>
+        <td style="font-size:11px;color:var(--gold);font-weight:600">${b.id}</td>
+        <td>${b.name}</td>
+        <td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px">${b.items}</td>
+        <td style="font-size:11px">${b.eventDate}</td>
+        <td style="color:var(--gold);font-weight:600">₱${parseInt(b.total||0).toLocaleString()}</td>
+        <td><span class="status" style="${statusStyle(b.status)}">${b.status}</span></td>
+      </tr>`).join("")
+    :`<tr><td colspan="6" style="color:var(--muted);text-align:center;padding:1rem">No bookings yet</td></tr>`;
 }
 
-/* ADMIN INVENTORY */
+function buildRevenueChart(bookings){
+  const canvas=document.getElementById("revenue-chart");
+  if(!canvas)return;
+  const ctx=canvas.getContext("2d");
+  // Build last 6 months data
+  const months=[];const revenues=[];const counts=[];
+  for(let i=5;i>=0;i--){
+    const d=new Date();d.setMonth(d.getMonth()-i);
+    const key=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0");
+    const label=d.toLocaleDateString("en-PH",{month:"short",year:"2-digit"});
+    months.push(label);
+    const bks=bookings.filter(b=>{
+      const bd=String(b.eventDate||"").substring(0,7);
+      return bd===key&&!["Cancelled"].includes(b.status);
+    });
+    revenues.push(bks.reduce((s,b)=>s+(parseInt(b.total)||0),0));
+    counts.push(bks.length);
+  }
+  // Draw simple bar chart
+  const W=canvas.offsetWidth||400;
+  canvas.width=W;canvas.height=130;
+  const maxRev=Math.max(...revenues,1);
+  const barW=Math.floor((W-40)/(months.length*1.5));
+  const gap=Math.floor((W-40)/months.length);
+  ctx.clearRect(0,0,W,130);
+  months.forEach((m,i)=>{
+    const x=20+i*gap;
+    const barH=Math.round((revenues[i]/maxRev)*80);
+    const y=100-barH;
+    // Bar
+    ctx.fillStyle=revenues[i]>0?"#e8a020":"#2e2e2e";
+    ctx.beginPath();
+    ctx.roundRect?ctx.roundRect(x,y,barW,barH,3):ctx.rect(x,y,barW,barH);
+    ctx.fill();
+    // Month label
+    ctx.fillStyle="#a0a0a0";
+    ctx.font="10px Inter,sans-serif";
+    ctx.textAlign="center";
+    ctx.fillText(m,x+barW/2,118);
+    // Revenue label on bar
+    if(revenues[i]>0){
+      ctx.fillStyle="#fff";
+      ctx.font="bold 9px Inter,sans-serif";
+      ctx.fillText("₱"+(revenues[i]>=1000?Math.round(revenues[i]/1000)+"k":revenues[i]),x+barW/2,y-4);
+    }
+  });
+}
+
+
 async function loadAdminInventory(){
   const g=document.getElementById("admin-inv-grid");
   g.innerHTML=`<div class="loading"><div class="spinner"></div> Loading...</div>`;
@@ -2688,6 +2919,147 @@ async function confirmPayment() {
   loadAdminBookings();
 }
 
+/* ══════════════════════════════════════════════
+   EXPORT + PRINT BOOKINGS
+══════════════════════════════════════════════ */
+function exportBookingsCSV(){
+  if(!allBookings.length){showToast("No bookings to export.","error");return;}
+  const headers=["Booking ID","Name","Phone","Email","Location","Event Date","Return Date","Items","Total","Booking Deposit","Security Deposit","Sec. Deposit Status","Delivery Type","Delivery Address","Status","Notes"];
+  const rows=allBookings.map(b=>[
+    b.id,b.name,b.phone,b.email||"",b.location,b.eventDate,b.returnDate,
+    '"'+(b.items||"").replace(/"/g,'""')+'"',
+    b.total,b.bookingDeposit||"",b.securityDeposit||"",b.secDepStatus||"",
+    b.deliveryType||"pickup",b.deliveryAddress||"",b.status,
+    '"'+(b.notes||"").replace(/"/g,'""')+'"'
+  ].join(","));
+  const csv=[headers.join(","),...rows].join("
+");
+  const blob=new Blob([csv],{type:"text/csv;charset=utf-8;"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;a.download="JR_Rentals_Bookings_"+new Date().toISOString().substring(0,10)+".csv";
+  a.click();URL.revokeObjectURL(url);
+  showToast("Bookings exported as CSV!","success");
+}
+
+function printBookings(){
+  if(!allBookings.length){showToast("No bookings to print.","error");return;}
+  const rows=allBookings.slice().reverse().map(b=>`
+    <tr>
+      <td>${b.id}</td><td>${b.name}</td><td>${b.phone}</td>
+      <td>${b.location||"—"}</td><td>${b.eventDate||"—"}</td>
+      <td style="max-width:150px;overflow:hidden">${(b.items||"").substring(0,40)}${(b.items||"").length>40?"...":""}</td>
+      <td>₱${parseInt(b.total||0).toLocaleString()}</td>
+      <td>${b.status}</td>
+    </tr>`).join("");
+  const win=window.open("","_blank");
+  win.document.write(`<!DOCTYPE html><html><head><title>JR Rentals — Bookings</title>
+  <style>body{font-family:Arial,sans-serif;padding:20px;font-size:12px;}
+  h2{color:#1a2b4a;margin-bottom:4px;}
+  p{color:#666;margin-bottom:16px;font-size:11px;}
+  table{width:100%;border-collapse:collapse;}
+  th{background:#1a2b4a;color:#fff;padding:8px;text-align:left;font-size:11px;}
+  td{padding:7px 8px;border-bottom:1px solid #eee;font-size:11px;}
+  tr:nth-child(even){background:#f9f9f9;}
+  @media print{button{display:none}}</style></head>
+  <body>
+  <h2>Jacky & Rey Rentals — Booking Records</h2>
+  <p>Printed: ${new Date().toLocaleString()} · Total: ${allBookings.length} bookings</p>
+  <button onclick="window.print()" style="margin-bottom:14px;padding:8px 18px;background:#e8a020;border:none;border-radius:6px;cursor:pointer;font-weight:700;">🖨️ Print</button>
+  <table><thead><tr><th>ID</th><th>Client</th><th>Phone</th><th>Location</th><th>Event Date</th><th>Items</th><th>Total</th><th>Status</th></tr></thead>
+  <tbody>${rows}</tbody></table></body></html>`);
+  win.document.close();
+}
+
+/* ══════════════════════════════════════════════
+   BOOKING CALENDAR VIEW
+══════════════════════════════════════════════ */
+let calYear=new Date().getFullYear();
+let calMonth=new Date().getMonth();
+let calBookings=[];
+
+function setBkView(view){
+  document.getElementById("bk-list-view").style.display=view==="list"?"block":"none";
+  document.getElementById("bk-calendar-view").style.display=view==="calendar"?"block":"none";
+  document.getElementById("bk-list-controls").style.display=view==="list"?"flex":"none";
+  document.getElementById("bk-view-list").className=view==="list"?"bk-filter active":"bk-filter";
+  document.getElementById("bk-view-cal").className=view==="calendar"?"bk-filter active":"bk-filter";
+  if(view==="calendar"){calBookings=allBookings;renderCalendar();}
+}
+
+function calNav(dir){
+  if(dir===0){calYear=new Date().getFullYear();calMonth=new Date().getMonth();}
+  else{calMonth+=dir;if(calMonth>11){calMonth=0;calYear++;}else if(calMonth<0){calMonth=11;calYear--;}}
+  renderCalendar();
+}
+
+function renderCalendar(){
+  const label=document.getElementById("cal-month-label");
+  const grid=document.getElementById("cal-grid");
+  if(!label||!grid)return;
+  const monthNames=["January","February","March","April","May","June","July","August","September","October","November","December"];
+  label.textContent=monthNames[calMonth]+" "+calYear;
+  const days=["SUN","MON","TUE","WED","THU","FRI","SAT"];
+  const today=new Date();today.setHours(0,0,0,0);
+  const firstDay=new Date(calYear,calMonth,1).getDay();
+  const daysInMonth=new Date(calYear,calMonth+1,0).getDate();
+  const daysInPrev=new Date(calYear,calMonth,0).getDate();
+  let html=days.map(d=>`<div class="cal-day-header">${d}</div>`).join("");
+  // Previous month days
+  for(let i=firstDay-1;i>=0;i--){
+    html+=`<div class="cal-day other-month"><div class="cal-day-num">${daysInPrev-i}</div></div>`;
+  }
+  // Current month days
+  for(let d=1;d<=daysInMonth;d++){
+    const dateStr=calYear+"-"+String(calMonth+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");
+    const dayDate=new Date(calYear,calMonth,d);dayDate.setHours(0,0,0,0);
+    const isToday=dayDate.getTime()===today.getTime();
+    const dayBookings=calBookings.filter(b=>{
+      const bd=String(b.eventDate||"").substring(0,10);
+      return bd===dateStr&&b.status!=="Cancelled";
+    });
+    const eventsHtml=dayBookings.slice(0,2).map(b=>{
+      const cls=b.status==="Pending"?"cal-ev-pending":b.status==="Confirmed"?"cal-ev-confirmed":
+        b.status==="Paid"?"cal-ev-paid":b.status==="Out / Rented"?"cal-ev-out":
+        b.status==="Completed"?"cal-ev-completed":"cal-ev-other";
+      return `<div class="cal-event ${cls}" title="${b.name}: ${b.items}">${b.name}</div>`;
+    }).join("");
+    const moreHtml=dayBookings.length>2?`<div class="cal-more">+${dayBookings.length-2} more</div>`:"";
+    html+=`<div class="cal-day${isToday?" today":""}${dayBookings.length?" has-events":""}" onclick="showCalDay('${dateStr}',${d})">
+      <div class="cal-day-num">${d}</div>
+      ${eventsHtml}${moreHtml}
+    </div>`;
+  }
+  // Next month fill
+  const total=firstDay+daysInMonth;const remaining=(7-total%7)%7;
+  for(let i=1;i<=remaining;i++){
+    html+=`<div class="cal-day other-month"><div class="cal-day-num">${i}</div></div>`;
+  }
+  grid.innerHTML=html;
+}
+
+function showCalDay(dateStr, dayNum){
+  const detail=document.getElementById("cal-detail");
+  const dateLabel=document.getElementById("cal-detail-date");
+  const list=document.getElementById("cal-detail-list");
+  const bks=calBookings.filter(b=>String(b.eventDate||"").substring(0,10)===dateStr&&b.status!=="Cancelled");
+  if(!bks.length){detail.style.display="none";return;}
+  const d=new Date(dateStr);
+  dateLabel.textContent=d.toLocaleDateString("en-PH",{weekday:"long",year:"numeric",month:"long",day:"numeric"});
+  list.innerHTML=bks.map(b=>`<div style="background:var(--dark3);border-radius:8px;padding:10px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;">
+    <div>
+      <div style="font-size:13px;font-weight:700">${b.name} <span style="font-size:11px;color:var(--muted)">${b.id}</span></div>
+      <div style="font-size:11px;color:var(--muted);margin-top:2px">${(b.items||"").substring(0,50)}</div>
+      <div style="font-size:11px;color:var(--muted)">📍 ${b.location||"—"} · Return: ${b.returnDate||"—"}</div>
+    </div>
+    <div style="text-align:right;flex-shrink:0;margin-left:10px">
+      <span class="status" style="${statusStyle(b.status)}">${b.status}</span>
+      <div style="font-size:12px;color:var(--gold);font-weight:700;margin-top:4px">₱${parseInt(b.total||0).toLocaleString()}</div>
+    </div>
+  </div>`).join("");
+  detail.style.display="block";
+}
+
 async function releaseSecurityDeposit(bookingId, clientName, amount){
   if(!confirm(`Release ₱${amount.toLocaleString()} security deposit to ${clientName}?\n\nMake sure you have already sent the refund via GCash before confirming.`))return;
   showToast("Marking security deposit as released...","");
@@ -2876,7 +3248,7 @@ const FB_PAGE_URL = "https://m.me/" + FB_PAGE_ID;
 function openMessenger(){
   // Opens Messenger in a new tab
   // Replace YOUR_FACEBOOK_PAGE_ID with your actual page ID or username
-  window.open("https://www.facebook.com/profile.php?id=61579549797935", "_blank");
+  window.open("https://m.me/jackyandreyrentals", "_blank");
 }
 
 // Hide Messenger FAB when in admin, show on public
