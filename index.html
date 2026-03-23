@@ -739,7 +739,15 @@ canvas#sign-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
         </button>
       </div>
       <div class="sec-sub" id="inv-cache-label">Individual rental items — prices per day per piece</div>
-      <div class="inv-grid" id="pub-inv-grid"><div class="loading"><div class="spinner"></div> Loading...</div></div>
+      <!-- CATEGORY FILTER TABS -->
+      <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px;" id="pub-inv-cat-filters">
+        <button class="bk-filter active" onclick="filterPubInv('all',this)">All</button>
+        <button class="bk-filter" onclick="filterPubInv('Chairs',this)">🪑 Chairs</button>
+        <button class="bk-filter" onclick="filterPubInv('Tables',this)">🍽️ Tables</button>
+        <button class="bk-filter" onclick="filterPubInv('Camping',this)">⛺ Camping</button>
+        <button class="bk-filter" onclick="filterPubInv('Other',this)">📦 Other</button>
+      </div>
+      <div id="pub-inv-grid"><div class="loading"><div class="spinner"></div> Loading...</div></div>
     </div>
   </div>
 
@@ -1272,7 +1280,16 @@ canvas#sign-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
 
         <!-- INVENTORY -->
         <div class="apanel" id="apanel-inventory">
-          <button class="btn-add" onclick="openItemModal(null,'item')">➕ Add New Item</button>
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:12px;">
+            <div style="display:flex;gap:7px;flex-wrap:wrap;" id="admin-inv-cat-filters">
+              <button class="bk-filter active" onclick="filterAdminInv('all',this)">All</button>
+              <button class="bk-filter" onclick="filterAdminInv('Chairs',this)">🪑 Chairs</button>
+              <button class="bk-filter" onclick="filterAdminInv('Tables',this)">🍽️ Tables</button>
+              <button class="bk-filter" onclick="filterAdminInv('Camping',this)">⛺ Camping</button>
+              <button class="bk-filter" onclick="filterAdminInv('Other',this)">📦 Other</button>
+            </div>
+            <button class="btn-add" style="margin-bottom:0" onclick="openItemModal(null,'item')">➕ Add New Item</button>
+          </div>
           <div class="inv-admin-grid" id="admin-inv-grid"><div class="loading"><div class="spinner"></div> Loading...</div></div>
         </div>
 
@@ -1555,13 +1572,32 @@ canvas#sign-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
       <div class="item-form-grid">
         <div class="ifg if-full"><label>PACKAGE NAME</label><input type="text" id="p-name" placeholder="e.g. Birthday Starter Package"></div>
         <div class="ifg if-full"><label>SHORT DESCRIPTION</label><input type="text" id="p-desc" placeholder="Perfect for birthdays & small gatherings"></div>
+
+        <!-- ITEM PICKER -->
         <div class="ifg if-full">
-          <label>WHAT'S INCLUDED (one item per line)</label>
-          <textarea id="p-includes" placeholder="50 Monobloc Chairs&#10;5 Round Tables&#10;1 String Lights (10m)"></textarea>
+          <label style="display:flex;align-items:center;justify-content:space-between;">
+            INCLUDED ITEMS <span style="font-size:10px;color:var(--green);font-weight:400" id="pkg-items-count"></span>
+          </label>
+          <div id="pkg-item-picker" style="background:var(--dark3);border:1px solid var(--border);border-radius:9px;overflow:hidden;max-height:260px;overflow-y:auto;">
+            <div class="loading"><div class="spinner"></div> Loading inventory...</div>
+          </div>
         </div>
+
+        <!-- AUTO-CALCULATED SUMMARY -->
+        <div class="ifg if-full" id="pkg-calc-summary" style="display:none;">
+          <div style="background:var(--gold-dim);border:1px solid rgba(232,160,32,0.3);border-radius:9px;padding:10px 13px;">
+            <div style="font-size:10px;font-weight:700;color:var(--gold);letter-spacing:.08em;margin-bottom:8px;">PACKAGE CONTENTS</div>
+            <div id="pkg-calc-rows"></div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;padding:6px 0 0;border-top:1px solid rgba(232,160,32,0.2);margin-top:5px;">
+              <span style="color:var(--muted)">Individual total (if rented separately)</span>
+              <span style="font-weight:700;color:var(--gold)" id="pkg-indiv-display">₱0/day</span>
+            </div>
+          </div>
+        </div>
+
         <div class="ifg">
           <label>PACKAGE PRICE (₱)</label>
-          <input type="number" id="p-price" placeholder="1500" min="0">
+          <input type="number" id="p-price" placeholder="1500" min="0" oninput="calcPkgSavings()">
         </div>
         <div class="ifg">
           <label>PRICE TYPE</label>
@@ -1571,12 +1607,20 @@ canvas#sign-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
           </div>
         </div>
         <div class="ifg">
-          <label>INDIVIDUAL PRICE (₱) <span style="color:var(--muted);font-weight:400">(if bought separately)</span></label>
-          <input type="number" id="p-indiv" placeholder="1750" min="0">
+          <label style="display:flex;align-items:center;gap:5px;">
+            INDIVIDUAL PRICE (₱)
+            <span style="font-size:9px;background:var(--blue-bg);color:var(--blue);padding:1px 6px;border-radius:10px;">Auto</span>
+          </label>
+          <input type="number" id="p-indiv" placeholder="Auto-calculated" min="0" readonly
+            style="background:var(--dark3);opacity:.7;cursor:not-allowed;">
         </div>
         <div class="ifg">
-          <label>SAVINGS (₱)</label>
-          <input type="number" id="p-savings" placeholder="250" min="0" oninput="">
+          <label style="display:flex;align-items:center;gap:5px;">
+            SAVINGS (₱)
+            <span style="font-size:9px;background:var(--green-bg);color:var(--green);padding:1px 6px;border-radius:10px;">Auto</span>
+          </label>
+          <input type="number" id="p-savings" placeholder="Auto-calculated" min="0" readonly
+            style="background:var(--dark3);opacity:.7;cursor:not-allowed;">
         </div>
         <div class="ifg">
           <label>AVAILABLE?</label>
@@ -1933,7 +1977,6 @@ canvas#sign-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
 
 <div class="toast" id="toast"></div>
 
-</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
 const API="https://script.google.com/macros/s/AKfycbyxhstT4vDPqdVTrqcOPBCJL7JDIgzateELyfMqCrDnfnBKzaL3vtdR4982_iMrnUV4yA/exec";
@@ -2060,6 +2103,8 @@ function gdImg(url,fallback,h){
   return`<img src="${u}" style="width:100%;height:${h||110}px;object-fit:cover;" onerror="this.parentElement.innerHTML='<span style=\\'font-size:2.2rem\\'>${fallback||'📦'}</span>'">`;
 }
 
+let pubInvActiveCat = 'all';
+
 async function loadPublicInventory(){
   const g=document.getElementById("pub-inv-grid");
   const cacheLabel=document.getElementById("inv-cache-label");
@@ -2073,11 +2118,49 @@ async function loadPublicInventory(){
       :`Individual rental items — prices per day per piece`;
   }
   if(!items.length){g.innerHTML=`<p style="color:var(--muted);padding:1rem">No items found.</p>`;return;}
-  g.innerHTML=items.map(item=>{
-    const av=parseInt(item.available)||0;
-    const bc=av>20?"badge-green":av>0?"badge-amber":"badge-red";
-    return`<div class="inv-card"><div class="inv-img">${gdImg(item.imageUrl,item.emoji)}</div><div class="inv-body"><div class="inv-name">${item.name}</div><div class="inv-price">₱${item.price} / day</div><span class="badge ${bc}">${av>0?av+" available":"Out of stock"}</span><button class="btn-book" onclick="pub('booking')" ${av===0?"disabled style='background:var(--dark4);color:var(--muted)'":''}>${av>0?"Book this":"Unavailable"}</button></div></div>`;
-  }).join("");
+  renderPubInvGrid(items, pubInvActiveCat);
+}
+
+function renderPubInvGrid(items, cat){
+  const g=document.getElementById("pub-inv-grid");
+  const filtered = cat==='all' ? items : items.filter(i=>(i.category||'Other')===cat);
+  if(!filtered.length){
+    g.innerHTML=`<p style="color:var(--muted);padding:1rem">No ${cat} items found.</p>`;
+    return;
+  }
+
+  // Group by category if showing all
+  let html = '';
+  if(cat === 'all'){
+    const cats = ['Chairs','Tables','Camping','Other'];
+    cats.forEach(c => {
+      const catItems = items.filter(i=>(i.category||'Other')===c);
+      if(!catItems.length) return;
+      const catIcons = {Chairs:'🪑',Tables:'🍽️',Camping:'⛺',Other:'📦'};
+      html += `<div style="grid-column:1/-1;margin-top:8px;margin-bottom:4px;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.06em;color:var(--gold);display:flex;align-items:center;gap:7px;">
+          <span>${catIcons[c]||'📦'}</span><span>${c}</span>
+          <span style="font-size:11px;color:var(--muted);font-family:'Inter',sans-serif;font-weight:400;">(${catItems.length} item${catItems.length>1?'s':''})</span>
+        </div>
+      </div>` + catItems.map(item => renderPubInvCard(item)).join('');
+    });
+  } else {
+    html = filtered.map(item => renderPubInvCard(item)).join('');
+  }
+  g.innerHTML = html;
+}
+
+function renderPubInvCard(item){
+  const av=parseInt(item.available)||0;
+  const bc=av>20?"badge-green":av>0?"badge-amber":"badge-red";
+  return`<div class="inv-card"><div class="inv-img">${gdImg(item.imageUrl,item.emoji)}</div><div class="inv-body"><div class="inv-name">${item.name}</div><div class="inv-price">₱${item.price} / day</div><span class="badge ${bc}">${av>0?av+" available":"Out of stock"}</span><button class="btn-book" onclick="pub('booking')" ${av===0?"disabled style='background:var(--dark4);color:var(--muted)'":''}>${av>0?"Book this":"Unavailable"}</button></div></div>`;
+}
+
+function filterPubInv(cat, btn){
+  pubInvActiveCat = cat;
+  document.querySelectorAll('#pub-inv-cat-filters .bk-filter').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  renderPubInvGrid(inventoryItems, cat);
 }
 
 /* PACKAGES */
@@ -2102,7 +2185,8 @@ async function loadPublicPackages(){
   if(!pkgs.length){g.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--muted)"><div style="font-size:2.5rem;margin-bottom:.75rem">🎁</div><div style="font-size:14px;font-weight:600;margin-bottom:.5rem">No packages yet</div><div style="font-size:12px">Check back soon or contact us directly!</div></div>`;return;}
   g.innerHTML=pkgs.map(pkg=>{
     const avail=(pkg.available||"Yes")==="Yes";
-    const inclLines=(pkg.includes||"").split("\n").filter(Boolean);
+    // Parse includes — handle both structured "Chair:50,Table:5" and legacy "50x Chair\n5x Table"
+    const inclLines = parsePkgIncludesForDisplay(pkg.includes||pkg.includesReadable||"");
     const priceLabel=pkg.priceType==="perday"?"per day":"fixed price";
     return`<div class="pkg-card ${avail?'':''}">
       <div class="pkg-photo">${gdImg(pkg.imageUrl,"🎁",150)}${pkg.savings?`<div class="pkg-badge">Save ₱${parseInt(pkg.savings).toLocaleString()}</div>`:''}</div>
@@ -2188,8 +2272,9 @@ async function loadPackageSelectorOnBooking(){
   while(sel.options.length>1)sel.remove(1);
   pkgs.filter(p=>p.available==="Yes").forEach(pkg=>{
     const opt=document.createElement("option");
+    const itemCount = parsePkgIncludesForDisplay(pkg.includes||pkg.includesReadable||"").length;
     opt.value=pkg.name;
-    opt.textContent=`🎁 ${pkg.name} — ₱${parseInt(pkg.packagePrice).toLocaleString()} ${pkg.priceType==="perday"?"/ day":"fixed"}`;
+    opt.textContent=`🎁 ${pkg.name} — ₱${parseInt(pkg.packagePrice).toLocaleString()} ${pkg.priceType==="perday"?"/ day":"fixed"}${itemCount?" ("+itemCount+" items)":""}`;
     opt.dataset.pkg=JSON.stringify(pkg);
     sel.appendChild(opt);
   });
@@ -2367,13 +2452,17 @@ async function submitBooking(){
   const bookingDeposit=Math.ceil(total*0.5);
   const totalNow=bookingDeposit+securityDeposit;
 
+  const numDays=countRentalDays(date,returnDate);
+  const discountPct=parseFloat(appSettings.multiday_discount_pct)||0;
   const res=await api({
     action:"submitBooking",
     name,phone,email,location,eventDate:date,returnDate,
     items:itemsList,total,
     securityDeposit,bookingDeposit,totalNow,
     deliveryType,deliveryAddress:delivAddress,deliveryMethod:delivMethod,
-    notes:(notes?(notes+"\n"):"")+"Delivery: "+deliveryLabel
+    notes:(notes?(notes+"\n"):"")+"Delivery: "+deliveryLabel,
+    numDays,
+    discountPct
   });
   btn.disabled=false;btn.textContent="Submit Booking Request";
   if(res.success){
@@ -2636,12 +2725,36 @@ function buildRevenueChart(bookings){
 }
 
 
+let adminInvActiveCat = 'all';
+
 async function loadAdminInventory(){
   const g=document.getElementById("admin-inv-grid");
   g.innerHTML=`<div class="loading"><div class="spinner"></div> Loading...</div>`;
   inventoryItems=[];await loadInventory();
   if(!inventoryItems.length){g.innerHTML=`<p style="color:var(--muted)">No inventory found.</p>`;return;}
-  g.innerHTML=inventoryItems.map(item=>`
+  renderAdminInvGrid(inventoryItems, adminInvActiveCat);
+}
+
+function renderAdminInvGrid(items, cat){
+  const g=document.getElementById("admin-inv-grid");
+  const filtered = cat==='all' ? items : items.filter(i=>(i.category||'Other')===cat);
+  if(!filtered.length){
+    g.innerHTML=`<p style="color:var(--muted);padding:.5rem">No ${cat} items found.</p>`;
+    return;
+  }
+  const cats = cat==='all' ? ['Chairs','Tables','Camping','Other'] : [cat];
+  const catIcons = {Chairs:'🪑',Tables:'🍽️',Camping:'⛺',Other:'📦'};
+  let html = '';
+  cats.forEach(c => {
+    const catItems = items.filter(i=>(i.category||'Other')===c);
+    if(!catItems.length) return;
+    if(cat==='all'){
+      html += `<div style="grid-column:1/-1;margin-top:10px;margin-bottom:6px;padding-bottom:6px;border-bottom:1px solid var(--border);">
+        <span style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.06em;color:var(--gold)">${catIcons[c]||'📦'} ${c}</span>
+        <span style="font-size:11px;color:var(--muted);margin-left:8px;">${catItems.length} item${catItems.length>1?'s':''}</span>
+      </div>`;
+    }
+    html += catItems.map(item=>`
     <div class="inv-admin-card">
       <div class="inv-admin-photo">${gdImg(item.imageUrl,item.emoji,120)}<div class="photo-overlay" onclick="openItemModal(${JSON.stringify(item).replace(/"/g,'&quot;')},'item')"><span>✏️ Edit</span></div></div>
       <div class="inv-admin-body">
@@ -2655,7 +2768,16 @@ async function loadAdminInventory(){
         <button class="btn-sm btn-edit" onclick="openItemModal(${JSON.stringify(item).replace(/"/g,'&quot;')},'item')">✏️ Edit</button>
         <button class="btn-sm btn-del" onclick="openDelModal('${item.name}','item')">🗑️ Delete</button>
       </div>
-    </div>`).join("");
+    </div>`).join('');
+  });
+  g.innerHTML = html;
+}
+
+function filterAdminInv(cat, btn){
+  adminInvActiveCat = cat;
+  document.querySelectorAll('#admin-inv-cat-filters .bk-filter').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  renderAdminInvGrid(inventoryItems, cat);
 }
 
 /* ADMIN PACKAGES */
@@ -2670,7 +2792,7 @@ async function loadAdminPackages(){
       <div class="pkg-admin-body">
         <div class="pkg-admin-name">${pkg.name}</div>
         <div class="pkg-admin-price">₱${parseInt(pkg.packagePrice).toLocaleString()} ${pkg.priceType==="perday"?"/ day":"fixed"}</div>
-        <div class="pkg-admin-includes">${(pkg.includes||"").replace(/\n/g," · ")}</div>
+        <div class="pkg-admin-includes">${parsePkgIncludesForDisplay(pkg.includes||pkg.includesReadable||"").join(" · ")}</div>
         <span class="pkg-admin-avail badge ${pkg.available==="Yes"?"badge-green":"badge-red"}">${pkg.available==="Yes"?"Available":"Unavailable"}</span>
       </div>
       <div class="inv-admin-actions">
@@ -2708,7 +2830,6 @@ function openItemModal(item,type){
   }else{
     document.getElementById("p-name").value=item?item.name:"";
     document.getElementById("p-desc").value=item?item.description||"":"";
-    document.getElementById("p-includes").value=item?item.includes||"":"";
     document.getElementById("p-price").value=item?item.packagePrice:"";
     document.getElementById("p-indiv").value=item?item.individualPrice||"":"";
     document.getElementById("p-savings").value=item?item.savings||"":"";
@@ -2716,6 +2837,12 @@ function openItemModal(item,type){
     document.getElementById("p-imgurl").value=item?item.imageUrl||"":"";
     setPriceType(item?item.priceType||"fixed":"fixed");
     updateImgPreview(currentPkgImageUrl,"pkg-img-upload-area","pkg-img-preview","pkg-img-placeholder");
+    // ── Load item picker ──
+    pkgItemQty = {};
+    loadInventory().then(() => {
+      if(item && item.includes) parsePkgIncludes(item.includes);
+      loadPkgItemPicker();
+    });
   }
   document.getElementById("item-modal-overlay").classList.add("open");
 }
@@ -2747,17 +2874,28 @@ async function saveItem(){
   if(editingType==="package"){
     const name=document.getElementById("p-name").value.trim();
     const description=document.getElementById("p-desc").value.trim();
-    const includes=document.getElementById("p-includes").value.trim();
+    const includes=buildPkgIncludes(); // structured: "Chair:50,Table:5"
+    const includesReadable=buildPkgIncludesReadable(); // "50x Chair
+5x Table"
     const packagePrice=document.getElementById("p-price").value;
     const individualPrice=document.getElementById("p-indiv").value;
     const savings=document.getElementById("p-savings").value;
     const available=document.getElementById("p-avail").value;
     const imgUrl=document.getElementById("p-imgurl").value.trim();
     const imageUrl=currentPkgImageUrl.startsWith("data:")?currentPkgImageUrl:(imgUrl==="(uploaded)"?"":imgUrl||currentPkgImageUrl);
-    if(!name||!packagePrice||!includes){showToast("Please fill in name, price and what's included.","error");btn.disabled=false;btn.textContent="💾 Save";return;}
+    if(!name||!packagePrice){showToast("Please fill in package name and price.","error");btn.disabled=false;btn.textContent="💾 Save";return;}
+    if(!includes){showToast("Please add at least one item to this package.","error");btn.disabled=false;btn.textContent="💾 Save";return;}
     const payload=editingItem
-      ?{action:"editPackage",originalName:editingItem.name,name,description,includes,packagePrice:parseInt(packagePrice),priceType:currentPriceType,individualPrice:parseInt(individualPrice)||0,savings:parseInt(savings)||0,available,imageUrl}
-      :{action:"addPackage",name,description,includes,packagePrice:parseInt(packagePrice),priceType:currentPriceType,individualPrice:parseInt(individualPrice)||0,savings:parseInt(savings)||0,available,imageUrl};
+      ?{action:"editPackage",originalName:editingItem.name,name,description,
+        includes,includesReadable,
+        packagePrice:parseInt(packagePrice),priceType:currentPriceType,
+        individualPrice:parseInt(individualPrice)||0,savings:parseInt(savings)||0,
+        available,imageUrl}
+      :{action:"addPackage",name,description,
+        includes,includesReadable,
+        packagePrice:parseInt(packagePrice),priceType:currentPriceType,
+        individualPrice:parseInt(individualPrice)||0,savings:parseInt(savings)||0,
+        available,imageUrl};
     res=await api(payload);
   }else{
     const name=document.getElementById("f-name").value.trim();
@@ -2778,9 +2916,199 @@ async function saveItem(){
   if(res&&res.success){
     showToast(editingItem?"Updated successfully!":"Added successfully!","success");
     closeItemModal();
-    if(editingType==="package"){packagesData=[];loadAdminPackages();}
-    else{inventoryItems=[];loadAdminInventory();}
+    clearCache();
+    if(editingType==="package"){loadAdminPackages();}
+    else{loadAdminInventory();}
   }else showToast("Save failed. Please try again.","error");
+}
+
+// Parse structured includes string into display lines
+// Input: "Monoblock Chair:50,Round Table:5"  OR  "50x Chair\n5x Table"
+// Output: ["50x Monoblock Chair", "5x Round Table"]
+function parsePkgIncludesForDisplay(str) {
+  if (!str) return [];
+  if (str.includes(':') && !str.match(/^\d+\s*x/i)) {
+    // Structured format
+    return str.split(',').map(part => {
+      const colonIdx = part.lastIndexOf(':');
+      if (colonIdx > -1) {
+        const name = part.substring(0, colonIdx).trim();
+        const qty  = parseInt(part.substring(colonIdx+1)) || 0;
+        return qty > 0 ? `${qty}x ${name}` : null;
+      }
+      return null;
+    }).filter(Boolean);
+  }
+  // Legacy / readable format
+  return str.split('\n').filter(Boolean);
+}
+
+/* ══════════════════════════════════════════════
+   PACKAGE ITEM PICKER
+══════════════════════════════════════════════ */
+let pkgItemQty = {}; // { "Monoblock Chair": 50, "Round Table (5ft)": 5 }
+
+let pkgPickerActiveCat = 'all';
+
+async function loadPkgItemPicker() {
+  const picker = document.getElementById('pkg-item-picker');
+  if (!picker) return;
+  const items = await loadInventory();
+  if (!items.length) {
+    picker.innerHTML = '<p style="color:var(--muted);font-size:12px;padding:10px">No inventory items found. Add items first.</p>';
+    return;
+  }
+  renderPkgItemPicker(items, pkgPickerActiveCat);
+  updatePkgSummary();
+}
+
+function renderPkgItemPicker(items, cat) {
+  var picker = document.getElementById('pkg-item-picker');
+  if (!picker) return;
+  var catIcons = {Chairs:'🪑',Tables:'🍽️',Camping:'⛺',Other:'📦'};
+  var cats = ['Chairs','Tables','Camping','Other'];
+  var html = '<div style="display:flex;gap:5px;flex-wrap:wrap;padding:8px 10px;border-bottom:1px solid var(--border);background:var(--dark2);">';
+  html += '<button class="bk-filter ' + (cat==='all'?'active':'') + '" style="font-size:10px;padding:3px 9px;" onclick="setPkgPickerCat(\'all\')">All</button>';
+  cats.forEach(function(c){ html += '<button class="bk-filter ' + (cat===c?'active':'') + '" style="font-size:10px;padding:3px 9px;" onclick="setPkgPickerCat(\'' + c + '\')">' + (catIcons[c]||'') + ' ' + c + '</button>'; });
+  html += '</div>';
+  var filtered = cat==='all' ? items : items.filter(function(i){ return (i.category||'Other')===cat; });
+  if(cat==='all'){
+    cats.forEach(function(c){
+      var catItems = items.filter(function(i){ return (i.category||'Other')===c; });
+      if(!catItems.length) return;
+      html += '<div style="padding:5px 12px 2px;font-size:10px;font-weight:700;color:var(--gold);letter-spacing:.07em;background:rgba(232,160,32,0.06);">' + (catIcons[c]||'') + ' ' + c.toUpperCase() + '</div>';
+      catItems.forEach(function(item){ html += renderPkgPickerRow(item); });
+    });
+  } else {
+    filtered.forEach(function(item){ html += renderPkgPickerRow(item); });
+  }
+  html += '<div style="height:6px;"></div>';
+  picker.innerHTML = html;
+}
+
+function renderPkgPickerRow(item){
+  var qty = pkgItemQty[item.name]||0;
+  var hl = qty > 0 ? 'background:rgba(232,160,32,0.07);' : '';
+  var badge = qty > 0 ? ' <span style="font-size:9px;background:var(--green-bg);color:var(--green);padding:1px 6px;border-radius:10px;">x' + qty + '</span>' : '';
+  var qc = qty > 0 ? 'color:var(--gold);' : 'color:var(--muted);';
+  var sid = item.name.replace(/\s/g,'_');
+  var n = item.name.replace(/'/g,"\\'");
+  return '<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-bottom:1px solid var(--border);' + hl + '">'
+    + '<div style="flex:1;"><div style="font-size:12px;font-weight:600;">' + (item.emoji||'') + ' ' + item.name + badge + '</div>'
+    + '<div style="font-size:10px;color:var(--muted);">&#8369;' + item.price + '/day &middot; ' + item.available + ' available</div></div>'
+    + '<div style="display:flex;align-items:center;gap:7px;flex-shrink:0;">'
+    + '<button onclick="chgPkgQty(\'' + n + '\',-1)" style="width:26px;height:26px;border-radius:50%;border:1px solid var(--border);background:var(--dark2);cursor:pointer;font-size:16px;color:var(--gold);display:flex;align-items:center;justify-content:center;">&#8722;</button>'
+    + '<span style="font-size:13px;font-weight:600;min-width:22px;text-align:center;' + qc + '" id="pkgqty-' + sid + '">' + qty + '</span>'
+    + '<button onclick="chgPkgQty(\'' + n + '\',1)" style="width:26px;height:26px;border-radius:50%;border:1px solid var(--border);background:var(--dark2);cursor:pointer;font-size:16px;color:var(--gold);display:flex;align-items:center;justify-content:center;">&#43;</button>'
+    + '</div></div>';
+}
+
+
+function setPkgPickerCat(cat){
+  pkgPickerActiveCat = cat;
+  renderPkgItemPicker(inventoryItems, cat);
+}
+
+function chgPkgQty(name, delta) {
+  pkgItemQty[name] = Math.max(0, (pkgItemQty[name]||0) + delta);
+  // Re-render picker to update highlights and badges
+  renderPkgItemPicker(inventoryItems, pkgPickerActiveCat);
+  updatePkgSummary();
+}
+
+function updatePkgSummary() {
+  const selected = Object.entries(pkgItemQty).filter(([k,v]) => v > 0);
+  const countEl = document.getElementById('pkg-items-count');
+  const summaryEl = document.getElementById('pkg-calc-summary');
+  const rowsEl = document.getElementById('pkg-calc-rows');
+  const indivEl = document.getElementById('pkg-indiv-display');
+
+  if (!selected.length) {
+    if (countEl) countEl.textContent = '';
+    if (summaryEl) summaryEl.style.display = 'none';
+    document.getElementById('p-indiv').value = '';
+    document.getElementById('p-savings').value = '';
+    return;
+  }
+
+  // Calculate individual total from inventory prices
+  let indivTotal = 0;
+  const rows = selected.map(([name, qty]) => {
+    const item = inventoryItems.find(i => i.name === name);
+    const rate = item ? parseInt(item.price) : 0;
+    const lineTotal = qty * rate;
+    indivTotal += lineTotal;
+    return `<div style="display:flex;justify-content:space-between;font-size:11px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
+      <span style="color:var(--muted)">${qty}x ${name}</span>
+      <span style="color:var(--gold)">₱${lineTotal.toLocaleString()}/day</span>
+    </div>`;
+  });
+
+  if (countEl) countEl.textContent = selected.length + ' item type' + (selected.length > 1 ? 's' : '') + ' selected';
+  if (summaryEl) summaryEl.style.display = 'block';
+  if (rowsEl) rowsEl.innerHTML = rows.join('');
+  if (indivEl) indivEl.textContent = '₱' + indivTotal.toLocaleString() + '/day';
+
+  // Auto-fill Individual Price and Savings
+  document.getElementById('p-indiv').value = indivTotal;
+  calcPkgSavings();
+}
+
+function calcPkgSavings() {
+  const pkgPrice = parseInt(document.getElementById('p-price').value) || 0;
+  const indivPrice = parseInt(document.getElementById('p-indiv').value) || 0;
+  const savings = indivPrice > pkgPrice && pkgPrice > 0 ? indivPrice - pkgPrice : 0;
+  document.getElementById('p-savings').value = savings;
+}
+
+// Build structured includes string from pkgItemQty
+// Format: "Monoblock Chair:50,Round Table (5ft):5"
+function buildPkgIncludes() {
+  return Object.entries(pkgItemQty)
+    .filter(([k,v]) => v > 0)
+    .map(([k,v]) => `${k}:${v}`)
+    .join(',');
+}
+
+// Build human-readable includes for display
+function buildPkgIncludesReadable() {
+  return Object.entries(pkgItemQty)
+    .filter(([k,v]) => v > 0)
+    .map(([k,v]) => `${v}x ${k}`)
+    .join('\n');
+}
+
+// Parse structured includes string back to pkgItemQty
+function parsePkgIncludes(str) {
+  pkgItemQty = {};
+  if (!str) return;
+  // Try structured format first: "Chair:50,Table:5"
+  if (str.includes(':')) {
+    str.split(',').forEach(part => {
+      const colonIdx = part.lastIndexOf(':');
+      if (colonIdx > -1) {
+        const name = part.substring(0, colonIdx).trim();
+        const qty = parseInt(part.substring(colonIdx+1)) || 0;
+        if (name && qty > 0) pkgItemQty[name] = qty;
+      }
+    });
+  } else {
+    // Legacy free-text format: "50x Monoblock Chair" or "50 Monoblock Chair"
+    str.split('\n').forEach(line => {
+      const m = line.trim().match(/^(\d+)\s*x?\s+(.+)$/i);
+      if (m) {
+        const qty = parseInt(m[1]);
+        const name = m[2].trim();
+        // Try to match to existing inventory item
+        const match = inventoryItems.find(i =>
+          i.name.toLowerCase() === name.toLowerCase() ||
+          name.toLowerCase().includes(i.name.toLowerCase())
+        );
+        if (match) pkgItemQty[match.name] = qty;
+        else pkgItemQty[name] = qty; // keep as-is if no match
+      }
+    });
+  }
 }
 
 /* DELETE */
