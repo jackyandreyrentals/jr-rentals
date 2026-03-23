@@ -3388,8 +3388,8 @@ function openBookingModal(bk){
 
   // ── Reset discount fields ──
   bmDiscType = 'none';
-  ['none','fixed','percent'].forEach(t => {
-    document.getElementById('bm-disc-'+t).classList.toggle('active', t==='none');
+  [{t:'none',id:'bm-disc-none'},{t:'fixed',id:'bm-disc-fixed'},{t:'percent',id:'bm-disc-pct'}].forEach(({t,id}) => {
+    const el=document.getElementById(id); if(el) el.classList.toggle('active', t==='none');
   });
   document.getElementById('bm-disc-input-row').style.display='none';
   document.getElementById('bm-disc-preview').style.display='none';
@@ -3422,8 +3422,10 @@ let bmDiscType = 'none';
 function setBmDiscType(type) {
   bmDiscType = type;
   // Update toggle buttons
+  const discIdMap = {none:'none', fixed:'fixed', percent:'pct'};
   ['none','fixed','percent'].forEach(t => {
-    document.getElementById('bm-disc-' + t).classList.toggle('active', t === type);
+    const el = document.getElementById('bm-disc-' + discIdMap[t]);
+    if(el) el.classList.toggle('active', t === type);
   });
   const inputRow = document.getElementById('bm-disc-input-row');
   const preview  = document.getElementById('bm-disc-preview');
