@@ -834,6 +834,7 @@ canvas#sign-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
         <!-- BOOKING SUMMARY -->
         <div class="booking-total-bar" id="booking-total-bar" style="display:none">
           <div class="btb-row"><span>Items subtotal</span><span id="btb-items">₱0</span></div>
+          <div id="btb-multiday-note" style="display:none;padding:0 0 4px;"></div>
           <div class="btb-row" id="btb-pkg-row" style="display:none"><span>Package</span><span id="btb-pkg">₱0</span></div>
           <div class="btb-row" id="btb-del-row" style="display:none"><span>🚚 Delivery fee</span><span id="btb-del">To be confirmed</span></div>
           <div class="btb-total"><span>Rental Total</span><span id="btb-total">₱0</span></div>
@@ -1202,6 +1203,7 @@ canvas#sign-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
         <button class="sidebar-btn" onclick="aPanel('quotations',this);closeSidebar()"><span class="sidebar-icon">💰</span> Quotations</button>
         <button class="sidebar-btn" onclick="aPanel('contracts',this);closeSidebar()"><span class="sidebar-icon">📄</span> Contracts</button>
         <button class="sidebar-btn" onclick="aPanel('finance',this);closeSidebar()"><span class="sidebar-icon">💹</span> Finance</button>
+        <button class="sidebar-btn" onclick="aPanel('settings',this);closeSidebar()"><span class="sidebar-icon">⚙️</span> Settings</button>
       </div>
       <div class="sidebar-footer"><button class="btn-logout" onclick="doLogout()">⬡ Logout</button></div>
     </div>
@@ -1426,6 +1428,89 @@ canvas#sign-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
               </table>
             </div>
           </div>
+        </div>
+
+      </div>
+
+        <!-- SETTINGS -->
+        <div class="apanel" id="apanel-settings">
+
+          <!-- MULTI-DAY PRICING -->
+          <div class="dash-card" style="max-width:580px;margin-bottom:14px;">
+            <div class="dash-card-title">📅 Multi-Day Rental Pricing</div>
+            <div style="font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.7;">
+              Set a discount for rentals longer than 1 day. Day 1 is always charged at full price.
+              From Day 2 onwards, each day gets a percentage discount off the Day 1 rate.
+            </div>
+
+            <!-- Visual example -->
+            <div id="multiday-example" style="background:var(--dark3);border-radius:10px;padding:13px 15px;margin-bottom:16px;font-size:12px;">
+              <div style="font-weight:600;color:var(--gold);margin-bottom:8px;font-size:11px;letter-spacing:.07em;">EXAMPLE: 50x Monobloc Chair @ ₱15/day</div>
+              <div id="example-rows"></div>
+            </div>
+
+            <!-- Discount slider -->
+            <div style="margin-bottom:16px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                <label style="font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.07em;">DAY 2+ DISCOUNT</label>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span style="font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--gold);" id="discount-display">20</span>
+                  <span style="font-size:14px;color:var(--gold);font-weight:600;">% off</span>
+                </div>
+              </div>
+              <input type="range" id="discount-slider" min="0" max="70" step="5" value="20"
+                oninput="updateDiscountPreview(this.value)"
+                style="width:100%;accent-color:var(--gold);">
+              <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:4px;">
+                <span>0% (no discount)</span>
+                <span>35% off</span>
+                <span>70% off</span>
+              </div>
+            </div>
+
+            <!-- Quick presets -->
+            <div style="margin-bottom:16px;">
+              <div style="font-size:10px;font-weight:600;color:var(--muted);letter-spacing:.07em;margin-bottom:8px;">QUICK PRESETS</div>
+              <div style="display:flex;gap:7px;flex-wrap:wrap;">
+                <button class="bk-filter" onclick="applyPreset(0)">No discount</button>
+                <button class="bk-filter" onclick="applyPreset(10)">10% off</button>
+                <button class="bk-filter active" onclick="applyPreset(20)">20% off</button>
+                <button class="bk-filter" onclick="applyPreset(25)">25% off</button>
+                <button class="bk-filter" onclick="applyPreset(30)">30% off</button>
+                <button class="bk-filter" onclick="applyPreset(50)">50% off</button>
+              </div>
+            </div>
+
+            <!-- Current day 2 rate display -->
+            <div style="background:var(--gold-dim);border:1px solid rgba(232,160,32,0.3);border-radius:9px;padding:11px 14px;margin-bottom:16px;font-size:12px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <span style="color:var(--muted)">Day 1 rate (full price)</span>
+                <span style="font-weight:600;">₱X.XX / item / day</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px;">
+                <span style="color:var(--muted)">Day 2+ rate</span>
+                <span style="font-weight:600;color:var(--gold);" id="day2-rate-display">₱X.XX / item / day (80% of full)</span>
+              </div>
+            </div>
+
+            <button onclick="saveSettings()" style="background:var(--gold);color:#111;border:none;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;padding:11px 28px;border-radius:8px;cursor:pointer;" id="btn-save-settings">
+              💾 Save Settings
+            </button>
+            <span id="settings-save-msg" style="font-size:12px;color:var(--green);margin-left:12px;display:none;">✅ Saved!</span>
+          </div>
+
+          <!-- HOW IT WORKS info card -->
+          <div class="dash-card" style="max-width:580px;">
+            <div class="dash-card-title">ℹ️ How Multi-Day Pricing Works</div>
+            <div style="font-size:12px;color:var(--muted);line-height:1.9;">
+              <div style="margin-bottom:6px;">📅 <strong style="color:#fff">Day 1</strong> — always charged at the full item price (set in Inventory)</div>
+              <div style="margin-bottom:6px;">📅 <strong style="color:#fff">Day 2 onwards</strong> — each additional day is charged at the discounted rate</div>
+              <div style="margin-bottom:6px;">🧮 <strong style="color:#fff">Formula:</strong> Total = (Day 1 price) + (Day 2+ price × remaining days)</div>
+              <div style="margin-bottom:6px;">📦 <strong style="color:#fff">Packages</strong> — package prices are fixed totals and are not affected by this setting</div>
+              <div>🔄 <strong style="color:#fff">Changes take effect immediately</strong> on all new bookings and the quotation calculator</div>
+            </div>
+          </div>
+
         </div>
 
       </div>
@@ -1726,6 +1811,7 @@ canvas#sign-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
         <div class="sign-row"><span>Event Date</span><span id="sc-eventdate">—</span></div>
         <div class="sign-row"><span>Return Date</span><span id="sc-returndate">—</span></div>
         <div class="sign-row"><span>Items / Package</span><span id="sc-items" style="max-width:55%;text-align:right">—</span></div>
+        <div class="sign-row" id="sc-days-row" style="display:none"><span>Rental Duration</span><span id="sc-days">—</span></div>
         <div class="sign-row" style="border-top:1px dashed var(--border);padding-top:8px;margin-top:4px;">
           <span style="font-weight:600">Total Amount</span>
           <span id="sc-total" style="font-weight:700;color:var(--gold);font-size:1.1rem;">—</span>
@@ -2083,9 +2169,24 @@ function onPkgSelectorChange(sel){
 const SECURITY_DEPOSIT_RATE = 0.20; // 20% of rental total
 
 function updateBookingTotal(){
-  let itemsTotal=0;
-  Object.entries(bookingQty).forEach(([k,v])=>{
-    if(v>0){const item=inventoryItems.find(i=>i.name===k);if(item)itemsTotal+=v*parseInt(item.price);}
+  // ── Get rental days from event/return dates ──
+  const eventDate = document.getElementById('b-date')?.value || '';
+  const returnDate = document.getElementById('b-return')?.value || '';
+  const numDays = countRentalDays(eventDate, returnDate);
+  const discountPct = parseFloat(appSettings.multiday_discount_pct) || 0;
+
+  // ── Calculate items total with multi-day pricing ──
+  let itemsTotal = 0;
+  let itemsBreakdown = [];
+  Object.entries(bookingQty).forEach(([k, v]) => {
+    if (v > 0) {
+      const item = inventoryItems.find(i => i.name === k);
+      if (item) {
+        const lineTotal = calcMultiDayTotal(parseInt(item.price), v, numDays);
+        itemsTotal += lineTotal;
+        itemsBreakdown.push({ name: k, qty: v, price: parseInt(item.price), total: lineTotal });
+      }
+    }
   });
   const pkgTotal=selectedPackage?parseInt(selectedPackage.packagePrice)||0:0;
   const rentalTotal=itemsTotal+pkgTotal;
@@ -2094,7 +2195,23 @@ function updateBookingTotal(){
   if(!bar)return;
   if(rentalTotal>0||selectedPackage){
     bar.style.display="block";
-    document.getElementById("btb-items").textContent="₱"+itemsTotal.toLocaleString();
+    // Show days badge
+    const daysLabel = numDays > 1
+      ? ` <span style="font-size:10px;background:var(--gold-dim);color:var(--gold);padding:1px 8px;border-radius:10px;margin-left:6px;">${numDays} days</span>`
+      : '';
+    document.getElementById("btb-items").innerHTML = "₱" + Math.round(itemsTotal).toLocaleString() + daysLabel;
+
+    // Show multi-day breakdown note if applicable
+    const breakdownNote = document.getElementById("btb-multiday-note");
+    if (breakdownNote) {
+      if (numDays > 1 && discountPct > 0 && itemsBreakdown.length > 0) {
+        const day2Rate = 100 - discountPct;
+        breakdownNote.innerHTML = `<div style="font-size:10px;color:var(--muted);margin-top:4px;">Day 1: full price · Day 2+: ${day2Rate}% of daily rate (${discountPct}% off)</div>`;
+        breakdownNote.style.display = 'block';
+      } else {
+        breakdownNote.style.display = 'none';
+      }
+    }
     const pkgRow=document.getElementById("btb-pkg-row");
     if(selectedPackage){pkgRow.style.display="flex";document.getElementById("btb-pkg").textContent=`₱${pkgTotal.toLocaleString()} (${selectedPackage.name})`;}
     else pkgRow.style.display="none";
@@ -2264,8 +2381,20 @@ function setQDelivery(type){
 function calcQ(){
   if(!inventoryItems.length)return;
   const days=Math.max(1,parseInt(document.getElementById("q-days")?.value)||1);
+  const discountPct = parseFloat(appSettings.multiday_discount_pct) || 0;
+  const day2Rate = 1 - discountPct / 100;
   let total=0,html="";
-  inventoryItems.forEach(i=>{const qty=parseInt(document.getElementById("qq-"+i.name.replace(/\s/g,'_'))?.value)||0;if(qty>0){const sub=qty*parseInt(i.price)*days;total+=sub;html+=`<div class="q-line"><span>${i.name}</span><span class="q-line-calc">${qty}×₱${i.price}×${days}d</span><span class="q-line-amt">₱${sub.toLocaleString()}</span></div>`;}});
+  inventoryItems.forEach(i=>{
+    const qty=parseInt(document.getElementById("qq-"+i.name.replace(/\s/g,'_'))?.value)||0;
+    if(qty>0){
+      const sub = calcMultiDayTotal(parseInt(i.price), qty, days);
+      total += sub;
+      const calcLabel = days > 1 && discountPct > 0
+        ? `${qty}×₱${i.price} Day1 + ${qty}×₱${(parseInt(i.price)*day2Rate).toFixed(0)} ×${days-1}d`
+        : `${qty}×₱${i.price}×${days}d`;
+      html+=`<div class="q-line"><span>${i.name}</span><span class="q-line-calc">${calcLabel}</span><span class="q-line-amt">₱${Math.round(sub).toLocaleString()}</span></div>`;
+    }
+  });
   document.getElementById("q-lines").innerHTML=html||`<p style="font-size:12px;color:var(--muted);padding:6px 0">Select items above to see your estimate.</p>`;
   const totalTxt="₱"+total.toLocaleString()+(qDeliveryType==="delivery"?" + delivery fee":"");
   document.getElementById("q-total").textContent=totalTxt;
@@ -2296,6 +2425,7 @@ async function doLogin(){
     const sf=document.getElementById("site-footer");if(sf)sf.style.display="none";
     hideMessengerFab();
     startPendingPoll();
+    loadSettingsSilent(); // load multi-day pricing settings in background
     loadAdminDashboard();
   }else document.getElementById("l-err").style.display="block";
 }
@@ -2316,7 +2446,7 @@ function aPanel(id,btn){
   document.getElementById("apanel-"+id).classList.add("active");
   document.querySelectorAll(".sidebar-btn").forEach(b=>b.classList.remove("active"));
   btn.classList.add("active");
-  const titles={dashboard:"Dashboard <em>Overview</em>",inventory:"Inventory <em>Management</em>",packages:"Package <em>Management</em>",bookings:"Booking <em>Records</em>",quotations:"Quotation <em>Manager</em>",contracts:"Contract <em>Records</em>",finance:"Finance <em>Reports</em>"};
+  const titles={dashboard:"Dashboard <em>Overview</em>",inventory:"Inventory <em>Management</em>",packages:"Package <em>Management</em>",bookings:"Booking <em>Records</em>",quotations:"Quotation <em>Manager</em>",contracts:"Contract <em>Records</em>",finance:"Finance <em>Reports</em>",settings:"System <em>Settings</em>"};
   document.getElementById("a-page-title").innerHTML=titles[id];
   if(id==="inventory")loadAdminInventory();
   if(id==="packages")loadAdminPackages();
@@ -2324,6 +2454,7 @@ function aPanel(id,btn){
   if(id==="quotations")loadAdminQuotations();
   if(id==="contracts")loadAdminContracts();
   if(id==="finance")loadFinancePanel();
+  if(id==="settings")loadSettingsPanel();
 }
 function refreshAdminData(){inventoryItems=[];packagesData=[];loadAdminDashboard();const active=document.querySelector(".apanel.active")?.id?.replace("apanel-","");if(active&&active!=="dashboard")aPanel(active,document.querySelector(".sidebar-btn.active"));showToast("Data refreshed!","success");}
 
@@ -3308,6 +3439,128 @@ document.addEventListener("click", function(e){
 });
 
 /* ══════════════════════════════════════════════
+   SETTINGS + MULTI-DAY PRICING
+══════════════════════════════════════════════ */
+let appSettings = { multiday_discount_pct: 20, multiday_start_day: 2 };
+let settingsLoaded = false;
+
+async function loadSettingsPanel() {
+  const res = await api({ action: 'getSettings' });
+  if (res.success) {
+    appSettings = { ...appSettings, ...res.settings };
+    settingsLoaded = true;
+  }
+  renderSettingsPanel();
+}
+
+// Load settings silently on admin login (needed for booking calculations)
+async function loadSettingsSilent() {
+  if (settingsLoaded) return;
+  const res = await api({ action: 'getSettings' });
+  if (res.success) {
+    appSettings = { ...appSettings, ...res.settings };
+    settingsLoaded = true;
+  }
+}
+
+function renderSettingsPanel() {
+  const pct = parseFloat(appSettings.multiday_discount_pct) || 20;
+  document.getElementById('discount-slider').value = pct;
+  document.getElementById('discount-display').textContent = pct;
+  updateDiscountPreview(pct);
+  // Highlight active preset
+  document.querySelectorAll('#apanel-settings .bk-filter').forEach(b => {
+    b.classList.remove('active');
+    if (parseFloat(b.textContent) === pct || (pct === 0 && b.textContent === 'No discount')) {
+      b.classList.add('active');
+    }
+  });
+}
+
+function updateDiscountPreview(pct) {
+  pct = parseFloat(pct) || 0;
+  document.getElementById('discount-display').textContent = pct;
+  const dayRate = 15; // example: ₱15/chair
+  const qty = 50;
+  const day2Rate = dayRate * (1 - pct / 100);
+  document.getElementById('day2-rate-display').textContent =
+    '₱' + day2Rate.toFixed(2) + ' / item / day (' + (100 - pct) + '% of full price)';
+
+  // Build example rows for 3-day rental
+  const rows = [];
+  for (let d = 1; d <= 3; d++) {
+    const rate = d === 1 ? dayRate : day2Rate;
+    const dayTotal = qty * rate;
+    const tag = d === 1
+      ? '<span style="font-size:10px;background:var(--green-bg);color:var(--green);padding:1px 7px;border-radius:10px;margin-left:6px;">full price</span>'
+      : pct > 0
+        ? '<span style="font-size:10px;background:var(--gold-dim);color:var(--gold);padding:1px 7px;border-radius:10px;margin-left:6px;">-' + pct + '%</span>'
+        : '';
+    rows.push(`
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
+        <span style="color:var(--muted)">Day ${d}${tag}</span>
+        <span>₱${rate.toFixed(2)}/chair × ${qty} = <strong style="color:var(--gold)">₱${dayTotal.toLocaleString()}</strong></span>
+      </div>`);
+  }
+  const grandTotal = qty * dayRate + qty * day2Rate * 2;
+  rows.push(`
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0 0;">
+      <span style="font-weight:600;">3-Day Total</span>
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:1.2rem;color:var(--gold);">₱${grandTotal.toLocaleString()}</span>
+    </div>`);
+  document.getElementById('example-rows').innerHTML = rows.join('');
+}
+
+function applyPreset(pct) {
+  document.getElementById('discount-slider').value = pct;
+  updateDiscountPreview(pct);
+  document.querySelectorAll('#apanel-settings .bk-filter').forEach(b => {
+    b.classList.remove('active');
+    if (parseFloat(b.textContent) === pct || (pct === 0 && b.textContent === 'No discount')) {
+      b.classList.add('active');
+    }
+  });
+}
+
+async function saveSettings() {
+  const pct = parseFloat(document.getElementById('discount-slider').value) || 0;
+  appSettings.multiday_discount_pct = pct;
+  const btn = document.getElementById('btn-save-settings');
+  btn.disabled = true; btn.textContent = 'Saving...';
+  const res = await api({ action: 'saveSettings', settings: { multiday_discount_pct: pct, multiday_start_day: 2 } });
+  btn.disabled = false; btn.textContent = '💾 Save Settings';
+  if (res.success) {
+    const msg = document.getElementById('settings-save-msg');
+    msg.style.display = 'inline';
+    setTimeout(() => msg.style.display = 'none', 3000);
+    showToast('Settings saved! New bookings will use the updated rates.', 'success');
+  } else {
+    showToast('Save failed. Please try again.', 'error');
+  }
+}
+
+// ── MULTI-DAY PRICE CALCULATOR ──
+// Returns total rental price accounting for multi-day discount
+function calcMultiDayTotal(pricePerDay, qty, numDays) {
+  if (numDays <= 0) numDays = 1;
+  const discountPct = parseFloat(appSettings.multiday_discount_pct) || 0;
+  const day1Total = pricePerDay * qty;                                    // Day 1 full price
+  const day2Rate = pricePerDay * (1 - discountPct / 100);                // Day 2+ discounted rate
+  const extraDaysTotal = day2Rate * qty * Math.max(0, numDays - 1);      // Remaining days
+  return day1Total + extraDaysTotal;
+}
+
+// Count rental days from event date to return date
+function countRentalDays(eventDate, returnDate) {
+  if (!eventDate) return 1;
+  const d1 = new Date(eventDate);
+  const d2 = returnDate ? new Date(returnDate) : d1;
+  const diffMs = d2.getTime() - d1.getTime();
+  const days = Math.round(diffMs / (1000 * 60 * 60 * 24)) + 1; // inclusive
+  return Math.max(1, days);
+}
+
+/* ══════════════════════════════════════════════
    FINANCE MODULE
 ══════════════════════════════════════════════ */
 let financeData = null;
@@ -3823,7 +4076,14 @@ async function loadContractForSigning(contractId){
   document.getElementById("sc-eventdate").textContent=formatDate(res.contract.eventDate)||"—";
   document.getElementById("sc-returndate").textContent=formatDate(res.contract.returnDate)||"—";
   document.getElementById("sc-items").textContent=res.contract.items||"—";
-  document.getElementById("sc-total").textContent="₱"+(parseInt(res.contract.total)||0).toLocaleString();
+  if(scDays > 1){
+    document.getElementById("sc-days-row").style.display="flex";
+    document.getElementById("sc-days").textContent=scDays+" day"+(scDays>1?"s":"")+" rental";
+  }
+  const scTotal = parseInt(res.contract.total)||0;
+  const scDays = parseInt(res.contract.numDays)||1;
+  document.getElementById("sc-total").textContent="₱"+scTotal.toLocaleString()
+    + (scDays > 1 ? " (" + scDays + " days)" : "");
   document.getElementById("sign-agree-name").textContent=res.contract.name||"the renter";
   document.getElementById("sign-content").style.display="block";
   initSignaturePad();
