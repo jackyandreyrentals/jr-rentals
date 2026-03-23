@@ -2875,8 +2875,7 @@ async function saveItem(){
     const name=document.getElementById("p-name").value.trim();
     const description=document.getElementById("p-desc").value.trim();
     const includes=buildPkgIncludes(); // structured: "Chair:50,Table:5"
-    const includesReadable=buildPkgIncludesReadable(); // "50x Chair
-5x Table"
+    const includesReadable=buildPkgIncludesReadable(); // human readable format
     const packagePrice=document.getElementById("p-price").value;
     const individualPrice=document.getElementById("p-indiv").value;
     const savings=document.getElementById("p-savings").value;
