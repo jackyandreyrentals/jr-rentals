@@ -1748,21 +1748,15 @@ canvas#sign-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
       <div class="ifg"><label>EVENT DATE</label><input type="date" id="bm-eventdate" onchange="updateBmTotal()"></div>
       <div class="ifg"><label>RETURN DATE</label><input type="date" id="bm-returndate" onchange="updateBmTotal()"></div>
       <div class="ifg if-full"><label>EVENT LOCATION</label><input type="text" id="bm-location" placeholder="Barangay, City, Metro Cebu"></div>
-      <!-- PACKAGE PICKER (multi-select) -->
+      <!-- PACKAGE PICKER (dropdown + chips) -->
       <div class="ifg if-full">
-        <label style="display:flex;align-items:center;justify-content:space-between;">
-          PACKAGES (optional — can select multiple)
-          <span style="font-size:10px;color:var(--green);" id="bm-pkg-badge"></span>
-        </label>
-        <div id="bm-pkg-picker" style="background:var(--dark3);border:1px solid var(--border);border-radius:9px;overflow:hidden;max-height:220px;overflow-y:auto;">
-          <div class="loading"><div class="spinner"></div> Loading packages...</div>
-        </div>
-      </div>
-
-      <!-- SELECTED PACKAGES SUMMARY -->
-      <div id="bm-pkg-summary" style="display:none;background:var(--gold-dim);border:1px solid rgba(232,160,32,0.3);border-radius:9px;padding:10px 13px;font-size:12px;">
-        <div style="font-size:10px;font-weight:700;color:var(--gold);letter-spacing:.07em;margin-bottom:6px;">SELECTED PACKAGES</div>
-        <div id="bm-pkg-summary-rows"></div>
+        <label>PACKAGES (optional — select multiple)</label>
+        <select id="bm-pkg-select"
+          style="width:100%;background:var(--dark3);border:1px solid var(--border);border-radius:8px;padding:10px 11px;font-family:Inter,sans-serif;font-size:13px;color:#fff;outline:none;cursor:pointer;">
+          <option value="">+ Add a package...</option>
+        </select>
+        <!-- Selected package chips -->
+        <div id="bm-pkg-chips" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;"></div>
       </div>
 
       <!-- ITEM PICKER (individual items / extras) -->
@@ -3849,7 +3843,7 @@ function openBookingModal(bk){
     });
   }
   // Load pickers
-  loadBmPackageSelect();
+  loadBmPackageSelect().then(function(){ renderBmPkgChips(); });
   loadBmItemPicker();
 
   // ── Reset discount fields ──
@@ -4100,87 +4094,89 @@ function updateBmTotal() {
 }
 
 async function loadBmPackageSelect() {
-  const picker = document.getElementById('bm-pkg-picker');
-  if (!picker) return;
+  const sel = document.getElementById('bm-pkg-select');
+  if (!sel) return;
   if (!packagesData.length) {
     const res = await api({action:'getPackages'});
     if (res.success) packagesData = res.packages;
   }
-  renderBmPkgPicker();
+  // Build dropdown options
+  sel.innerHTML = '<option value="">+ Add a package...</option>';
+  packagesData.filter(function(p){ return p.available==='Yes'; }).forEach(function(pkg){
+    const opt = document.createElement('option');
+    opt.value = pkg.name;
+    opt.textContent = '🎁 '+pkg.name+' — ₱'+parseInt(pkg.packagePrice).toLocaleString()+' '+(pkg.priceType==='perday'?'/day':'fixed');
+    sel.appendChild(opt);
+  });
+  // Attach change handler
+  sel.onchange = function() {
+    const name = this.value;
+    if (!name) return;
+    bmPkgQty[name] = (bmPkgQty[name]||0) + 1;
+    this.value = ''; // reset dropdown
+    renderBmPkgChips();
+    updateBmTotal();
+  };
+  renderBmPkgChips();
 }
 
-function renderBmPkgPicker() {
-  const picker = document.getElementById('bm-pkg-picker');
-  if (!picker) return;
-  const available = packagesData.filter(function(p){ return p.available==='Yes'; });
-  if (!available.length) {
-    picker.innerHTML = '<p style="color:var(--muted);font-size:12px;padding:10px;">No packages available.</p>';
-    return;
-  }
-  let html = '';
-  available.forEach(function(pkg) {
-    const qty = bmPkgQty[pkg.name]||0;
-    const hl  = qty > 0 ? 'background:rgba(232,160,32,0.07);' : '';
-    const inclLines = parsePkgIncludesForDisplay(pkg.includes||pkg.includesReadable||'');
-    const badge = qty > 0
-      ? ' <span style="font-size:9px;background:var(--green-bg);color:var(--green);padding:1px 5px;border-radius:10px;">×'+qty+'</span>' : '';
-    html += '<div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid var(--border);'+hl+'">'
-      + '<div style="flex:1;">'
-      + '<div style="font-size:12px;font-weight:600;">🎁 '+pkg.name+badge+'</div>'
-      + '<div style="font-size:10px;color:var(--muted);">₱'+parseInt(pkg.packagePrice).toLocaleString()+' '+(pkg.priceType==='perday'?'/ day':'fixed')+' · '+inclLines.slice(0,2).join(', ')+(inclLines.length>2?' +more':'')+' </div>'
-      + '</div>'
-      + '<div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">'
-      + '<button data-pkgdec="'+pkg.name+'" style="width:24px;height:24px;border-radius:50%;border:1px solid var(--border);background:var(--dark2);cursor:pointer;font-size:14px;color:var(--gold);line-height:1;">−</button>'
-      + '<span style="font-size:13px;font-weight:600;min-width:20px;text-align:center;color:'+(qty>0?'var(--gold)':'var(--muted)')+';" id="bmpkgqty-'+pkg.name.replace(/\s/g,'_')+'">'+qty+'</span>'
-      + '<button data-pkginc="'+pkg.name+'" style="width:24px;height:24px;border-radius:50%;border:1px solid var(--border);background:var(--dark2);cursor:pointer;font-size:14px;color:var(--gold);line-height:1;">+</button>'
-      + '</div></div>';
-  });
-  html += '<div style="height:6px;"></div>';
-  picker.innerHTML = html;
+function renderBmPkgChips() {
+  const chips = document.getElementById('bm-pkg-chips');
+  const label = document.getElementById('bm-items-label');
+  if (!chips) return;
 
-  // Attach events
-  picker.querySelectorAll('[data-pkgdec]').forEach(function(btn){
-    btn.addEventListener('click', function(){ changeBmPkgQty(this.dataset.pkgdec, -1); });
-  });
-  picker.querySelectorAll('[data-pkginc]').forEach(function(btn){
-    btn.addEventListener('click', function(){ changeBmPkgQty(this.dataset.pkginc, 1); });
-  });
-}
-
-function changeBmPkgQty(name, delta) {
-  bmPkgQty[name] = Math.max(0, (bmPkgQty[name]||0) + delta);
-  renderBmPkgPicker();
-  updateBmPkgSummary();
-  updateBmTotal();
-}
-
-function updateBmPkgSummary() {
   const selected = Object.entries(bmPkgQty).filter(function(e){ return e[1]>0; });
-  const badge   = document.getElementById('bm-pkg-badge');
-  const summary = document.getElementById('bm-pkg-summary');
-  const rows    = document.getElementById('bm-pkg-summary-rows');
-  const label   = document.getElementById('bm-items-label');
 
-  if (badge) badge.textContent = selected.length > 0 ? selected.length+' package'+(selected.length>1?'s':'')+' selected' : '';
   if (!selected.length) {
-    if (summary) summary.style.display = 'none';
+    chips.innerHTML = '';
     if (label) label.textContent = 'ITEMS TO RENT';
     return;
   }
-  if (summary) summary.style.display = 'block';
+
   if (label) label.textContent = 'EXTRA ITEMS (on top of packages, optional)';
 
-  let html = '';
-  selected.forEach(function(e) {
+  chips.innerHTML = selected.map(function(e) {
     const pkg = packagesData.find(function(p){ return p.name===e[0]; });
-    if (!pkg) return;
-    const subtotal = (parseInt(pkg.packagePrice)||0) * e[1];
-    html += '<div style="display:flex;justify-content:space-between;padding:3px 0;font-size:12px;border-bottom:1px solid rgba(255,255,255,0.05);">'
-      + '<span style="color:var(--muted);">'+e[1]+'× 🎁 '+e[0]+'</span>'
-      + '<span style="color:var(--gold);">₱'+subtotal.toLocaleString()+'</span>'
+    const price = pkg ? parseInt(pkg.packagePrice)*e[1] : 0;
+    const inclLines = pkg ? parsePkgIncludesForDisplay(pkg.includes||pkg.includesReadable||'') : [];
+    return '<div style="display:flex;align-items:center;gap:0;background:var(--dark3);border:1px solid rgba(232,160,32,0.35);border-radius:9px;overflow:hidden;max-width:100%;">'
+      // Left: info
+      + '<div style="padding:7px 10px;flex:1;">'
+      + '<div style="font-size:12px;font-weight:700;color:var(--gold);">🎁 '+e[0]+(e[1]>1?' ×'+e[1]:'')+'<span style="font-weight:400;color:var(--muted);margin-left:6px;font-size:11px;">₱'+price.toLocaleString()+'</span></div>'
+      + (inclLines.length ? '<div style="font-size:10px;color:var(--muted);margin-top:2px;">'+inclLines.slice(0,3).join(' · ')+(inclLines.length>3?' +more':'')+'</div>' : '')
+      + '</div>'
+      // Right: qty controls + remove
+      + '<div style="display:flex;align-items:center;border-left:1px solid var(--border);flex-shrink:0;">'
+      + '<button data-chipdec="'+e[0]+'" style="width:30px;height:100%;border:none;background:none;cursor:pointer;font-size:16px;color:var(--gold);padding:0 4px;">−</button>'
+      + '<span style="font-size:13px;font-weight:700;min-width:18px;text-align:center;color:#fff;">'+e[1]+'</span>'
+      + '<button data-chipinc="'+e[0]+'" style="width:30px;height:100%;border:none;background:none;cursor:pointer;font-size:16px;color:var(--gold);padding:0 4px;">+</button>'
+      + '<button data-chiprm="'+e[0]+'" style="width:30px;height:100%;border:none;background:rgba(255,80,80,0.08);cursor:pointer;font-size:14px;color:var(--red);padding:0 4px;border-left:1px solid var(--border);">✕</button>'
+      + '</div>'
       + '</div>';
+  }).join('');
+
+  // Attach events
+  chips.querySelectorAll('[data-chipdec]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      const n = this.dataset.chipdec;
+      bmPkgQty[n] = Math.max(0, (bmPkgQty[n]||0)-1);
+      if (!bmPkgQty[n]) delete bmPkgQty[n];
+      renderBmPkgChips(); updateBmTotal();
+    });
   });
-  if (rows) rows.innerHTML = html;
+  chips.querySelectorAll('[data-chipinc]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      const n = this.dataset.chipinc;
+      bmPkgQty[n] = (bmPkgQty[n]||0)+1;
+      renderBmPkgChips(); updateBmTotal();
+    });
+  });
+  chips.querySelectorAll('[data-chiprm]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      delete bmPkgQty[this.dataset.chiprm];
+      renderBmPkgChips(); updateBmTotal();
+    });
+  });
 }
 
 async function saveBooking(){
