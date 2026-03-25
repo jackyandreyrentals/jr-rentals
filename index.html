@@ -1748,19 +1748,21 @@ canvas#sign-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
       <div class="ifg"><label>EVENT DATE</label><input type="date" id="bm-eventdate" onchange="updateBmTotal()"></div>
       <div class="ifg"><label>RETURN DATE</label><input type="date" id="bm-returndate" onchange="updateBmTotal()"></div>
       <div class="ifg if-full"><label>EVENT LOCATION</label><input type="text" id="bm-location" placeholder="Barangay, City, Metro Cebu"></div>
-      <!-- PACKAGE SELECTOR -->
+      <!-- PACKAGE PICKER (multi-select) -->
       <div class="ifg if-full">
-        <label>SELECT PACKAGE (optional)</label>
-        <select id="bm-pkg-select" onchange="onBmPkgChange(this.value)"
-          style="width:100%;background:var(--dark3);border:1px solid var(--border);border-radius:8px;padding:10px 11px;font-family:Inter,sans-serif;font-size:13px;color:#fff;outline:none;">
-          <option value="">— No Package (individual items only) —</option>
-        </select>
+        <label style="display:flex;align-items:center;justify-content:space-between;">
+          PACKAGES (optional — can select multiple)
+          <span style="font-size:10px;color:var(--green);" id="bm-pkg-badge"></span>
+        </label>
+        <div id="bm-pkg-picker" style="background:var(--dark3);border:1px solid var(--border);border-radius:9px;overflow:hidden;max-height:220px;overflow-y:auto;">
+          <div class="loading"><div class="spinner"></div> Loading packages...</div>
+        </div>
       </div>
 
-      <!-- PACKAGE SUMMARY BANNER -->
-      <div id="bm-pkg-banner" style="display:none;background:var(--gold-dim);border:1px solid rgba(232,160,32,0.3);border-radius:9px;padding:10px 13px;font-size:12px;">
-        <div style="font-weight:700;color:var(--gold);margin-bottom:4px;" id="bm-pkg-banner-name"></div>
-        <div style="color:var(--muted);" id="bm-pkg-banner-includes"></div>
+      <!-- SELECTED PACKAGES SUMMARY -->
+      <div id="bm-pkg-summary" style="display:none;background:var(--gold-dim);border:1px solid rgba(232,160,32,0.3);border-radius:9px;padding:10px 13px;font-size:12px;">
+        <div style="font-size:10px;font-weight:700;color:var(--gold);letter-spacing:.07em;margin-bottom:6px;">SELECTED PACKAGES</div>
+        <div id="bm-pkg-summary-rows"></div>
       </div>
 
       <!-- ITEM PICKER (individual items / extras) -->
@@ -3826,27 +3828,25 @@ function openBookingModal(bk){
   document.getElementById("bm-delivaddr").value=bk?bk.deliveryAddress||"":"";
   document.getElementById("bm-notes").value=bk?bk.notes||"":"";
 
-  // ── Reset item picker ──
+  // ── Reset pickers ──
   bmItemQty = {};
-  bmSelectedPkg = null;
+  bmPkgQty  = {};
   // Pre-populate if editing existing booking
   if (bk && bk.items) {
-    if (bk.items.startsWith('PACKAGE:')) {
-      const pkgMatch = bk.items.match(/^PACKAGE:\s*([^+]+)/i);
-      if (pkgMatch) {
-        const pkgName = pkgMatch[1].trim();
-        setTimeout(function(){
-          const sel = document.getElementById('bm-pkg-select');
-          if (sel) { sel.value = pkgName; onBmPkgChange(pkgName); }
-        }, 300);
-      }
-    } else {
-      // Parse individual items back to qty map
-      bk.items.split(',').forEach(function(part){
-        const m = part.trim().match(/^(\d+)x\s+(.+)$/i);
-        if (m) bmItemQty[m[2].trim()] = parseInt(m[1]);
-      });
-    }
+    const itemsStr = bk.items;
+    // Parse PACKAGE: entries (can have multiple: "PACKAGE: A + PACKAGE: B + Extras: 2x Chair")
+    const pkgMatches = [...itemsStr.matchAll(/PACKAGE:\s*([^+]+)/gi)];
+    pkgMatches.forEach(function(m){
+      const name = m[1].trim();
+      bmPkgQty[name] = (bmPkgQty[name]||0) + 1;
+    });
+    // Parse extras / individual items
+    const extrasMatch = itemsStr.match(/Extras:\s*(.+)$/i);
+    const itemsSrc = extrasMatch ? extrasMatch[1] : (pkgMatches.length ? '' : itemsStr);
+    itemsSrc.split(',').forEach(function(part){
+      const m = part.trim().match(/^(\d+)x?\s+(.+)$/i);
+      if (m) bmItemQty[m[2].trim()] = parseInt(m[1]);
+    });
   }
   // Load pickers
   loadBmPackageSelect();
@@ -3977,10 +3977,10 @@ function onBmTotalChange(){
 
 // ── SAVE BOOKING (add or edit) ──
 /* ══════════════════════════════════════════════
-   BOOKING MODAL ITEM PICKER
+   BOOKING MODAL ITEM + PACKAGE PICKER
 ══════════════════════════════════════════════ */
-let bmItemQty = {};       // { "Monoblock Chair": 50 }
-let bmSelectedPkg = null; // package object or null
+let bmItemQty = {};    // { "Monoblock Chair": 50 }
+let bmPkgQty  = {};    // { "Birthday Starter": 1, "Camping Set": 2 }
 
 async function loadBmItemPicker() {
   const picker = document.getElementById('bm-item-picker');
@@ -4063,33 +4063,15 @@ function updateBmItemsBadge() {
   if (badge) badge.textContent = selected.length > 0 ? selected.length+' item type'+(selected.length>1?'s':'')+' selected' : '';
 }
 
-function onBmPkgChange(pkgName) {
-  if (!pkgName) {
-    bmSelectedPkg = null;
-    const banner = document.getElementById('bm-pkg-banner');
-    if (banner) banner.style.display = 'none';
-    document.getElementById('bm-items-label').textContent = 'ITEMS TO RENT';
-    updateBmTotal();
-    return;
-  }
-  bmSelectedPkg = packagesData.find(function(p){ return p.name===pkgName; }) || null;
-  if (bmSelectedPkg) {
-    const banner = document.getElementById('bm-pkg-banner');
-    const inclLines = parsePkgIncludesForDisplay(bmSelectedPkg.includes||bmSelectedPkg.includesReadable||'');
-    if (banner) {
-      document.getElementById('bm-pkg-banner-name').textContent = '🎁 '+bmSelectedPkg.name+' — ₱'+parseInt(bmSelectedPkg.packagePrice).toLocaleString();
-      document.getElementById('bm-pkg-banner-includes').textContent = inclLines.join(' · ');
-      banner.style.display = 'block';
-    }
-    document.getElementById('bm-items-label').textContent = 'EXTRA ITEMS (on top of package, optional)';
-  }
-  updateBmTotal();
-}
+// onBmPkgChange replaced by changeBmPkgQty
 
 function getBmItemsList() {
+  const pkgs = Object.entries(bmPkgQty).filter(function(e){ return e[1]>0; });
   const extras = Object.entries(bmItemQty).filter(function(e){ return e[1]>0; }).map(function(e){ return e[1]+'x '+e[0]; }).join(', ');
-  if (bmSelectedPkg) {
-    return extras ? 'PACKAGE: '+bmSelectedPkg.name+' + Extras: '+extras : 'PACKAGE: '+bmSelectedPkg.name;
+
+  if (pkgs.length) {
+    const pkgStr = pkgs.map(function(e){ return (e[1]>1 ? e[1]+'x ' : '')+'PACKAGE: '+e[0]; }).join(' + ');
+    return extras ? pkgStr+' + Extras: '+extras : pkgStr;
   }
   return extras;
 }
@@ -4098,11 +4080,17 @@ function updateBmTotal() {
   const eventDate = document.getElementById('bm-eventdate')?.value || '';
   const returnDate = document.getElementById('bm-returndate')?.value || '';
   const numDays = countRentalDays(eventDate, returnDate);
-  const discountPct = parseFloat(appSettings.multiday_discount_pct)||0;
 
   let total = 0;
-  if (bmSelectedPkg) total += parseInt(bmSelectedPkg.packagePrice)||0;
+  // Sum all selected packages × qty
+  Object.entries(bmPkgQty).forEach(function(e){
+    if (e[1] <= 0) return;
+    const pkg = packagesData.find(function(p){ return p.name===e[0]; });
+    if (pkg) total += (parseInt(pkg.packagePrice)||0) * e[1];
+  });
+  // Sum individual items with multi-day pricing
   Object.entries(bmItemQty).forEach(function(e){
+    if (e[1] <= 0) return;
     const item = inventoryItems.find(function(i){ return i.name===e[0]; });
     if (item) total += calcMultiDayTotal(parseInt(item.price), e[1], numDays);
   });
@@ -4112,20 +4100,87 @@ function updateBmTotal() {
 }
 
 async function loadBmPackageSelect() {
-  const sel = document.getElementById('bm-pkg-select');
-  if (!sel) return;
+  const picker = document.getElementById('bm-pkg-picker');
+  if (!picker) return;
   if (!packagesData.length) {
     const res = await api({action:'getPackages'});
     if (res.success) packagesData = res.packages;
   }
-  // Clear and rebuild
-  sel.innerHTML = '<option value="">— No Package (individual items only) —</option>';
-  packagesData.filter(function(p){ return p.available==='Yes'; }).forEach(function(pkg){
-    const opt = document.createElement('option');
-    opt.value = pkg.name;
-    opt.textContent = '🎁 '+pkg.name+' — ₱'+parseInt(pkg.packagePrice).toLocaleString()+' '+(pkg.priceType==='perday'?'/ day':'fixed');
-    sel.appendChild(opt);
+  renderBmPkgPicker();
+}
+
+function renderBmPkgPicker() {
+  const picker = document.getElementById('bm-pkg-picker');
+  if (!picker) return;
+  const available = packagesData.filter(function(p){ return p.available==='Yes'; });
+  if (!available.length) {
+    picker.innerHTML = '<p style="color:var(--muted);font-size:12px;padding:10px;">No packages available.</p>';
+    return;
+  }
+  let html = '';
+  available.forEach(function(pkg) {
+    const qty = bmPkgQty[pkg.name]||0;
+    const hl  = qty > 0 ? 'background:rgba(232,160,32,0.07);' : '';
+    const inclLines = parsePkgIncludesForDisplay(pkg.includes||pkg.includesReadable||'');
+    const badge = qty > 0
+      ? ' <span style="font-size:9px;background:var(--green-bg);color:var(--green);padding:1px 5px;border-radius:10px;">×'+qty+'</span>' : '';
+    html += '<div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid var(--border);'+hl+'">'
+      + '<div style="flex:1;">'
+      + '<div style="font-size:12px;font-weight:600;">🎁 '+pkg.name+badge+'</div>'
+      + '<div style="font-size:10px;color:var(--muted);">₱'+parseInt(pkg.packagePrice).toLocaleString()+' '+(pkg.priceType==='perday'?'/ day':'fixed')+' · '+inclLines.slice(0,2).join(', ')+(inclLines.length>2?' +more':'')+' </div>'
+      + '</div>'
+      + '<div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">'
+      + '<button data-pkgdec="'+pkg.name+'" style="width:24px;height:24px;border-radius:50%;border:1px solid var(--border);background:var(--dark2);cursor:pointer;font-size:14px;color:var(--gold);line-height:1;">−</button>'
+      + '<span style="font-size:13px;font-weight:600;min-width:20px;text-align:center;color:'+(qty>0?'var(--gold)':'var(--muted)')+';" id="bmpkgqty-'+pkg.name.replace(/\s/g,'_')+'">'+qty+'</span>'
+      + '<button data-pkginc="'+pkg.name+'" style="width:24px;height:24px;border-radius:50%;border:1px solid var(--border);background:var(--dark2);cursor:pointer;font-size:14px;color:var(--gold);line-height:1;">+</button>'
+      + '</div></div>';
   });
+  html += '<div style="height:6px;"></div>';
+  picker.innerHTML = html;
+
+  // Attach events
+  picker.querySelectorAll('[data-pkgdec]').forEach(function(btn){
+    btn.addEventListener('click', function(){ changeBmPkgQty(this.dataset.pkgdec, -1); });
+  });
+  picker.querySelectorAll('[data-pkginc]').forEach(function(btn){
+    btn.addEventListener('click', function(){ changeBmPkgQty(this.dataset.pkginc, 1); });
+  });
+}
+
+function changeBmPkgQty(name, delta) {
+  bmPkgQty[name] = Math.max(0, (bmPkgQty[name]||0) + delta);
+  renderBmPkgPicker();
+  updateBmPkgSummary();
+  updateBmTotal();
+}
+
+function updateBmPkgSummary() {
+  const selected = Object.entries(bmPkgQty).filter(function(e){ return e[1]>0; });
+  const badge   = document.getElementById('bm-pkg-badge');
+  const summary = document.getElementById('bm-pkg-summary');
+  const rows    = document.getElementById('bm-pkg-summary-rows');
+  const label   = document.getElementById('bm-items-label');
+
+  if (badge) badge.textContent = selected.length > 0 ? selected.length+' package'+(selected.length>1?'s':'')+' selected' : '';
+  if (!selected.length) {
+    if (summary) summary.style.display = 'none';
+    if (label) label.textContent = 'ITEMS TO RENT';
+    return;
+  }
+  if (summary) summary.style.display = 'block';
+  if (label) label.textContent = 'EXTRA ITEMS (on top of packages, optional)';
+
+  let html = '';
+  selected.forEach(function(e) {
+    const pkg = packagesData.find(function(p){ return p.name===e[0]; });
+    if (!pkg) return;
+    const subtotal = (parseInt(pkg.packagePrice)||0) * e[1];
+    html += '<div style="display:flex;justify-content:space-between;padding:3px 0;font-size:12px;border-bottom:1px solid rgba(255,255,255,0.05);">'
+      + '<span style="color:var(--muted);">'+e[1]+'× 🎁 '+e[0]+'</span>'
+      + '<span style="color:var(--gold);">₱'+subtotal.toLocaleString()+'</span>'
+      + '</div>';
+  });
+  if (rows) rows.innerHTML = html;
 }
 
 async function saveBooking(){
