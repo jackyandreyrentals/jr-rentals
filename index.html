@@ -86,10 +86,10 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
 .svc-desc{font-size:11px;color:var(--muted);}
 
 /* INVENTORY */
-.inv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;}
-.inv-card{background:var(--dark2);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border .15s;}
+.inv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;}
+.inv-card{background:var(--dark2);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:border .2s;}
 .inv-card:hover{border-color:var(--gold);}
-.inv-img{height:110px;background:var(--dark3);display:flex;align-items:center;justify-content:center;font-size:2.4rem;border-bottom:1px solid var(--border);overflow:hidden;}
+.inv-img{height:160px;background:var(--dark3);display:flex;align-items:center;justify-content:center;font-size:3rem;border-bottom:1px solid var(--border);overflow:hidden;}
 .inv-img img{width:100%;height:100%;object-fit:cover;}
 .inv-body{padding:10px 12px;}
 .inv-name{font-size:13px;font-weight:600;margin-bottom:3px;}
@@ -747,7 +747,7 @@ canvas#sign-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
         <button class="bk-filter" onclick="filterPubInv('Camping',this)">⛺ Camping</button>
         <button class="bk-filter" onclick="filterPubInv('Other',this)">📦 Other</button>
       </div>
-      <div id="pub-inv-grid"><div class="loading"><div class="spinner"></div> Loading...</div></div>
+      <div class="inv-grid" id="pub-inv-grid"><div class="loading"><div class="spinner"></div> Loading...</div></div>
     </div>
   </div>
 
@@ -1518,20 +1518,19 @@ canvas#sign-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
 
           <!-- CATEGORY MANAGEMENT -->
           <div class="dash-card" style="max-width:580px;margin-bottom:14px;">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-              <div class="dash-card-title" style="margin-bottom:0">🗂️ Category Management</div>
-              <button onclick="openCatModal(null)"
-                style="background:var(--gold);color:#111;border:none;font-family:Inter,sans-serif;font-size:12px;font-weight:700;padding:6px 14px;border-radius:7px;cursor:pointer;">
-                + Add Category
-              </button>
+            <div class="dash-card-title">🗂️ Category Management</div>
+            <div style="font-size:12px;color:var(--muted);margin-bottom:14px;line-height:1.7;">
+              Categories appear as filter tabs on the Inventory page and in the admin item picker.
+              Renaming a category auto-updates all items. Deleting moves items to <strong style="color:#fff">Other</strong>.
             </div>
-            <div id="cat-list" style="display:flex;flex-direction:column;gap:6px;">
+            <div id="cat-list" style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px;">
               <div class="loading"><div class="spinner"></div> Loading...</div>
             </div>
-            <div style="font-size:11px;color:var(--muted);margin-top:10px;line-height:1.6;">
-              Categories appear as filter tabs on the public Inventory page and in the admin item picker.
-              Deleting a category moves its items to <strong style="color:#fff">Other</strong>.
-            </div>
+            <button onclick="openCatModal(null)"
+              style="width:100%;background:var(--dark3);border:1.5px dashed rgba(232,160,32,0.4);color:var(--gold);font-family:Inter,sans-serif;font-size:13px;font-weight:600;padding:10px;border-radius:9px;cursor:pointer;transition:all .15s;"
+              onmouseover="this.style.background='var(--gold-dim)'" onmouseout="this.style.background='var(--dark3)'">
+              + Add New Category
+            </button>
           </div>
 
           <!-- HOW IT WORKS info card -->
@@ -1746,10 +1745,37 @@ canvas#sign-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
       <div class="ifg"><label>FULL NAME</label><input type="text" id="bm-name" placeholder="Juan dela Cruz"></div>
       <div class="ifg"><label>CONTACT NUMBER</label><input type="tel" id="bm-phone" placeholder="09XX XXX XXXX"></div>
       <div class="ifg if-full"><label>EMAIL ADDRESS</label><input type="email" id="bm-email" placeholder="youremail@gmail.com"></div>
-      <div class="ifg"><label>EVENT DATE</label><input type="date" id="bm-eventdate"></div>
-      <div class="ifg"><label>RETURN DATE</label><input type="date" id="bm-returndate"></div>
+      <div class="ifg"><label>EVENT DATE</label><input type="date" id="bm-eventdate" onchange="updateBmTotal()"></div>
+      <div class="ifg"><label>RETURN DATE</label><input type="date" id="bm-returndate" onchange="updateBmTotal()"></div>
       <div class="ifg if-full"><label>EVENT LOCATION</label><input type="text" id="bm-location" placeholder="Barangay, City, Metro Cebu"></div>
-      <div class="ifg if-full"><label>ITEMS / PACKAGE</label><textarea id="bm-items" style="min-height:60px" placeholder="e.g. 50x Monobloc Chair, 5x Round Table"></textarea></div>
+      <!-- PACKAGE SELECTOR -->
+      <div class="ifg if-full">
+        <label>SELECT PACKAGE (optional)</label>
+        <select id="bm-pkg-select" onchange="onBmPkgChange(this.value)"
+          style="width:100%;background:var(--dark3);border:1px solid var(--border);border-radius:8px;padding:10px 11px;font-family:Inter,sans-serif;font-size:13px;color:#fff;outline:none;">
+          <option value="">— No Package (individual items only) —</option>
+        </select>
+      </div>
+
+      <!-- PACKAGE SUMMARY BANNER -->
+      <div id="bm-pkg-banner" style="display:none;background:var(--gold-dim);border:1px solid rgba(232,160,32,0.3);border-radius:9px;padding:10px 13px;font-size:12px;">
+        <div style="font-weight:700;color:var(--gold);margin-bottom:4px;" id="bm-pkg-banner-name"></div>
+        <div style="color:var(--muted);" id="bm-pkg-banner-includes"></div>
+      </div>
+
+      <!-- ITEM PICKER (individual items / extras) -->
+      <div class="ifg if-full">
+        <label style="display:flex;align-items:center;justify-content:space-between;">
+          <span id="bm-items-label">ITEMS TO RENT</span>
+          <span style="font-size:10px;color:var(--green);" id="bm-items-badge"></span>
+        </label>
+        <div id="bm-item-picker" style="background:var(--dark3);border:1px solid var(--border);border-radius:9px;overflow:hidden;max-height:240px;overflow-y:auto;">
+          <div class="loading"><div class="spinner"></div> Loading items...</div>
+        </div>
+      </div>
+
+      <!-- ITEMS SUMMARY (hidden textarea used for saving) -->
+      <input type="hidden" id="bm-items">
       <div class="ifg"><label>TOTAL AMOUNT (₱)</label><input type="number" id="bm-total" placeholder="0" min="0" oninput="onBmTotalChange()"></div>
       <div class="ifg"><label>STATUS</label>
         <select id="bm-status">
@@ -3800,6 +3826,32 @@ function openBookingModal(bk){
   document.getElementById("bm-delivaddr").value=bk?bk.deliveryAddress||"":"";
   document.getElementById("bm-notes").value=bk?bk.notes||"":"";
 
+  // ── Reset item picker ──
+  bmItemQty = {};
+  bmSelectedPkg = null;
+  // Pre-populate if editing existing booking
+  if (bk && bk.items) {
+    if (bk.items.startsWith('PACKAGE:')) {
+      const pkgMatch = bk.items.match(/^PACKAGE:\s*([^+]+)/i);
+      if (pkgMatch) {
+        const pkgName = pkgMatch[1].trim();
+        setTimeout(function(){
+          const sel = document.getElementById('bm-pkg-select');
+          if (sel) { sel.value = pkgName; onBmPkgChange(pkgName); }
+        }, 300);
+      }
+    } else {
+      // Parse individual items back to qty map
+      bk.items.split(',').forEach(function(part){
+        const m = part.trim().match(/^(\d+)x\s+(.+)$/i);
+        if (m) bmItemQty[m[2].trim()] = parseInt(m[1]);
+      });
+    }
+  }
+  // Load pickers
+  loadBmPackageSelect();
+  loadBmItemPicker();
+
   // ── Reset discount fields ──
   bmDiscType = 'none';
   [{t:'none',id:'bm-disc-none'},{t:'fixed',id:'bm-disc-fixed'},{t:'percent',id:'bm-disc-pct'}].forEach(({t,id}) => {
@@ -3924,6 +3976,158 @@ function onBmTotalChange(){
 }
 
 // ── SAVE BOOKING (add or edit) ──
+/* ══════════════════════════════════════════════
+   BOOKING MODAL ITEM PICKER
+══════════════════════════════════════════════ */
+let bmItemQty = {};       // { "Monoblock Chair": 50 }
+let bmSelectedPkg = null; // package object or null
+
+async function loadBmItemPicker() {
+  const picker = document.getElementById('bm-item-picker');
+  if (!picker) return;
+  const items = await loadInventory();
+  if (!items.length) {
+    picker.innerHTML = '<p style="color:var(--muted);font-size:12px;padding:10px;">No inventory items found.</p>';
+    return;
+  }
+  renderBmItemPicker(items);
+}
+
+function renderBmItemPicker(items) {
+  const picker = document.getElementById('bm-item-picker');
+  if (!picker) return;
+  // Category filter tabs inside picker
+  let html = '<div style="display:flex;gap:5px;flex-wrap:wrap;padding:7px 10px;border-bottom:1px solid var(--border);background:var(--dark2);">';
+  html += '<button class="bk-filter active" data-bmcat="all" style="font-size:10px;padding:3px 9px;">All</button>';
+  appCategories.forEach(function(c){
+    html += '<button class="bk-filter" data-bmcat="' + c.name + '" style="font-size:10px;padding:3px 9px;">' + c.emoji + ' ' + c.name + '</button>';
+  });
+  html += '</div>';
+  // All items
+  html += '<div id="bm-item-rows">';
+  items.forEach(function(item){
+    const qty = bmItemQty[item.name]||0;
+    const hl = qty > 0 ? 'background:rgba(232,160,32,0.07);' : '';
+    const badge = qty > 0 ? ' <span style="font-size:9px;background:var(--green-bg);color:var(--green);padding:1px 5px;border-radius:10px;">x'+qty+'</span>' : '';
+    html += '<div class="bm-item-row" data-cat="'+(item.category||'Other')+'" style="display:flex;align-items:center;justify-content:space-between;padding:7px 12px;border-bottom:1px solid var(--border);'+hl+'">'
+      + '<div style="flex:1;">'
+      + '<div style="font-size:12px;font-weight:600;">'+(item.emoji||'')+' '+item.name+badge+'</div>'
+      + '<div style="font-size:10px;color:var(--muted);">₱'+item.price+'/day · '+item.available+' avail</div>'
+      + '</div>'
+      + '<div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">'
+      + '<button data-bmdec="'+item.name+'" style="width:24px;height:24px;border-radius:50%;border:1px solid var(--border);background:var(--dark2);cursor:pointer;font-size:14px;color:var(--gold);line-height:1;">−</button>'
+      + '<span style="font-size:13px;font-weight:600;min-width:20px;text-align:center;color:'+(qty>0?'var(--gold)':'var(--muted)')+';" id="bmqty-'+item.name.replace(/\s/g,'_')+'">'+qty+'</span>'
+      + '<button data-bminc="'+item.name+'" style="width:24px;height:24px;border-radius:50%;border:1px solid var(--border);background:var(--dark2);cursor:pointer;font-size:14px;color:var(--gold);line-height:1;">+</button>'
+      + '</div></div>';
+  });
+  html += '</div><div style="height:6px;"></div>';
+  picker.innerHTML = html;
+
+  // Attach +/− events
+  picker.querySelectorAll('[data-bmdec]').forEach(function(btn){
+    btn.addEventListener('click', function(){ changeBmQty(this.dataset.bmdec, -1); });
+  });
+  picker.querySelectorAll('[data-bminc]').forEach(function(btn){
+    btn.addEventListener('click', function(){ changeBmQty(this.dataset.bminc, 1); });
+  });
+  // Attach category filter tabs
+  picker.querySelectorAll('[data-bmcat]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      const cat = this.dataset.bmcat;
+      picker.querySelectorAll('[data-bmcat]').forEach(function(b){ b.classList.remove('active'); });
+      this.classList.add('active');
+      picker.querySelectorAll('.bm-item-row').forEach(function(row){
+        row.style.display = (cat==='all' || row.dataset.cat===cat) ? 'flex' : 'none';
+      });
+    });
+  });
+}
+
+function changeBmQty(name, delta) {
+  bmItemQty[name] = Math.max(0, (bmItemQty[name]||0) + delta);
+  // Update display
+  const el = document.getElementById('bmqty-'+name.replace(/\s/g,'_'));
+  if (el) {
+    el.textContent = bmItemQty[name];
+    el.style.color = bmItemQty[name]>0 ? 'var(--gold)' : 'var(--muted)';
+  }
+  // Update row highlight and badge
+  renderBmItemPicker(inventoryItems);
+  updateBmTotal();
+  updateBmItemsBadge();
+}
+
+function updateBmItemsBadge() {
+  const selected = Object.entries(bmItemQty).filter(function(e){ return e[1]>0; });
+  const badge = document.getElementById('bm-items-badge');
+  if (badge) badge.textContent = selected.length > 0 ? selected.length+' item type'+(selected.length>1?'s':'')+' selected' : '';
+}
+
+function onBmPkgChange(pkgName) {
+  if (!pkgName) {
+    bmSelectedPkg = null;
+    const banner = document.getElementById('bm-pkg-banner');
+    if (banner) banner.style.display = 'none';
+    document.getElementById('bm-items-label').textContent = 'ITEMS TO RENT';
+    updateBmTotal();
+    return;
+  }
+  bmSelectedPkg = packagesData.find(function(p){ return p.name===pkgName; }) || null;
+  if (bmSelectedPkg) {
+    const banner = document.getElementById('bm-pkg-banner');
+    const inclLines = parsePkgIncludesForDisplay(bmSelectedPkg.includes||bmSelectedPkg.includesReadable||'');
+    if (banner) {
+      document.getElementById('bm-pkg-banner-name').textContent = '🎁 '+bmSelectedPkg.name+' — ₱'+parseInt(bmSelectedPkg.packagePrice).toLocaleString();
+      document.getElementById('bm-pkg-banner-includes').textContent = inclLines.join(' · ');
+      banner.style.display = 'block';
+    }
+    document.getElementById('bm-items-label').textContent = 'EXTRA ITEMS (on top of package, optional)';
+  }
+  updateBmTotal();
+}
+
+function getBmItemsList() {
+  const extras = Object.entries(bmItemQty).filter(function(e){ return e[1]>0; }).map(function(e){ return e[1]+'x '+e[0]; }).join(', ');
+  if (bmSelectedPkg) {
+    return extras ? 'PACKAGE: '+bmSelectedPkg.name+' + Extras: '+extras : 'PACKAGE: '+bmSelectedPkg.name;
+  }
+  return extras;
+}
+
+function updateBmTotal() {
+  const eventDate = document.getElementById('bm-eventdate')?.value || '';
+  const returnDate = document.getElementById('bm-returndate')?.value || '';
+  const numDays = countRentalDays(eventDate, returnDate);
+  const discountPct = parseFloat(appSettings.multiday_discount_pct)||0;
+
+  let total = 0;
+  if (bmSelectedPkg) total += parseInt(bmSelectedPkg.packagePrice)||0;
+  Object.entries(bmItemQty).forEach(function(e){
+    const item = inventoryItems.find(function(i){ return i.name===e[0]; });
+    if (item) total += calcMultiDayTotal(parseInt(item.price), e[1], numDays);
+  });
+
+  document.getElementById('bm-total').value = Math.round(total) || '';
+  onBmTotalChange();
+}
+
+async function loadBmPackageSelect() {
+  const sel = document.getElementById('bm-pkg-select');
+  if (!sel) return;
+  if (!packagesData.length) {
+    const res = await api({action:'getPackages'});
+    if (res.success) packagesData = res.packages;
+  }
+  // Clear and rebuild
+  sel.innerHTML = '<option value="">— No Package (individual items only) —</option>';
+  packagesData.filter(function(p){ return p.available==='Yes'; }).forEach(function(pkg){
+    const opt = document.createElement('option');
+    opt.value = pkg.name;
+    opt.textContent = '🎁 '+pkg.name+' — ₱'+parseInt(pkg.packagePrice).toLocaleString()+' '+(pkg.priceType==='perday'?'/ day':'fixed');
+    sel.appendChild(opt);
+  });
+}
+
 async function saveBooking(){
   const name=document.getElementById("bm-name").value.trim();
   const phone=document.getElementById("bm-phone").value.trim();
@@ -3931,7 +4135,7 @@ async function saveBooking(){
   const eventDate=document.getElementById("bm-eventdate").value;
   const returnDate=document.getElementById("bm-returndate").value;
   const location=document.getElementById("bm-location").value.trim();
-  const items=document.getElementById("bm-items").value.trim();
+  const items = getBmItemsList() || document.getElementById("bm-items").value.trim();
   const total=parseInt(document.getElementById("bm-total").value)||0;
   const status=document.getElementById("bm-status").value;
   const deliveryType=document.getElementById("bm-delivtype").value;
