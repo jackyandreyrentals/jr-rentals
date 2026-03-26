@@ -721,7 +721,9 @@ canvas#sign-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
       <div class="sec-sub">Individual items or ready-made event packages</div>
       <div class="service-grid">
         <div class="svc-card" onclick="pub('packages')"><div class="svc-icon">🎁</div><div class="svc-name">Packages</div><div class="svc-desc">All-in event bundles</div></div>
-        <div id="svc-dynamic-cats"></div>
+        <div class="svc-card" data-svc-cat="Chairs" onclick="filterAndGoInventory(this.dataset.svcCat)"><div class="svc-icon" id="svc-icon-Chairs">🪑</div><div class="svc-name" id="svc-name-Chairs">Chairs</div><div class="svc-desc">Monoblock, foldable & more</div></div>
+        <div class="svc-card" data-svc-cat="Tables" onclick="filterAndGoInventory(this.dataset.svcCat)"><div class="svc-icon" id="svc-icon-Tables">🍽️</div><div class="svc-name" id="svc-name-Tables">Tables</div><div class="svc-desc">Round, rectangular & banquet</div></div>
+        <div class="svc-card" data-svc-cat="Camping" onclick="filterAndGoInventory(this.dataset.svcCat)"><div class="svc-icon" id="svc-icon-Camping">⛺</div><div class="svc-name" id="svc-name-Camping">Camping</div><div class="svc-desc">Tents, lights & essentials</div></div>
       </div>
     </div>
   </div>
@@ -4298,26 +4300,18 @@ function rebuildCategoryUI() {
   rebuildHomeSvcCards();
 }
 
-// Rebuild homepage "What We Offer" category cards
+// Update homepage "What We Offer" category cards with dynamic emojis/names
 function rebuildHomeSvcCards() {
-  const el = document.getElementById('svc-dynamic-cats');
-  if (!el) return;
-  // Use a sensible desc per category or fall back to generic
-  const descs = {
-    'Chairs': 'Monoblock, foldable & more',
-    'Tables': 'Round, rectangular & banquet',
-    'Camping': 'Tents, lights & essentials',
-    'Other': 'Various rental items'
-  };
-  el.style.display = 'contents'; // acts as if not there, children join the grid
-  el.innerHTML = appCategories.map(function(c) {
-    const desc = descs[c.name] || c.name + ' items';
-    return '<div class="svc-card" data-cat="' + c.name + '" onclick="filterAndGoInventory(this.dataset.cat)">'
-      + '<div class="svc-icon">' + c.emoji + '</div>'
-      + '<div class="svc-name">' + c.name + '</div>'
-      + '<div class="svc-desc">' + desc + '</div>'
-      + '</div>';
-  }).join('');
+  // Update each card's emoji and name from appCategories
+  appCategories.forEach(function(c) {
+    const iconEl = document.getElementById('svc-icon-' + c.name);
+    const nameEl = document.getElementById('svc-name-' + c.name);
+    if (iconEl) iconEl.textContent = c.emoji;
+    if (nameEl) nameEl.textContent = c.name;
+    // Update the data attribute on the card too
+    const card = document.querySelector('[data-svc-cat="' + c.name + '"]');
+    if (card) card.dataset.svcCat = c.name;
+  });
 }
 
 function filterAndGoInventory(cat) {
