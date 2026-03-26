@@ -78,7 +78,7 @@ nav{background:#111;border-bottom:1px solid var(--border);padding:0 1rem;height:
 .sec-sub{font-size:12px;color:var(--muted);margin-top:2px;margin-bottom:1.25rem;}
 
 /* SERVICE GRID */
-.service-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;}
+.service-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
 .svc-card{background:var(--dark2);border:1px solid var(--border);border-radius:12px;padding:1.25rem 1rem;text-align:center;cursor:pointer;transition:all .15s;}
 .svc-card:hover{border-color:var(--gold);}
 .svc-icon{font-size:2rem;margin-bottom:.6rem;}
@@ -637,7 +637,7 @@ canvas#sign-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
   .stat:nth-last-child(-n+2){border-bottom:none;}
   .section{padding:1.25rem 1rem;}
   .inv-grid,.pkg-grid,.pkg-admin-grid{grid-template-columns:1fr;}
-  .service-grid{grid-template-columns:1fr 1fr;}
+  .service-grid{grid-template-columns:1fr 1fr;gap:8px;}
   .form-grid{grid-template-columns:1fr;}
   .form-full{grid-column:1;}
   .form-card{padding:1.25rem 1rem;}
@@ -721,9 +721,7 @@ canvas#sign-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
       <div class="sec-sub">Individual items or ready-made event packages</div>
       <div class="service-grid">
         <div class="svc-card" onclick="pub('packages')"><div class="svc-icon">🎁</div><div class="svc-name">Packages</div><div class="svc-desc">All-in event bundles</div></div>
-        <div class="svc-card" onclick="pub('inventory')"><div class="svc-icon">🪑</div><div class="svc-name">Chairs</div><div class="svc-desc">Monoblock, foldable & more</div></div>
-        <div class="svc-card" onclick="pub('inventory')"><div class="svc-icon">🍽️</div><div class="svc-name">Tables</div><div class="svc-desc">Round, rectangular & banquet</div></div>
-        <div class="svc-card" onclick="pub('inventory')"><div class="svc-icon">⛺</div><div class="svc-name">Camping Sets</div><div class="svc-desc">Tents, lights & essentials</div></div>
+        <div id="svc-dynamic-cats"></div>
       </div>
     </div>
   </div>
@@ -1992,6 +1990,10 @@ canvas#sign-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
         <div class="sign-row"><span>Return Date</span><span id="sc-returndate">—</span></div>
         <div class="sign-row"><span>Items / Package</span><span id="sc-items" style="max-width:55%;text-align:right">—</span></div>
         <div class="sign-row" id="sc-days-row" style="display:none"><span>Rental Duration</span><span id="sc-days">—</span></div>
+        <div class="sign-row" id="sc-delivery-row" style="display:none"><span>Delivery</span><span id="sc-delivery">—</span></div>
+        <div class="sign-row" id="sc-secdeposit-row" style="display:none">
+          <span>Security Deposit</span><span id="sc-secdeposit" style="color:var(--gold);">—</span>
+        </div>
         <div class="sign-row" style="border-top:1px dashed var(--border);padding-top:8px;margin-top:4px;">
           <span style="font-weight:600">Total Amount</span>
           <span id="sc-total" style="font-weight:700;color:var(--gold);font-size:1.1rem;">—</span>
@@ -2205,6 +2207,7 @@ function gdImg(url,fallback,h){
 let pubInvActiveCat = 'all';
 
 async function loadPublicInventory(){
+  rebuildHomeSvcCards(); // show category cards with current appCategories
   const g=document.getElementById("pub-inv-grid");
   const cacheLabel=document.getElementById("inv-cache-label");
   const wasCached=isCacheValid(inventoryCache);
@@ -4281,8 +4284,9 @@ async function loadCategoriesSilent() {
   const res = await api({action:'getCategories'});
   if (res.success && res.categories.length) {
     appCategories = res.categories;
-    // Rebuild all dynamic category UI
     rebuildCategoryUI();
+  } else {
+    rebuildHomeSvcCards();
   }
 }
 
@@ -4291,6 +4295,39 @@ function rebuildCategoryUI() {
   rebuildPubInvFilters();
   rebuildAdminInvFilters();
   rebuildItemCatSelect();
+  rebuildHomeSvcCards();
+}
+
+// Rebuild homepage "What We Offer" category cards
+function rebuildHomeSvcCards() {
+  const el = document.getElementById('svc-dynamic-cats');
+  if (!el) return;
+  // Use a sensible desc per category or fall back to generic
+  const descs = {
+    'Chairs': 'Monoblock, foldable & more',
+    'Tables': 'Round, rectangular & banquet',
+    'Camping': 'Tents, lights & essentials',
+    'Other': 'Various rental items'
+  };
+  el.style.display = 'contents'; // acts as if not there, children join the grid
+  el.innerHTML = appCategories.map(function(c) {
+    const desc = descs[c.name] || c.name + ' items';
+    return '<div class="svc-card" data-cat="' + c.name + '" onclick="filterAndGoInventory(this.dataset.cat)">'
+      + '<div class="svc-icon">' + c.emoji + '</div>'
+      + '<div class="svc-name">' + c.name + '</div>'
+      + '<div class="svc-desc">' + desc + '</div>'
+      + '</div>';
+  }).join('');
+}
+
+function filterAndGoInventory(cat) {
+  pub('inventory');
+  setTimeout(function(){
+    const btns = document.querySelectorAll('#pub-inv-cat-filters button');
+    btns.forEach(function(b){ b.classList.remove('active'); });
+    const target = Array.from(btns).find(function(b){ return b.dataset.cat === cat; });
+    if (target) { target.classList.add('active'); filterPubInv(cat, target); }
+  }, 200);
 }
 
 function getCatIcon(name) {
@@ -4483,6 +4520,8 @@ async function loadSettingsPanel() {
   if (catRes.success && catRes.categories.length) {
     appCategories = catRes.categories;
     rebuildCategoryUI();
+  } else {
+    rebuildHomeSvcCards(); // use defaults on first load
   }
   renderSettingsPanel();
 }
@@ -5104,6 +5143,11 @@ async function loadContractForSigning(contractId){
     return;
   }
   signContractData=res.contract;
+  // Declare these first to avoid use-before-declaration
+  const scTotal = parseInt(res.contract.total)||0;
+  const scDays  = parseInt(res.contract.numDays)||1;
+  const scSecDep = parseInt(res.contract.securityDeposit)||0;
+
   // Fill contract details
   document.getElementById("sign-contract-id").textContent=contractId;
   document.getElementById("sc-name").textContent=res.contract.name||"—";
@@ -5112,14 +5156,39 @@ async function loadContractForSigning(contractId){
   document.getElementById("sc-eventdate").textContent=formatDate(res.contract.eventDate)||"—";
   document.getElementById("sc-returndate").textContent=formatDate(res.contract.returnDate)||"—";
   document.getElementById("sc-items").textContent=res.contract.items||"—";
+
+  // Rental duration (multi-day)
   if(scDays > 1){
     document.getElementById("sc-days-row").style.display="flex";
     document.getElementById("sc-days").textContent=scDays+" day"+(scDays>1?"s":"")+" rental";
   }
-  const scTotal = parseInt(res.contract.total)||0;
-  const scDays = parseInt(res.contract.numDays)||1;
+
+  // Total
   document.getElementById("sc-total").textContent="₱"+scTotal.toLocaleString()
-    + (scDays > 1 ? " (" + scDays + " days)" : "");
+    + (scDays > 1 ? " ("+scDays+" days)" : "");
+
+  // Security deposit
+  const secDepEl = document.getElementById("sc-secdeposit-row");
+  const secDepVal = document.getElementById("sc-secdeposit");
+  if(secDepEl && scSecDep > 0){
+    secDepEl.style.display="flex";
+    secDepVal.textContent="₱"+scSecDep.toLocaleString();
+  }
+
+  // Delivery info
+  const delivType = res.contract.deliveryType||"pickup";
+  const delivEl = document.getElementById("sc-delivery-row");
+  const delivVal = document.getElementById("sc-delivery");
+  if(delivEl){
+    if(delivType === "delivery"){
+      delivEl.style.display="flex";
+      delivVal.textContent="Delivery to: "+(res.contract.deliveryAddress||"—");
+    } else {
+      delivEl.style.display="flex";
+      delivVal.textContent="Self Pickup";
+    }
+  }
+
   document.getElementById("sign-agree-name").textContent=res.contract.name||"the renter";
   document.getElementById("sign-content").style.display="block";
   initSignaturePad();
